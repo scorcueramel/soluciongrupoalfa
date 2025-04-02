@@ -11,17 +11,12 @@ use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['index', 'validarAcceso']]);
-    }
-
     public function index()
     {
         return Inertia::render('Formularios/Access');
     }
 
-    public function validarAcceso(ValidarAccesoFormatosRequest $request)
+    public function show(ValidarAccesoFormatosRequest $request)
     {
         $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
 

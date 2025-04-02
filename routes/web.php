@@ -50,7 +50,7 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 Route::get('/formato', [ValidarAccesoFormatosController::class, 'index'])->name('formato.index');
-Route::post('/formato', [ValidarAccesoFormatosController::class, 'validarAcceso'])->name('formato.validar.acceso');
+Route::post('/formato', [ValidarAccesoFormatosController::class, 'show'])->name('formato.validar.acceso');
 
 
 require __DIR__ . '/auth.php';
