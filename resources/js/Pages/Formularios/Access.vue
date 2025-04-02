@@ -1,11 +1,13 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { loadToast } from "@/composables/loadToast";
+import { loadToast } from '@/composables/loadToast';
 
 const props = defineProps({
-    status: Boolean,
+    errors : Object,
 })
+
+loadToast();
 
 const form = useForm({
     documento: "",
@@ -18,11 +20,17 @@ const submit = () => {
         documentoVacio.value = "Debes ingresar tu número de documento";
     } else {
         documentoVacio.value = "";
-        form.post(route("validar.acceso"), {
+        // form.post(route("formato.validar.acceso"), {
+        //     onSuccess: () => form.reset(),
+        //     onFinish: () => form.reset(),
+        // });
+
+        form.transform(data => ({
+            ...data,
+        })).post(route("formato.validar.acceso"),{
             onSuccess: () => form.reset(),
             onFinish: () => form.reset(),
         });
-        console.log(props.status)
     }
 };
 </script>

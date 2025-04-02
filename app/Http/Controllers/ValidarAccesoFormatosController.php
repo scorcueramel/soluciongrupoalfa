@@ -2,38 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index', 'validarAcceso']]);
+    }
+
     public function index()
     {
         return Inertia::render('Formularios/Access');
     }
 
-    public function validarAcceso(Request $request)
+    public function validarAcceso(ValidarAccesoFormatosRequest $request)
     {
+        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
 
-        DB::beginTransaction();
-        try {
-            $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
-            if (!is_null($accesoFormato)) {
-                if ($accesoFormato->acceso_formato) {
-                    DB::commit();
-                    return Inertia::render('Formularios/FormatoUno');
-                }
-            }else{
-                DB::rollback();
-                return Inertia::render('Formularios/NotAccess');
+        if (!is_null($accesoFormato)) {
+            if ($accesoFormato->acceso_formato) {
+                return Inertia::render('Formularios/FormatoUno');
             }
-
-        } catch (\Throwable $th) {
-            DB::rollback();
-            return back()->with('error', 'Error updating ' . $th->getMessage());
         }
+
+        return redirect()->back()->with('error', 'No tienes permitido acceder al formato.');
     }
 }

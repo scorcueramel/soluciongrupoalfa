@@ -1,6 +1,7 @@
 <script setup>
 import {Head} from '@inertiajs/vue3';
-
+import { loadToast } from '@/composables/loadToast';
+loadToast();
 </script>
 
 <template>
