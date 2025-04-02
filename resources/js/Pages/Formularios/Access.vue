@@ -1,22 +1,32 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
+import {ref} from "vue";
+import { loadToast } from '@/composables/loadToast';
 
 const form = useForm({
     documento: "",
 });
 
-const submit = () => {
-    // form.post(route("login"), {
-    //     onFinish: () => form.reset("password"),
-    // });
-    console.log(form.documento);
+loadToast();
 
+let documentoVacio = ref('');
+
+const submit = () => {
+    if(form.documento == ''){
+        documentoVacio.value = "Debes ingresar tu número de documento";
+    }else{
+        documentoVacio.value = "";
+        form.post(route("validar.acceso"), {
+            onSuccess: ()=> form.reset(),
+            onFinish: () => form.reset(),
+        });
+    }
 };
 
 </script>
 
 <template>
-    <Head title="Autenticación"/>
+    <Head title="Validación de acceso"/>
     <div class="bg-surface-50 dark:bg-surface-950 flex items-center justify-center min-h-screen min-w-[100vw] overflow-hidden">
         <div class="flex flex-col items-center justify-center">
             <div style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, #FF0000 10%, rgba(33, 150, 243, 0) 30%)">
@@ -33,6 +43,7 @@ const submit = () => {
                             <label for="documento" class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2">Número de documento</label>
                             <InputText id="documento" type="text" placeholder="Documento" class="w-full md:w-[30rem] mb-4" v-model="form.documento" />
                             <Message v-if="form.errors.documento" class="mb-4" severity="error">{{ form.errors.documento }}</Message>
+                            <Message v-if="documentoVacio" class="mb-4" severity="error">{{ documentoVacio }}</Message>
 
                             <div class="flex items-center justify-between gap-8">
                             </div>

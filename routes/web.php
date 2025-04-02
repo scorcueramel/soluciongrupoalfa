@@ -50,6 +50,7 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 Route::get('/formato', [ValidarAccesoFormatosController::class, 'index']);
+Route::post('/formato', [ValidarAccesoFormatosController::class, 'validarAcceso'])->name('validar.acceso');
 
 /*
 Route::get('/form', function () {
