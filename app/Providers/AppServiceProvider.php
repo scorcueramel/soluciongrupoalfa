@@ -22,11 +22,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('acceso-examen', function (User $user, bool $autorized) {
-            if($autorized){
-                return Response::allow();
-            }
-            return Response::deny('Usted no puede rellenar el formulario de evaluación en estos momentos.');
-        });
     }
 }

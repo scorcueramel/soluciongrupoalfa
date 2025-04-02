@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ValidarAccesoFormatosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
 });
 
+Route::get('/formato', [ValidarAccesoFormatosController::class, 'index']);
+
+/*
 Route::get('/form', function () {
     return Inertia::render('SakaiForm');
 });
@@ -59,11 +63,7 @@ Route::get('/button', function () {
 Route::get('/list', function () {
     return Inertia::render('SakaiList');
 });
-
-//revisar
-Route::get('/formato', function () {
-    return Inertia::render('Formularios/Index');
-});
+*/
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
