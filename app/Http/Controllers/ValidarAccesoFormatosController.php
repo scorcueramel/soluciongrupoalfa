@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
-use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
@@ -22,10 +20,9 @@ class ValidarAccesoFormatosController extends Controller
 
         if (!is_null($accesoFormato)) {
             if ($accesoFormato->acceso_formato) {
-                return Inertia::render('Formularios/FormatoUno');
+                return Inertia::render('Formularios/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
             }
         }
-
-        return redirect()->back()->with('error', 'No tienes permitido acceder al formato.');
+        return Inertia::render('Formularios/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
     }
 }

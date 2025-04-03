@@ -1,33 +1,26 @@
 <script setup>
 import { useForm, Head } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { loadToast } from '@/composables/loadToast';
+import Alert from "@/Components/Alert.vue";
+
+let documentoVacio = ref("");
 
 const props = defineProps({
-    errors : Object,
-})
-
-loadToast();
+    openError: Boolean,
+    errorMessage: String,
+});
 
 const form = useForm({
     documento: "",
 });
-
-let documentoVacio = ref("");
 
 const submit = () => {
     if (form.documento === "") {
         documentoVacio.value = "Debes ingresar tu número de documento";
     } else {
         documentoVacio.value = "";
-        // form.post(route("formato.validar.acceso"), {
-        //     onSuccess: () => form.reset(),
-        //     onFinish: () => form.reset(),
-        // });
 
-        form.transform(data => ({
-            ...data,
-        })).post(route("formato.validar.acceso"),{
+        form.post(route("formato.validar.acceso"), {
             onSuccess: () => form.reset(),
             onFinish: () => form.reset(),
         });
@@ -62,15 +55,33 @@ const submit = () => {
                             alt="logo-grupo-alfa"
                         />
                     </div>
-                    <div class="flex justify-center mb-12">
+                    <div class="flex justify-center mb-5">
                         <span
                             class="text-muted-color font-medium text-xl text-center"
                             >Ingresa tu número de documento para continuar</span
                         >
                     </div>
 
-                    <form @submit.prevent="submit">
-                        <div>
+                    <div
+                        class="bg-red-50 border-s-4 border-red-500 p-4 dark:bg-red-800/30"
+                        role="alert"
+                        tabindex="-1"
+                        aria-labelledby="hs-bordered-red-style-label"
+                        v-if="props.openError"
+                    >
+                        <alert :show="props.openError">
+                            <template #titleAlert>
+                                Ooops!!
+                            </template>
+                            <template #messageAlert>
+                                {{ props.errorMessage}}
+                            </template>
+                        </alert>
+
+                    </div>
+
+                    <div class="mt-5">
+                        <form @submit.prevent="submit">
                             <label
                                 for="documento"
                                 class="block text-surface-900 dark:text-surface-0 text-xl font-medium mb-2"
@@ -105,8 +116,8 @@ const submit = () => {
                             >
                                 Validar Documento
                             </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
