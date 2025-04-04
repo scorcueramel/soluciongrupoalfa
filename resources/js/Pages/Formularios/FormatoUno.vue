@@ -1,15 +1,22 @@
 <script setup>
 import { Head, useForm } from "@inertiajs/vue3";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { usePrimeVue } from "primevue/config";
 
 const props = defineProps({
     empresas: Array,
-    cargos: Array
+    cargos: Array,
 });
 
 const form = useForm({
     empresa: "",
-    cargo:""
+    cargo: "",
+    nombres: "",
+    paterno: "",
+    materno: "",
+    tipoDocumento: "",
+    numeroDocumento: "",
+    fechaNacimiento: "",
 });
 
 const isEnding = ref(false);
@@ -17,6 +24,16 @@ const isEnding = ref(false);
 // onbeforeunload = (event) => {
 //     event.preventDefault();
 // };
+
+const changeToSpanish = () => {
+    const primevue = usePrimeVue();
+    primevue.config.locale.dayNamesMin = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+    primevue.config.locale.monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+};
+
+onMounted(() => {
+    changeToSpanish();
+});
 </script>
 
 <template>
@@ -25,6 +42,7 @@ const isEnding = ref(false);
     />
     <div class="card flex justify-center">
         <div class="border border-gray-300 rounded-lg p-4 w-full md:w-9/12">
+            <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
             <div
                 class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4"
             >
@@ -93,37 +111,111 @@ const isEnding = ref(false);
                 </div>
             </div>
 
-            <div>
-                <div class="grid grid-cols-2">
-                    <div class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md">
-                        EMPRESA A LA QUE POSTULA
-                    </div>
-                    <div class="mt-2 flex flex-col gap-2">
-                        <label for="role">Razón Social</label>
-                        <Select
-                            v-model="form.empresa"
-                            :options="props.empresas"
-                            optionValue="code"
-                            optionLabel="name"
-                            placeholder="Seleccionar empresa"
-                        />
-                        <small class="text-red-500">errores</small>
-                    </div>
-                    <div class="mt-2 flex flex-col gap-2">
-                        <label for="role">Cargo</label>
-                        <Select
-                            v-model="form.cargo"
-                            :options="props.cargos"
-                            optionValue="code"
-                            optionLabel="name"
-                            placeholder="Seleccionar cargo"
-                        />
-                        <small class="text-red-500">errores</small>
-                    </div>
+            <div class="grid grid-cols-2 mb-4">
+                <div
+                    class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md"
+                >
+                    EMPRESA A LA QUE POSTULA
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-2">
+                    <label for="role">Razón Social</label>
+                    <Select
+                        v-model="form.empresa"
+                        :options="props.empresas"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar razón social"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 ms-2">
+                    <label for="role">Cargo</label>
+                    <Select
+                        v-model="form.cargo"
+                        :options="props.cargos"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar cargo"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3">
+                <div
+                    class="col-span-3 bg-[#B00202] font-black p-2 text-white rounded-md"
+                >
+                    DATOS PERSONALES
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="name">Nombres</label>
+                    <InputText
+                        id="nombres"
+                        v-model="form.nombres"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Nombres"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="name">Apellido Paterno</label>
+                    <InputText
+                        id="paterno"
+                        v-model="form.paterno"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Apellido paterno"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="name">Apellido Materno</label>
+                    <InputText
+                        id="materno"
+                        v-model="form.materno"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Apellido materno"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="tipoDocumento"
+                        >Tipo de Documento de Identidad</label
+                    >
+                    <Select
+                        v-model="form.tipoDocumento"
+                        :options="props.tipoDocumento"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar tipo de documento"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="numeroDocumento">Número de Documento</label>
+                    <InputText
+                        id="numeroDocumento"
+                        v-model="form.numeroDocumento"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Número de documento"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                    <DatePicker
+                        id="fechaNacimiento"
+                        v-model="form.fechaNacimiento"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Fecha de nacimiento"
+                    />
+                    <small class="text-red-500">errores</small>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<style scoped></style>
