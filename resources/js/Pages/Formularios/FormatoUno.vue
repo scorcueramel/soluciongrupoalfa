@@ -120,6 +120,9 @@ const activarBotonAgregar = () =>{
 }
 
 const agregarParentesco = (parentesco) => {
+
+    const textTipoParentesco = document.getElementById("textoTipoParentesco").text();
+    console.log(textTipoParentesco);
     const test =`
         <div id="inputFormRow">
             <div class="input-group mb-3">
@@ -469,6 +472,7 @@ const agregarParentesco = (parentesco) => {
                         placeholder="Seleccionar parentescos"
                         emptyMessage="Opciones no disponibles"
                         @change="activarBotonAgregar"
+                        id="textoTipoParentesco"
                     />
                     <small class="text-red-500">errores</small>
                 </div>
