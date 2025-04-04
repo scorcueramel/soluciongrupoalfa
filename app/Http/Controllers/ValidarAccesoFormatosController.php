@@ -14,15 +14,20 @@ class ValidarAccesoFormatosController extends Controller
         return Inertia::render('Formularios/Access');
     }
 
-    public function show(ValidarAccesoFormatosRequest $request)
+    public function test()
     {
-        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
-
-        if (!is_null($accesoFormato)) {
-            if ($accesoFormato->acceso_formato) {
-                return Inertia::render('Formularios/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
-            }
-        }
-        return Inertia::render('Formularios/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+        return Inertia::render('Formularios/FormatoUno');
     }
+
+//    public function show(ValidarAccesoFormatosRequest $request)
+//    {
+//        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
+//
+//        if (!is_null($accesoFormato)) {
+//            if ($accesoFormato->acceso_formato) {
+//                return Inertia::render('Formularios/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
+//            }
+//        }
+//        return Inertia::render('Formularios/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+//    }
 }
