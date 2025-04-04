@@ -120,19 +120,17 @@ const activarBotonAgregar = () =>{
 }
 
 const agregarParentesco = (parentesco) => {
-    console.log(parentesco);
     const test =`
         <div id="inputFormRow">
             <div class="input-group mb-3">
+                <input type="text" value="${form.tipoParentesco}" disabled>
                 <input type="text" name="title[]" class="form-control m-input" placeholder="Ingrese titulo" autocomplete="off">
             <div class="input-group-append">
                 <button id="removeRow" type="button" class="btn btn-danger">Borrar</button>
             </div>
         </div>
     `
-    document.getElementById("datosFamiliares").append(test);
-
-
+    document.getElementById("datosFamiliares").insertAdjacentHTML("afterend",test);
 };
 </script>
 
@@ -474,9 +472,9 @@ const agregarParentesco = (parentesco) => {
                     />
                     <small class="text-red-500">errores</small>
                 </div>
-                <div class="flex flex-col mt-10">
+                <div class="flex flex-col mt-10 w-4/12">
                     <Button
-                        label=""
+                        label="Agreagar parentesco"
                         icon="pi pi-plus"
                         @click="agregarParentesco(form.tipoParentesco)"
                         :rounded="true"
