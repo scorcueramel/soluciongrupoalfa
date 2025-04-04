@@ -63,17 +63,17 @@ class DistritoSeeder extends Seeder
             if($contador < 10){
                 Distritos::create([
                     'distrito' => $distritos[$i],
-                    'codigo' => "C-00$contador",
+                    'codigo' => "D-00$contador",
                 ]);
             } elseif ($contador >= 10 && $contador <= 99){
                 Distritos::create([
                     'distrito' => $distritos[$i],
-                    'codigo' => "C-0$contador",
+                    'codigo' => "D-0$contador",
                 ]);
             }else{
                 Distritos::create([
                     'distrito' => $distritos[$i],
-                    'codigo' => "C-$contador",
+                    'codigo' => "D-$contador",
                 ]);
             }
             $contador++;

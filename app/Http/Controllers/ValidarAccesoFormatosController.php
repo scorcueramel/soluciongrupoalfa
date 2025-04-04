@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
 
+use App\Models\Distritos;
+use App\Models\TiposViviendas;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
@@ -16,7 +18,10 @@ class ValidarAccesoFormatosController extends Controller
 
     public function test()
     {
-        return Inertia::render('Formularios/FormatoUno');
+        return Inertia::render('Formularios/FormatoUno',[
+            'distritos' => Distritos::all(),
+            'tiposviviendas' => TiposViviendas::all()
+        ]);
     }
 
 //    public function show(ValidarAccesoFormatosRequest $request)

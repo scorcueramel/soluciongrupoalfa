@@ -6,7 +6,21 @@ import { usePrimeVue } from "primevue/config";
 const props = defineProps({
     empresas: Array,
     cargos: Array,
+    distritos: Object,
+    tiposviviendas: Object,
 });
+
+const distritosList = ref([]);
+const tiposViviendasList = ref([]);
+const otrotipovivienda = ref(false);
+const tipoParentescoList = ref([
+    { name: "Padre", code: 1 },
+    { name: "Madre", code: 2 },
+    { name: "Conyuge", code: 3 },
+    { name: "Hijos", code: 4 },
+    { name: "Hermanos", code: 5 },
+]);
+const agregarParentescoActive = ref(true);
 
 const form = useForm({
     empresa: "",
@@ -17,9 +31,17 @@ const form = useForm({
     tipoDocumento: "",
     numeroDocumento: "",
     fechaNacimiento: "",
+    lugarNacimiento: "",
+    estadoCivil: "",
+    genero: "",
+    distrito: "",
+    direccion: "",
+    tipoVivienda: "",
+    otroTipoVivienda: "",
+    telefono: "",
+    email: "",
+    tipoParentesco: "",
 });
-
-const isEnding = ref(false);
 
 // onbeforeunload = (event) => {
 //     event.preventDefault();
@@ -27,13 +49,91 @@ const isEnding = ref(false);
 
 const changeToSpanish = () => {
     const primevue = usePrimeVue();
-    primevue.config.locale.dayNamesMin = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
-    primevue.config.locale.monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    primevue.config.locale.dayNamesMin = [
+        "Dom",
+        "Lun",
+        "Mar",
+        "Mie",
+        "Jue",
+        "Vie",
+        "Sab",
+    ];
+    primevue.config.locale.monthNames = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+    ];
+    primevue.config.locale.monthNamesShort = [
+        "Ene",
+        "Feb",
+        "Mar",
+        "Abr",
+        "May",
+        "Jun",
+        "Jul",
+        "Ago",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dic",
+    ];
 };
 
 onMounted(() => {
     changeToSpanish();
+
+    props.distritos.map((e) => {
+        distritosList.value.push({
+            name: e.distrito,
+            code: e.id,
+        });
+    });
+
+    props.tiposviviendas.map((e) => {
+        tiposViviendasList.value.push({
+            name: e.tipo_vivienda,
+            code: e.id,
+        });
+    });
 });
+
+const otroTipoVivienda = (tipovivienda) => {
+    if (parseInt(form.tipoVivienda) === 5) {
+        otrotipovivienda.value = true;
+    } else {
+        otrotipovivienda.value = false;
+        form.otroTipoVivienda = "";
+    }
+};
+
+const activarBotonAgregar = () =>{
+    agregarParentescoActive.value = false;
+}
+
+const agregarParentesco = (parentesco) => {
+    console.log(parentesco);
+    const test =`
+        <div id="inputFormRow">
+            <div class="input-group mb-3">
+                <input type="text" name="title[]" class="form-control m-input" placeholder="Ingrese titulo" autocomplete="off">
+            <div class="input-group-append">
+                <button id="removeRow" type="button" class="btn btn-danger">Borrar</button>
+            </div>
+        </div>
+    `
+    document.getElementById("datosFamiliares").append(test);
+
+
+};
 </script>
 
 <template>
@@ -118,24 +218,26 @@ onMounted(() => {
                     EMPRESA A LA QUE POSTULA
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2">
-                    <label for="role">Razón Social</label>
+                    <label for="razonSocial">Razón Social</label>
                     <Select
                         v-model="form.empresa"
                         :options="props.empresas"
                         optionValue="code"
                         optionLabel="name"
                         placeholder="Seleccionar razón social"
+                        emptyMessage="Opciones no disponibles"
                     />
                     <small class="text-red-500">errores</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 ms-2">
-                    <label for="role">Cargo</label>
+                    <label for="cargo">Cargo</label>
                     <Select
                         v-model="form.cargo"
                         :options="props.cargos"
                         optionValue="code"
                         optionLabel="name"
                         placeholder="Seleccionar cargo"
+                        emptyMessage="Opciones no disponibles"
                     />
                     <small class="text-red-500">errores</small>
                 </div>
@@ -148,7 +250,7 @@ onMounted(() => {
                     DATOS PERSONALES
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4">
-                    <label for="name">Nombres</label>
+                    <label for="nombres">Nombres</label>
                     <InputText
                         id="nombres"
                         v-model="form.nombres"
@@ -159,7 +261,7 @@ onMounted(() => {
                     <small class="text-red-500">errores</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4">
-                    <label for="name">Apellido Paterno</label>
+                    <label for="paterno">Apellido Paterno</label>
                     <InputText
                         id="paterno"
                         v-model="form.paterno"
@@ -170,7 +272,7 @@ onMounted(() => {
                     <small class="text-red-500">errores</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4">
-                    <label for="name">Apellido Materno</label>
+                    <label for="materno">Apellido Materno</label>
                     <InputText
                         id="materno"
                         v-model="form.materno"
@@ -190,6 +292,7 @@ onMounted(() => {
                         optionValue="code"
                         optionLabel="name"
                         placeholder="Seleccionar tipo de documento"
+                        emptyMessage="Opciones no disponibles"
                     />
                     <small class="text-red-500">errores</small>
                 </div>
@@ -215,7 +318,173 @@ onMounted(() => {
                     />
                     <small class="text-red-500">errores</small>
                 </div>
+                <div class="mt-2 col-span-3 flex flex-col gap-2 me-4">
+                    <label for="lugarNacimiento">Lugar de Nacimiento</label>
+                    <InputText
+                        id="lugarNacimiento"
+                        v-model="form.lugarNacimiento"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Lugar de nacimiento"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="estadoCivil">Estado Civil</label>
+                    <Select
+                        v-model="form.estadoCivil"
+                        :options="props.estadoCivil"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar estado civil"
+                        emptyMessage="Opciones no disponibles"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="genero">Genero</label>
+                    <Select
+                        v-model="form.genero"
+                        :options="props.genero"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar cargo"
+                        emptyMessage="Opciones no disponibles"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="distrito">Distrito</label>
+                    <Select
+                        v-model="form.distrito"
+                        :options="distritosList"
+                        filter
+                        optionLabel="name"
+                        placeholder="Seleccionar distrito"
+                    >
+                        <template #value="slotProps">
+                            <div
+                                v-if="slotProps.value"
+                                class="flex items-center"
+                            >
+                                <div>{{ slotProps.value.name }}</div>
+                            </div>
+                            <span v-else>
+                                {{ slotProps.placeholder }}
+                            </span>
+                        </template>
+                        <template #option="slotProps">
+                            <div class="flex items-center">
+                                <div>{{ slotProps.option.name }}</div>
+                            </div>
+                        </template>
+                    </Select>
+
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 col-span-2 flex flex-col gap-2 me-4">
+                    <label for="direccion">Dirección</label>
+                    <InputText
+                        id="direccion"
+                        v-model="form.direccion"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Dirección"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="role">¿La Casa Donde Vives Es?</label>
+                    <Select
+                        v-model="form.tipoVivienda"
+                        :options="tiposViviendasList"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar tipo de vivienda"
+                        emptyMessage="Opciones no disponibles"
+                        @change="otroTipoVivienda(form.tipoVivienda)"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div
+                    class="mt-2 col-span-2 flex flex-col gap-2 me-4"
+                    v-if="otrotipovivienda"
+                >
+                    <label for="Otro">Otro Tipo de Vivienda</label>
+                    <InputText
+                        id="otro"
+                        v-model="form.otroTipoVivienda"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Indique otro tipo de vivienda"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="telefono">Teléfono</label>
+                    <InputText
+                        id="telefono"
+                        v-model="form.telefono"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Telefono"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="email">Email</label>
+                    <InputText
+                        id="email"
+                        v-model="form.email"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Email"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4">
+                    <label for="brevete">Brevete</label>
+                    <InputText
+                        id="brevete"
+                        v-model="form.brevete"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Brevete"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
             </div>
+
+            <div class="grid grid-cols-2 mb-4">
+                <div
+                    class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md"
+                >
+                    DATOS FAMILIARES
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+                    <label for="parentesco">Parentesco</label>
+                    <Select
+                        v-model="form.tipoParentesco"
+                        :options="tipoParentescoList"
+                        optionValue="code"
+                        optionLabel="name"
+                        placeholder="Seleccionar parentescos"
+                        emptyMessage="Opciones no disponibles"
+                        @change="activarBotonAgregar"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="flex flex-col mt-10">
+                    <Button
+                        label=""
+                        icon="pi pi-plus"
+                        @click="agregarParentesco(form.tipoParentesco)"
+                        :rounded="true"
+                        :disabled="agregarParentescoActive"
+                    />
+                </div>
+            </div>
+            <div id="datosFamiliares"></div>
         </div>
     </div>
 </template>

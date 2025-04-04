@@ -15,7 +15,7 @@ const form = useForm({
   email: "",
   password: "",
   password_confirmation: "",
-  role: "admin",
+  role: "",
 });
 
 const create = () => {
@@ -105,7 +105,7 @@ watchEffect(() => {
             :options="props.roles"
             optionValue="code"
             optionLabel="name"
-            placeholder="Select"
+            placeholder="Seleccionar rol"
           />
           <small v-if="form.errors.role" class="text-red-500">{{
             form.errors.role
