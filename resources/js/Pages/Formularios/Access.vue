@@ -47,7 +47,7 @@ const submit = () => {
 
                             <div class="flex items-center justify-between gap-8">
                             </div>
-                            <button type="submit" class="w-full bg-[#B00202] text-white p-2 rounded-md hover:bg-[#BC2727]">Validar Documento</button>
+                            <button type="submit" class="w-full bg-[#B00202] text-white p-2 rounded-md hover:bg-[#BC2727]" >Validar Documento</button>
                         </div>
                     </form>
                 </div>
