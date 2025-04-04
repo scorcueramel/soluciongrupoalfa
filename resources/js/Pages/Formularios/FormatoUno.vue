@@ -80,7 +80,7 @@ const isEnding = ref(false);
 
             <div class="my-4 text-justify">
                 <div
-                    class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                    class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50"
                     role="alert"
                 >
                     <span class="font-medium text-lg">
@@ -95,10 +95,10 @@ const isEnding = ref(false);
 
             <div>
                 <div class="grid grid-cols-2">
-                    <div class="col-span-2 bg-gray-300 font-black p-2">
+                    <div class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md">
                         EMPRESA A LA QUE POSTULA
                     </div>
-                    <div class="p-2 flex flex-col gap-2">
+                    <div class="mt-2 flex flex-col gap-2">
                         <label for="role">Razón Social</label>
                         <Select
                             v-model="form.empresa"
@@ -109,7 +109,7 @@ const isEnding = ref(false);
                         />
                         <small class="text-red-500">errores</small>
                     </div>
-                    <div class="p-2 flex flex-col gap-2">
+                    <div class="mt-2 flex flex-col gap-2">
                         <label for="role">Cargo</label>
                         <Select
                             v-model="form.cargo"
