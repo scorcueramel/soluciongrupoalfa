@@ -1,7 +1,7 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
-import { usePrimeVue } from "primevue/config";
+import {Head, useForm} from "@inertiajs/vue3";
+import {onMounted, ref} from "vue";
+import {usePrimeVue} from "primevue/config";
 
 const props = defineProps({
     empresas: Array,
@@ -14,11 +14,9 @@ const distritosList = ref([]);
 const tiposViviendasList = ref([]);
 const otrotipovivienda = ref(false);
 const tipoParentescoList = ref([
-    { name: "Padre", code: 1 },
-    { name: "Madre", code: 2 },
-    { name: "Conyuge", code: 3 },
-    { name: "Hijos", code: 4 },
-    { name: "Hermanos", code: 5 },
+    {name: "Conyuge", code: 3},
+    {name: "Hijos", code: 4},
+    {name: "Hermanos", code: 5},
 ]);
 const agregarParentescoActive = ref(true);
 
@@ -41,6 +39,10 @@ const form = useForm({
     telefono: "",
     email: "",
     tipoParentesco: "",
+    nombrespadre: "",
+    edadpadre: "",
+    nombresocupacionpadre: "",
+    mismoInmueblePadre: "",
 });
 
 // onbeforeunload = (event) => {
@@ -115,25 +117,35 @@ const otroTipoVivienda = (tipovivienda) => {
     }
 };
 
-const activarBotonAgregar = () =>{
+const activarBotonAgregar = () => {
     agregarParentescoActive.value = false;
-}
+};
 
 const agregarParentesco = (parentesco) => {
-
-    const textTipoParentesco = document.getElementById("textoTipoParentesco").text();
-    console.log(textTipoParentesco);
-    const test =`
+    const test = `
         <div id="inputFormRow">
             <div class="input-group mb-3">
-                <input type="text" value="${form.tipoParentesco}" disabled>
+                <input type="text" id="nombreparentesco" readonly>
                 <input type="text" name="title[]" class="form-control m-input" placeholder="Ingrese titulo" autocomplete="off">
+            </div>
             <div class="input-group-append">
                 <button id="removeRow" type="button" class="btn btn-danger">Borrar</button>
             </div>
         </div>
-    `
-    document.getElementById("datosFamiliares").insertAdjacentHTML("afterend",test);
+    `;
+
+    document.getElementById("datosFamiliares").insertAdjacentHTML("afterend", test);
+
+    if (parentesco === 3) {
+        $("#nombreparentesco").val("Conyuge");
+    }
+    if (parentesco === 4) {
+        $("#nombreparentesco").val("Hijo");
+    }
+    if (parentesco === 5) {
+        $("#nombreparentesco").val("Hermano");
+    }
+
 };
 </script>
 
@@ -142,7 +154,7 @@ const agregarParentesco = (parentesco) => {
         title="FORMATO DE SOLICITUD DE DATOS PERSONALES PARA PRUEBAS DE PRE - EMPLEO"
     />
     <div class="card flex justify-center">
-        <div class="border border-gray-300 rounded-lg p-4 w-full md:w-9/12">
+        <div class="border border-gray-300 rounded-lg p-4 w-full md:w-10/12">
             <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
             <div
                 class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4"
@@ -230,7 +242,7 @@ const agregarParentesco = (parentesco) => {
                     />
                     <small class="text-red-500">errores</small>
                 </div>
-                <div class="mt-2 flex flex-col gap-2 ms-2">
+                <div class="mt-2 flex flex-col gap-2 ms-2 me-4">
                     <label for="cargo">Cargo</label>
                     <Select
                         v-model="form.cargo"
@@ -285,7 +297,7 @@ const agregarParentesco = (parentesco) => {
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4">
                     <label for="tipoDocumento"
-                        >Tipo de Documento de Identidad</label
+                    >Tipo de Documento de Identidad</label
                     >
                     <Select
                         v-model="form.tipoDocumento"
@@ -456,35 +468,106 @@ const agregarParentesco = (parentesco) => {
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 mb-4">
+            <div class="grid grid-cols-4 mb-4">
                 <div
-                    class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md"
+                    class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
                 >
                     DATOS FAMILIARES
                 </div>
-                <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
-                    <label for="parentesco">Parentesco</label>
-                    <Select
-                        v-model="form.tipoParentesco"
-                        :options="tipoParentescoList"
-                        optionValue="code"
-                        optionLabel="name"
-                        placeholder="Seleccionar parentescos"
-                        emptyMessage="Opciones no disponibles"
-                        @change="activarBotonAgregar"
-                        id="textoTipoParentesco"
+
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+                    <p class="font-bold text-lg">Datos del padre</p>
+                </div>
+                <InputText
+                    id="padre"
+                    value="1"
+                    v-model="form.padre"
+                    autocomplete="off"
+                    type="hidden"
+                />
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+                    <label for="nombrespadre">Nombres y Apellidos</label>
+                    <InputText
+                        id="nombrespadre"
+                        v-model="form.nombrespadre"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Nombres y apellidos"
                     />
                     <small class="text-red-500">errores</small>
                 </div>
-                <div class="flex flex-col mt-10 w-4/12">
-                    <Button
-                        label="Agreagar parentesco"
-                        icon="pi pi-plus"
-                        @click="agregarParentesco(form.tipoParentesco)"
-                        :rounded="true"
-                        :disabled="agregarParentescoActive"
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+                    <label for="edad">Edad</label>
+                    <InputNumber
+                        id="edadpadre"
+                        v-model="form.edadpadre"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Edad"
+                        :min="0"
+                        :max="120"
                     />
+                    <small class="text-red-500">errores</small>
                 </div>
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+                    <label for="ocupacionpadre">Ocupación</label>
+                    <InputText
+                        id="ocupacionpadre"
+                        v-model="form.nombresocupacionpadre"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Ocupación"
+                    />
+                    <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 me-4 col-span-1">
+
+                    <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
+
+                    <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+                        <li class="w-full">
+                            <div class="flex items-center ">
+                                <input id="horizontal-list-radio-license" type="radio" value="" name="list-radio"
+                                       v-model="form.mismoInmueblePadre"
+                                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2">
+                                <label for="horizontal-list-radio-license"
+                                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900">Si</label>
+                            </div>
+                        </li>
+                        <li class="w-full">
+                            <div class="flex items-center ">
+                                <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio"
+                                       v-model="form.mismoInmueblePadre"
+                                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2">
+                                <label for="horizontal-list-radio-id"
+                                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900">No</label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!--                <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">-->
+                <!--                    <label for="parentesco">Parentesco</label>-->
+                <!--                    <Select-->
+                <!--                        v-model="form.tipoParentesco"-->
+                <!--                        :options="tipoParentescoList"-->
+                <!--                        optionValue="code"-->
+                <!--                        optionLabel="name"-->
+                <!--                        placeholder="Seleccionar parentescos"-->
+                <!--                        emptyMessage="Opciones no disponibles"-->
+                <!--                        @change="activarBotonAgregar"-->
+                <!--                    />-->
+                <!--                    <small class="text-red-500">errores</small>-->
+                <!--                </div>-->
+                <!--                <div class="flex flex-col mt-10 w-4/12">-->
+                <!--                    <Button-->
+                <!--                        label="Agreagar parentesco"-->
+                <!--                        icon="pi pi-plus"-->
+                <!--                        @click="agregarParentesco(form.tipoParentesco)"-->
+                <!--                        :rounded="true"-->
+                <!--                        :disabled="agregarParentescoActive"-->
+                <!--                    />-->
+                <!--                </div>-->
             </div>
             <div id="datosFamiliares"></div>
         </div>
