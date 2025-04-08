@@ -9,6 +9,7 @@ const props = defineProps({
   distritos: Object,
   tiposviviendas: Object,
   tiposparentescos: Object,
+  nombresHijos: Object,
 });
 
 const distritosList = ref([]);
@@ -18,7 +19,8 @@ const tipoParentescoList = ref([]);
 const agregarParentescoActive = ref(true);
 const datosConyuge = ref(false);
 const cantidadParentesco = ref(false);
-const datosHijos = ref(true);
+const datosHijos = ref(false);
+const cantidadDeHijosIndicada = ref(0);
 
 const form = useForm({
   empresa: "",
@@ -54,6 +56,11 @@ const form = useForm({
   edadConyuge: 0,
   nombreOcupacionConyuge: "",
   mismoInmuebleConyuge: false,
+  cantidadHijos: 0,
+  nombresHijos: [],
+  edadesHijos: [],
+  nombreOcupacionesHijos: [],
+  mismoInmuebleHijos: [],
 });
 
 // onbeforeunload = (event) => {
@@ -119,19 +126,19 @@ onMounted(() => {
   });
 
   props.tiposparentescos.map((e) => {
-    if(e.id === 1){
+    if (e.id === 1) {
       tipoParentescoList.value.push({
         name: props.tiposparentescos[0].tipo_parentesco,
         code: props.tiposparentescos[0].id,
       });
     }
-    if(e.id === 2){
+    if (e.id === 2) {
       tipoParentescoList.value.push({
         name: props.tiposparentescos[1].tipo_parentesco,
         code: props.tiposparentescos[1].id,
       });
     }
-    if(e.id === 3){
+    if (e.id === 3) {
       tipoParentescoList.value.push({
         name: props.tiposparentescos[2].tipo_parentesco,
         code: props.tiposparentescos[2].id,
@@ -151,9 +158,15 @@ const otroTipoVivienda = () => {
 
 const agregarParentesco = (parentesco) => {
   if (parentesco === 1) {
-
-    if(datosConyuge.value){
-      alert("Ya agregaste los campos para el conyuge");
+    if (datosConyuge.value) {
+      Swal.fire({
+        title: "Ooops!",
+        text: "Ya gregaste los campos para el conyuge",
+        icon: "info",
+        draggable: true,
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Entendido",
+      });
     }
 
     datosConyuge.value = true;
@@ -166,8 +179,52 @@ const agregarParentesco = (parentesco) => {
   }
 
   if (parentesco === 3) {
-
+    cantidadParentesco.value = true;
   }
+};
+
+const agregarCantidadHijos = () => {
+  datosHijos.value = true;
+  cantidadDeHijosIndicada.value = parseInt(form.cantidadHijos);
+};
+
+const removerDatosConyuge = () => {
+  Swal.fire({
+    title: "¿Eliminar?",
+    text: "¿Quieres eliminar los datos del conyuge?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si",
+    cancelButtonText: "No",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      datosConyuge.value = false;
+      form.tipoParentescoConyuge = 0;
+      form.nombresConyuge = "";
+      form.edadConyuge = 0;
+      form.nombreOcupacionConyuge = "";
+      form.mismoInmuebleConyuge = false;
+      Swal.fire({
+        title: "Eliminado!",
+        text: "Se retiraron los datos del conyuge",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Entendido",
+      });
+    }
+  });
+};
+
+const removerDatoHijo = (index) => {
+  $(`#${index}`).html("");
+
+  console.log(cantidadDeHijosIndicada.value);
+
+  cantidadDeHijosIndicada.value === 0
+    ? (datosHijos.value = false)
+    : (datosHijos.value = true);
 };
 
 const guardarFormato = () => {
@@ -180,13 +237,13 @@ const guardarFormato = () => {
     title="FORMATO DE SOLICITUD DE DATOS PERSONALES PARA PRUEBAS DE PRE - EMPLEO"
   />
   <div class="card flex justify-center">
-    <div class="border border-gray-300 rounded-lg p-4 w-full md:w-10/12">
+    <div class="border border-[#B00202] rounded-lg p-4 w-full md:w-10/12">
       <form @submit.prevent="guardarFormato">
         <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
         <div
           class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4"
         >
-          <div class="border border-gray-500 flex justify-center items-center">
+          <div class="border border-[#B00202] flex justify-center items-center">
             <img
               src="/demo/images/logo.png"
               width="166"
@@ -195,7 +252,7 @@ const guardarFormato = () => {
             />
           </div>
           <div
-            class="col-span-2 border border-gray-500 text-center flex justify-center items-center w-full px-10 py-4 xl:py-0 lg:py-0"
+            class="col-span-2 border border-[#B00202] text-center flex justify-center items-center w-full px-10 py-4 xl:py-0 lg:py-0"
           >
             <h4 class="text-lg font-bold">
               FORMATO DE SOLICITUD DE DATOS PERSONALES PARA PRUEBAS DE PRE -
@@ -203,7 +260,7 @@ const guardarFormato = () => {
             </h4>
           </div>
           <div
-            class="border border-gray-500 text-end flex justify-center items-center w-full py-4 xl:py-0 lg:py-0 md:px-2"
+            class="border border-[#B00202] text-end flex justify-center items-center w-full py-4 xl:py-0 lg:py-0 md:px-2"
           >
             <div class="grid grid-cols-2 py-4">
               <div class="text-start">
@@ -248,44 +305,49 @@ const guardarFormato = () => {
           </div>
         </div>
 
-        <div class="grid grid-cols-2 mb-4">
-          <div
-            class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md"
-          >
-            EMPRESA A LA QUE POSTULA
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-2">
-            <label for="razonSocial">Razón Social</label>
-            <Select
-              v-model="form.empresa"
-              :options="props.empresas"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar razón social"
-              emptyMessage="Opciones no disponibles"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 ms-2 me-4">
-            <label for="cargo">Cargo</label>
-            <Select
-              v-model="form.cargo"
-              :options="props.cargos"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar cargo"
-              emptyMessage="Opciones no disponibles"
-            />
-            <small class="text-red-500">errores</small>
+        <!--empresa a la que postula-->
+        <div
+          class="col-span-2 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          EMPRESA A LA QUE POSTULA
+        </div>
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-2 mb-4">
+            <div class="mt-2 flex flex-col gap-2 me-2">
+              <label for="razonSocial">Razón Social</label>
+              <Select
+                v-model="form.empresa"
+                :options="props.empresas"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar razón social"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 ms-2 me-4">
+              <label for="cargo">Cargo</label>
+              <Select
+                v-model="form.cargo"
+                :options="props.cargos"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar cargo"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3">
-          <div
-            class="col-span-3 bg-[#B00202] font-black p-2 text-white rounded-md"
-          >
-            DATOS PERSONALES
-          </div>
+
+        <div
+          class="col-span-3 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          DATOS PERSONALES
+        </div>
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-3">
           <div class="mt-2 flex flex-col gap-2 me-4">
             <label for="nombres">Nombres</label>
             <InputText
@@ -486,190 +548,194 @@ const guardarFormato = () => {
             <small class="text-red-500">errores</small>
           </div>
         </div>
+        </div>
 
         <div
           class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
         >
           DATOS FAMILIARES
         </div>
+        <!--datos del padre-->
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos del Padre</p>
+          </div>
 
-        <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-          <p class="font-bold text-lg">Datos del Padre</p>
+          <div class="grid grid-cols-5 gap-2">
+            <InputText
+              id="padre"
+              value="1"
+              v-model="form.tipoParentescoPadre"
+              autocomplete="off"
+              type="hidden"
+            />
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="nombrespadre">Nombres y Apellidos</label>
+              <InputText
+                id="nombrespadre"
+                v-model="form.nombrespadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="edadpadre">Edad</label>
+              <InputNumber
+                id="edadpadre"
+                v-model="form.edadpadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="ocupacionpadre">Ocupación</label>
+              <InputText
+                id="ocupacionpadre"
+                v-model="form.nombresocupacionpadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmueblePadreSi"
+                      type="radio"
+                      :value="true"
+                      name="mismoInmueblePadre"
+                      v-model="form.mismoInmueblePadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmueblePadreSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmueblePadreNo"
+                      type="radio"
+                      :value="false"
+                      name="mismoInmueblePadre"
+                      v-model="form.mismoInmueblePadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmueblePadreNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
+        <!--datos de la madre-->
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos de la Madre</p>
+          </div>
 
-        <div class="grid grid-cols-5 gap-2">
-          <InputText
-            id="padre"
-            value="1"
-            v-model="form.tipoParentescoPadre"
-            autocomplete="off"
-            type="hidden"
-          />
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-            <label for="nombrespadre">Nombres y Apellidos</label>
-            <InputText
-              id="nombrespadre"
-              v-model="form.nombrespadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Nombres y apellidos"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="edadpadre">Edad</label>
-            <InputNumber
-              id="edadpadre"
-              v-model="form.edadpadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Edad"
-              :min="0"
-              :max="120"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="ocupacionpadre">Ocupación</label>
-            <InputText
-              id="ocupacionpadre"
-              v-model="form.nombresocupacionpadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Ocupación"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
+          <div class="grid grid-cols-5 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="nombresmadre">Nombres y Apellidos</label>
+              <InputText
+                id="nombresmadre"
+                v-model="form.nombresmadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="edadmadre">Edad</label>
+              <InputNumber
+                id="edadmadre"
+                v-model="form.edadmadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="ocupacionmadre">Ocupación</label>
+              <InputText
+                id="ocupacionmadre"
+                v-model="form.nombresocupacionmadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
 
-            <ul
-              class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
-            >
-              <li class="w-full">
-                <div class="flex items-center">
-                  <input
-                    id="mismoInmueblePadreSi"
-                    type="radio"
-                    :value="true"
-                    name="mismoInmueblePadre"
-                    v-model="form.mismoInmueblePadre"
-                    class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                  />
-                  <label
-                    for="mismoInmueblePadreSi"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
-                  >
-                </div>
-              </li>
-              <li class="w-full">
-                <div class="flex items-center">
-                  <input
-                    id="mismoInmueblePadreNo"
-                    type="radio"
-                    :value="false"
-                    name="mismoInmueblePadre"
-                    v-model="form.mismoInmueblePadre"
-                    class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                  />
-                  <label
-                    for="mismoInmueblePadreNo"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
-                  >
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-          <p class="font-bold text-lg">Datos de la Madre</p>
-        </div>
-
-        <div class="grid grid-cols-5 gap-2">
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-            <label for="nombresmadre">Nombres y Apellidos</label>
-            <InputText
-              id="nombresmadre"
-              v-model="form.nombresmadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Nombres y apellidos"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="edadmadre">Edad</label>
-            <InputNumber
-              id="edadmadre"
-              v-model="form.edadmadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Edad"
-              :min="0"
-              :max="120"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="ocupacionmadre">Ocupación</label>
-            <InputText
-              id="ocupacionmadre"
-              v-model="form.nombresocupacionmadre"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Ocupación"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-            <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
-
-            <ul
-              class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
-            >
-              <li class="w-full">
-                <div class="flex items-center">
-                  <input
-                    id="mismoInmuebleMadreSi"
-                    type="radio"
-                    :value="true"
-                    name="mismoInmuebleMadre"
-                    v-model="form.mismoInmuebleMadre"
-                    class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                  />
-                  <label
-                    for="mismoInmuebleMadreSi"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
-                  >
-                </div>
-              </li>
-              <li class="w-full">
-                <div class="flex items-center">
-                  <input
-                    id="mismoInmuebleMadreNo"
-                    type="radio"
-                    :value="false"
-                    name="mismoInmuebleMadre"
-                    v-model="form.mismoInmuebleMadre"
-                    class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                  />
-                  <label
-                    for="mismoInmuebleMadreNo"
-                    class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
-                  >
-                </div>
-              </li>
-            </ul>
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleMadreSi"
+                      type="radio"
+                      :value="true"
+                      name="mismoInmuebleMadre"
+                      v-model="form.mismoInmuebleMadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleMadreSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleMadreNo"
+                      type="radio"
+                      :value="false"
+                      name="mismoInmuebleMadre"
+                      v-model="form.mismoInmuebleMadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleMadreNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div class="grid grid-cols-4 gap-2">
-
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
             <label for="parentesco">Parentesco</label>
             <Select
@@ -682,7 +748,9 @@ const guardarFormato = () => {
               @change="agregarParentescoActive = false"
             />
             <!--<small class="text-red-500">errores</small>-->
-            <small class="ms-1 text-lg text-[#B00202]">Seleccionar perentescos.</small>
+            <small class="ms-1 text-lg text-[#B00202]"
+              >Seleccionar perentescos.</small
+            >
           </div>
 
           <div class="flex flex-col mt-10 col-span-1 w-2/3">
@@ -695,33 +763,44 @@ const guardarFormato = () => {
             />
           </div>
 
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16" v-if="cantidadParentesco">
+          <div
+            class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16"
+            v-if="cantidadParentesco"
+          >
             <label for="cantidad">Cantidad</label>
             <InputText
               id="cantidad"
               class="flex-auto"
               autocomplete="off"
               placeholder="Cantidad"
+              v-model="form.cantidadHijos"
             />
           </div>
 
-          <div class="flex flex-col mt-10 col-span-1 w-1/2" v-if="cantidadParentesco">
+          <div
+            class="flex flex-col mt-10 col-span-1 w-1/2"
+            v-if="cantidadParentesco"
+          >
             <Button
               label="Agreagar"
               icon="pi pi-plus"
-              @click=""
               :rounded="true"
               :disabled="agregarParentescoActive"
+              @click="agregarCantidadHijos"
             />
           </div>
         </div>
 
-        <div v-if="datosConyuge">
+        <!--datos del conyuge-->
+        <div
+          v-if="datosConyuge"
+          class="border border-[#B00202] p-4 rounded-md my-2"
+        >
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-            <p class="font-bold text-lg">Datos del Conyuge <button class="bg-red-900  ms-4 py-1.5 px-3 rounded-full"><i class="pi pi-eraser text-white"></i></button></p>
+            <p class="font-bold text-lg">Datos del Conyuge</p>
           </div>
 
-          <div class="grid grid-cols-5 gap-2">
+          <div class="grid grid-cols-6 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
               <label for="nombresconyuge">Nombres y Apellidos</label>
               <InputText
@@ -758,7 +837,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="mismoinmuebleconyuge">Vive en el mismo inmueble</label>
+              <label for="mismoinmuebleconyuge"
+                >Vive en el mismo inmueble</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -774,9 +855,9 @@ const guardarFormato = () => {
                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                     />
                     <label
-                      for="mismoInmuebleMadreSi"
+                      for="mismoInmuebleConyugeSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -793,26 +874,44 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleConyugeNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <button
+                type="button"
+                class="bg-red-900 ms-4 rounded-full py-2.5 w-1/6 mt-8"
+                @click="removerDatosConyuge"
+              >
+                <i class="pi pi-eraser text-white"></i>
+              </button>
             </div>
           </div>
         </div>
 
-<!--        <div v-if="datosHijos">
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-            <p class="font-bold text-lg">Datos Hijos</p>
+        <!--datos de los hijos-->
+        <div
+          v-if="datosHijos"
+          class="border border-[#B00202] p-4 rounded-md my-2"
+        >
+          <div class="flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos de los Hijos</p>
           </div>
 
-          <div class="grid grid-cols-5 gap-2">
+          <div
+            class="grid grid-cols-6 gap-2"
+            v-for="item in cantidadDeHijosIndicada"
+            :key="item"
+            :id="'hijosid_' + item"
+          >
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="nombresconyuge">Nombres y Apellidos</label>
+              <label :for="'nombreshijos' + item">Nombres y Apellidos</label>
               <InputText
-                id="nombresconyuge"
-                v-model="form.nombresConyuge"
+                :inputId="'nombreshijos' + item"
+                v-model="form.nombresHijos[item]"
                 class="flex-auto"
                 autocomplete="off"
                 placeholder="Nombres y apellidos"
@@ -820,10 +919,10 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="edadconyuge">Edad</label>
-              <InputNumber
-                id="edadconyuge"
-                v-model="form.edadConyuge"
+              <label :for="'edadchijos' + item">Edad</label>
+              <InputText
+                :id="'edadchijos' + item"
+                v-model="form.edadesHijos[item]"
                 class="flex-auto"
                 autocomplete="off"
                 placeholder="Edad"
@@ -833,10 +932,10 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="ocupacionconyuge">Ocupación</label>
+              <label :for="'ocupacioneshijos' + item">Ocupación</label>
               <InputText
-                id="ocupacionconyuge"
-                v-model="form.nombreOcupacionConyuge"
+                :id="'ocupacioneshijos' + item"
+                v-model="form.nombreOcupacionesHijos[item]"
                 class="flex-auto"
                 autocomplete="off"
                 placeholder="Ocupación"
@@ -844,7 +943,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="mismoinmuebleconyuge">Vive en el mismo inmueble</label>
+              <label for="mismoinmuebleconyuge"
+                >Vive en el mismo inmueble</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -852,41 +953,50 @@ const guardarFormato = () => {
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
-                      id="mismoInmuebleConyugeSi"
+                      :id="'mismoInmuebleHijosSi' + item"
                       type="radio"
                       :value="true"
-                      name="mismoInmuebleConyuge"
-                      v-model="form.mismoInmuebleConyuge"
+                      :name="'mismoInmuebleHijos' + item"
+                      v-model="form.mismoInmuebleHijos[item]"
                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                     />
                     <label
-                      for="mismoInmuebleMadreSi"
+                      :for="'mismoInmuebleHijosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
-                      id="mismoInmuebleConyugeNo"
+                      :id="'mismoInmuebleHijosNo' + item"
                       type="radio"
                       :value="false"
-                      name="mismoInmuebleConyuge"
-                      v-model="form.mismoInmuebleConyuge"
+                      :name="'mismoInmuebleHijos' + item"
+                      v-model="form.mismoInmuebleHijos[item]"
                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                     />
                     <label
-                      for="mismoInmuebleConyugeNo"
+                      :for="'mismoInmuebleHijosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <button
+                type="button"
+                class="bg-red-900 ms-4 rounded-full py-2.5 w-1/6 mt-8"
+                @click="removerDatoHijo('hijosid_' + item)"
+              >
+                <i class="pi pi-eraser text-white"></i>
+              </button>
+            </div>
           </div>
-        </div>-->
+        </div>
 
         <Button type="submit" label="Terminar" />
       </form>
