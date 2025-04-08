@@ -72,14 +72,14 @@ const select = () => {
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="name">Name</label>
-                    <InputText id="name" v-model="form.name" class="flex-auto" autocomplete="off" placeholder="Name" />    
-                    <small v-if="form.errors.name" class="text-red-500">{{ form.errors.name }}</small>  
+                    <InputText id="name" v-model="form.name" class="flex-auto" autocomplete="off" placeholder="Name" />
+                    <small v-if="form.errors.name" class="text-red-500">{{ form.errors.name }}</small>
                 </div>
                 <div class="flex flex-col">
                     <label for="permissions">Permissions</label>
 
                     <div class="flex justify-start items-center space-x-2 mt-2">
-                        
+
                         <Checkbox v-model="data.multipleSelect" @change="selectAll" inputId="check_all" :binary="true"  />
                         <label for="check_all" class="ml-2"> Check All </label>
                     </div>
@@ -95,13 +95,13 @@ const select = () => {
                         </div>
                     </div>
 
-                    <small v-if="form.errors.permissions" class="text-red-500">{{ form.errors.permissions }}</small>  
+                    <small v-if="form.errors.permissions" class="text-red-500">{{ form.errors.permissions }}</small>
 
                 </div>
                 <div class="flex justify-end gap-2">
                     <Button type="button" label="Cancel" severity="secondary" @click="emit('close')"></Button>
                     <Button type="submit" label="Update"></Button>
-                </div> 
+                </div>
             </div>
         </form>
     </Dialog>

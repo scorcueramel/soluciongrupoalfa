@@ -18,6 +18,7 @@ const tipoParentescoList = ref([]);
 const agregarParentescoActive = ref(true);
 const datosConyuge = ref(false);
 const cantidadParentesco = ref(false);
+const datosHijos = ref(true);
 
 const form = useForm({
   empresa: "",
@@ -150,8 +151,14 @@ const otroTipoVivienda = () => {
 
 const agregarParentesco = (parentesco) => {
   if (parentesco === 1) {
+
+    if(datosConyuge.value){
+      alert("Ya agregaste los campos para el conyuge");
+    }
+
     datosConyuge.value = true;
     form.tipoParentescoConyuge = 1;
+    cantidadParentesco.value = false;
   }
 
   if (parentesco === 2) {
@@ -711,7 +718,7 @@ const guardarFormato = () => {
 
         <div v-if="datosConyuge">
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-            <p class="font-bold text-lg">Datos del Conyuge</p>
+            <p class="font-bold text-lg">Datos del Conyuge <button class="bg-red-900  ms-4 py-1.5 px-3 rounded-full"><i class="pi pi-eraser text-white"></i></button></p>
           </div>
 
           <div class="grid grid-cols-5 gap-2">
@@ -794,6 +801,92 @@ const guardarFormato = () => {
             </div>
           </div>
         </div>
+
+<!--        <div v-if="datosHijos">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos Hijos</p>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="nombresconyuge">Nombres y Apellidos</label>
+              <InputText
+                id="nombresconyuge"
+                v-model="form.nombresConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="edadconyuge">Edad</label>
+              <InputNumber
+                id="edadconyuge"
+                v-model="form.edadConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="ocupacionconyuge">Ocupación</label>
+              <InputText
+                id="ocupacionconyuge"
+                v-model="form.nombreOcupacionConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmuebleconyuge">Vive en el mismo inmueble</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleConyugeSi"
+                      type="radio"
+                      :value="true"
+                      name="mismoInmuebleConyuge"
+                      v-model="form.mismoInmuebleConyuge"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleMadreSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleConyugeNo"
+                      type="radio"
+                      :value="false"
+                      name="mismoInmuebleConyuge"
+                      v-model="form.mismoInmuebleConyuge"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleConyugeNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>-->
 
         <Button type="submit" label="Terminar" />
       </form>
