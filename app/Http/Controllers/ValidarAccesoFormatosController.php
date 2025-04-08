@@ -14,12 +14,12 @@ class ValidarAccesoFormatosController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Formularios/Access');
+        return Inertia::render('Formatos/Access');
     }
 
     public function test()
     {
-        return Inertia::render('Formularios/FormatoUno',[
+        return Inertia::render('Formatos/FormatoUno',[
             'distritos' => Distritos::all(),
             'tiposviviendas' => TiposViviendas::all(),
             'tiposparentescos' => TiposParentescos::all(),
@@ -32,9 +32,9 @@ class ValidarAccesoFormatosController extends Controller
 //
 //        if (!is_null($accesoFormato)) {
 //            if ($accesoFormato->acceso_formato) {
-//                return Inertia::render('Formularios/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
+//                return Inertia::render('Formatos/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
 //            }
 //        }
-//        return Inertia::render('Formularios/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+//        return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
 //    }
 }

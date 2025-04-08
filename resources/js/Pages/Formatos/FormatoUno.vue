@@ -18,9 +18,12 @@ const otrotipovivienda = ref(false);
 const tipoParentescoList = ref([]);
 const agregarParentescoActive = ref(true);
 const datosConyuge = ref(false);
-const cantidadParentesco = ref(false);
+const cantidadHijos = ref(false);
 const datosHijos = ref(false);
 const cantidadDeHijosIndicada = ref(0);
+const datosHermanos = ref(false);
+const cantidadDeHermanosIndicada = ref(0);
+const cantidadHermanos = ref(false);
 
 const form = useForm({
   empresa: "",
@@ -56,11 +59,18 @@ const form = useForm({
   edadConyuge: 0,
   nombreOcupacionConyuge: "",
   mismoInmuebleConyuge: false,
+  tipoParentescoHijos: 0,
   cantidadHijos: 0,
   nombresHijos: [],
   edadesHijos: [],
   nombreOcupacionesHijos: [],
   mismoInmuebleHijos: [],
+  tipoParentescoHermanos: 0,
+  cantidadHermanos: 0,
+  nombresHermanos: [],
+  edadesHermanos: [],
+  nombreOcupacionesHermanos: [],
+  mismoInmuebleHermanos: [],
 });
 
 // onbeforeunload = (event) => {
@@ -171,21 +181,34 @@ const agregarParentesco = (parentesco) => {
 
     datosConyuge.value = true;
     form.tipoParentescoConyuge = 1;
-    cantidadParentesco.value = false;
+    cantidadHijos.value = false;
   }
 
   if (parentesco === 2) {
-    cantidadParentesco.value = true;
+    cantidadHijos.value = true;
+    cantidadHermanos.value = false;
+    form.tipoParentescoHijos = 2;
   }
 
   if (parentesco === 3) {
-    cantidadParentesco.value = true;
+    cantidadHermanos.value = true;
+    cantidadHijos.value = false;
+    form.tipoParentescoHermanos = 3;
   }
 };
 
 const agregarCantidadHijos = () => {
   datosHijos.value = true;
   cantidadDeHijosIndicada.value = parseInt(form.cantidadHijos);
+  cantidadHijos.value = false;
+  form.cantidadHijos = 0;
+};
+
+const agregarCantidadHermanos = () => {
+  datosHermanos.value = true;
+  cantidadDeHermanosIndicada.value = parseInt(form.cantidadHermanos);
+  cantidadHermanos.value = false;
+  form.cantidadHermanos = 0;
 };
 
 const removerDatosConyuge = () => {
@@ -219,12 +242,12 @@ const removerDatosConyuge = () => {
 
 const removerDatoHijo = (index) => {
   $(`#${index}`).html("");
+  cantidadDeHijosIndicada.value === 0 ? (datosHijos.value = false) : (datosHijos.value = true);
+};
 
-  console.log(cantidadDeHijosIndicada.value);
-
-  cantidadDeHijosIndicada.value === 0
-    ? (datosHijos.value = false)
-    : (datosHijos.value = true);
+const removerDatoHermano = (index) => {
+  $(`#${index}`).html("");
+  cantidadDeHermanosIndicada.value === 0 ? (datosHermanos.value = false) : (datosHermanos.value = true);
 };
 
 const guardarFormato = () => {
@@ -311,6 +334,7 @@ const guardarFormato = () => {
         >
           EMPRESA A LA QUE POSTULA
         </div>
+
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-2 mb-4">
             <div class="mt-2 flex flex-col gap-2 me-2">
@@ -340,12 +364,12 @@ const guardarFormato = () => {
           </div>
         </div>
 
-
         <div
           class="col-span-3 bg-[#B00202] font-black p-2 text-white rounded-md"
         >
           DATOS PERSONALES
         </div>
+
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-3">
           <div class="mt-2 flex flex-col gap-2 me-4">
@@ -555,6 +579,7 @@ const guardarFormato = () => {
         >
           DATOS FAMILIARES
         </div>
+
         <!--datos del padre-->
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
@@ -648,6 +673,7 @@ const guardarFormato = () => {
             </div>
           </div>
         </div>
+
         <!--datos de la madre-->
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
@@ -735,7 +761,7 @@ const guardarFormato = () => {
           </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-2">
+        <div class="grid grid-cols-4 gap-2 border border-[#B00202] p-4 rounded-md my-2">
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
             <label for="parentesco">Parentesco</label>
             <Select
@@ -765,7 +791,7 @@ const guardarFormato = () => {
 
           <div
             class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16"
-            v-if="cantidadParentesco"
+            v-if="cantidadHijos"
           >
             <label for="cantidad">Cantidad</label>
             <InputText
@@ -779,7 +805,7 @@ const guardarFormato = () => {
 
           <div
             class="flex flex-col mt-10 col-span-1 w-1/2"
-            v-if="cantidadParentesco"
+            v-if="cantidadHijos"
           >
             <Button
               label="Agreagar"
@@ -787,6 +813,33 @@ const guardarFormato = () => {
               :rounded="true"
               :disabled="agregarParentescoActive"
               @click="agregarCantidadHijos"
+            />
+          </div>
+
+          <div
+            class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16"
+            v-if="cantidadHermanos"
+          >
+            <label for="cantidad">Cantidad</label>
+            <InputText
+              id="cantidad"
+              class="flex-auto"
+              autocomplete="off"
+              placeholder="Cantidad"
+              v-model="form.cantidadHermanos"
+            />
+          </div>
+
+          <div
+            class="flex flex-col mt-10 col-span-1 w-1/2"
+            v-if="cantidadHermanos"
+          >
+            <Button
+              label="Agreagar"
+              icon="pi pi-plus"
+              :rounded="true"
+              :disabled="agregarParentescoActive"
+              @click="agregarCantidadHermanos"
             />
           </div>
         </div>
@@ -997,6 +1050,212 @@ const guardarFormato = () => {
             </div>
           </div>
         </div>
+
+        <!--datos de los hermanos-->
+        <div
+          v-if="datosHermanos"
+          class="border border-[#B00202] p-4 rounded-md my-2"
+        >
+          <div class="flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos de los Hermanos</p>
+          </div>
+
+          <div
+            class="grid grid-cols-6 gap-2"
+            v-for="item in cantidadDeHermanosIndicada"
+            :key="item"
+            :id="'hermanosid_' + item"
+          >
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label :for="'nombreshermanos' + item">Nombres y Apellidos</label>
+              <InputText
+                :inputId="'nombreshermanos' + item"
+                v-model="form.nombresHermanos[item]"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label :for="'edadhermanos' + item">Edad</label>
+              <InputText
+                :id="'edadhermanos' + item"
+                v-model="form.edadesHermanos[item]"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label :for="'ocupacioneshermanos' + item">Ocupación</label>
+              <InputText
+                :id="'ocupacioneshermanos' + item"
+                v-model="form.nombreOcupacionesHermanos[item]"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmueblehermanos">Vive en el mismo inmueble</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      :id="'mismoInmuebleHermanosSi' + item"
+                      type="radio"
+                      :value="true"
+                      :name="'mismoInmuebleHermanos' + item"
+                      v-model="form.mismoInmuebleHermanos[item]"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      :for="'mismoInmuebleHermanosSi' + item"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      :id="'mismoInmuebleHermanosNo' + item"
+                      type="radio"
+                      :value="false"
+                      :name="'mismoInmuebleHermanos' + item"
+                      v-model="form.mismoInmuebleHermanos[item]"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      :for="'mismoInmuebleHermanosNo' + item"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <button
+                type="button"
+                class="bg-red-900 ms-4 rounded-full py-2.5 w-1/6 mt-8"
+                @click="removerDatoHermano('hermanosid_' + item)"
+              >
+                <i class="pi pi-eraser text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          FORMACIÓN ACADÉMICA - (Mencione los 3 últimos estudios realizados o que cursa actualmente)
+        </div>
+
+        <!--datos de la formacion academica-->
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-6">
+            <p class="font-bold text-lg">Datos del Padre</p>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2">
+            <InputText
+              id="padre"
+              value="1"
+              v-model="form.tipoParentescoPadre"
+              autocomplete="off"
+              type="hidden"
+            />
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="nombrespadre">Nombres y Apellidos</label>
+              <InputText
+                id="nombrespadre"
+                v-model="form.nombrespadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="edadpadre">Edad</label>
+              <InputNumber
+                id="edadpadre"
+                v-model="form.edadpadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="ocupacionpadre">Ocupación</label>
+              <InputText
+                id="ocupacionpadre"
+                v-model="form.nombresocupacionpadre"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmueblePadreSi"
+                      type="radio"
+                      :value="true"
+                      name="mismoInmueblePadre"
+                      v-model="form.mismoInmueblePadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmueblePadreSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmueblePadreNo"
+                      type="radio"
+                      :value="false"
+                      name="mismoInmueblePadre"
+                      v-model="form.mismoInmueblePadre"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmueblePadreNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
 
         <Button type="submit" label="Terminar" />
       </form>
