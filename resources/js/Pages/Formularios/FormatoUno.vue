@@ -14,8 +14,10 @@ const props = defineProps({
 const distritosList = ref([]);
 const tiposViviendasList = ref([]);
 const otrotipovivienda = ref(false);
-let tipoParentescoList = ref([]);
+const tipoParentescoList = ref([]);
 const agregarParentescoActive = ref(true);
+const datosConyuge = ref(false);
+const cantidadParentesco = ref(false);
 
 const form = useForm({
   empresa: "",
@@ -35,35 +37,23 @@ const form = useForm({
   otroTipoVivienda: "",
   telefono: "",
   email: "",
-  tipoParentescoPadre: "",
+  tipoParentescoPadre: 4,
   nombrespadre: "",
   edadpadre: 0,
   nombresocupacionpadre: "",
   mismoInmueblePadre: false,
-  tipoParentescoMadre: "",
+  tipoParentescoMadre: 5,
   nombresmadre: "",
   edadmadre: 0,
   nombresocupacionmadre: "",
   mismoInmuebleMadre: false,
   otroPatentesco: "",
-  tipoParentescoConyuge: "",
-  nombresconyuge: "",
-  edadconyuge: 0,
-  nombreocupacionconyuge: "",
+  tipoParentescoConyuge: 0,
+  nombresConyuge: "",
+  edadConyuge: 0,
+  nombreOcupacionConyuge: "",
   mismoInmuebleConyuge: false,
 });
-
-const removerParentescoSeleccionado = (parentescoId) => {
-  tipoParentescoList.value.map((e, index) => {
-    if (e.code === parentescoId) {
-      tipoParentescoList.value.splice(index, 1);
-    }
-  });
-
-  agregarParentescoActive.value = true;
-
-  return tipoParentescoList;
-};
 
 // onbeforeunload = (event) => {
 //     event.preventDefault();
@@ -128,13 +118,25 @@ onMounted(() => {
   });
 
   props.tiposparentescos.map((e) => {
-    tipoParentescoList.value.push({
-      name: e.tipo_parentesco,
-      code: e.id,
-    });
+    if(e.id === 1){
+      tipoParentescoList.value.push({
+        name: props.tiposparentescos[0].tipo_parentesco,
+        code: props.tiposparentescos[0].id,
+      });
+    }
+    if(e.id === 2){
+      tipoParentescoList.value.push({
+        name: props.tiposparentescos[1].tipo_parentesco,
+        code: props.tiposparentescos[1].id,
+      });
+    }
+    if(e.id === 3){
+      tipoParentescoList.value.push({
+        name: props.tiposparentescos[2].tipo_parentesco,
+        code: props.tiposparentescos[2].id,
+      });
+    }
   });
-
-
 });
 
 const otroTipoVivienda = () => {
@@ -148,94 +150,20 @@ const otroTipoVivienda = () => {
 
 const agregarParentesco = (parentesco) => {
   if (parentesco === 1) {
-    $("#datosConyuge").append(`
-      <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
-          <p class="font-bold text-lg">Datos del Conyuge <button type="button" class="text-white bg-[#B00202] hover:bg-[#CF6767] font-medium rounded-full text-sm px-3 py-2 text-center ms-4" onclick="alert('quitar conyuge');">Quitar</button>
-          </p>
-      </div>
-
-      <div class="grid grid-cols-5 gap-2">
-          <input type="hidden" id="tipoParentescoConyuge" name="tipoParentescoConyuge" value="3" autocomplete="off">
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="nombresconyuge">Nombres y Apellidos</label>
-              <input type="text" id="nombresconyuge" name="nombresconyuge" autocomplete="off" placeholder="Nombres y apellidos" class="flex-auto rounded-md border-[#CBD5E1] hover:border-[#919FB4] focus:border-none"/>
-              <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="edadconyuge">Edad</label>
-              <input type="number" id="edadconyuge" name="edadconyuge" autocomplete="off" placeholder="Edad" class="flex-auto rounded-md border-[#CBD5E1] hover:border-[#919FB4] focus:border-none" min="1" max="110" aria-controls="none" inputmode="numeric"/>
-              <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="nombreocupacionconyuge">Ocupación</label>
-              <input type="text" id="nombreocupacionconyuge" name="nombreocupacionconyuge" autocomplete="off" placeholder="Ocupacion" class="flex-auto rounded-md border-[#CBD5E1] hover:border-[#919FB4] focus:border-none"/>
-              <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="mismoinmuebleconyuge"
-                  >Vive en el mismo inmueble</label
-              >
-
-              <ul
-                  class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
-              >
-                  <li class="w-full">
-                      <div class="flex items-center">
-                          <input
-                              id="mismoInmuebleConyugeSi"
-                              type="radio"
-                              value="true"
-                              name="mismoInmuebleConyuge"
-                              class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                          />
-                          <label
-                              for="mismoInmuebleConyugeSi"
-                              class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                              >Si</label
-                          >
-                      </div>
-                  </li>
-                  <li class="w-full">
-                      <div class="flex items-center">
-                          <input
-                              id="mismoInmuebleConyugeNo"
-                              type="radio"
-                              value="false"
-                              name="mismoInmuebleConyuge"
-                              class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
-                          />
-                          <label
-                              for="mismoInmuebleConyugeNo"
-                              class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                              >No</label
-                          >
-                      </div>
-                  </li>
-              </ul>
-          </div>
-      </div>
-    `);
-
-    removerParentescoSeleccionado(parentesco);
+    datosConyuge.value = true;
+    form.tipoParentescoConyuge = 1;
   }
 
   if (parentesco === 2) {
-    removerParentescoSeleccionado(parentesco);
+    cantidadParentesco.value = true;
   }
 
   if (parentesco === 3) {
-    removerParentescoSeleccionado(parentesco);
+
   }
 };
 
 const guardarFormato = () => {
-  fomr.tipoParentescoConyuge = $("#tipoParentescoConyuge").val();
-  form.nombresconyuge = $("#nombresconyuge").val();
-  form.edadconyuge = $("#edadconyuge").val();
-  form.nombreocupacionconyuge = $("#nombreocupacionconyuge").val();
-  form.mismoInmuebleConyuge =
-    $('input[name="mismoInmuebleConyuge"]:checked').prop("value") === "true";
-
   console.log(form);
 };
 </script>
@@ -654,13 +582,6 @@ const guardarFormato = () => {
         </div>
 
         <div class="grid grid-cols-5 gap-2">
-          <InputText
-            id="madre"
-            value="2"
-            v-model="form.tipoParentescoMadre"
-            autocomplete="off"
-            type="hidden"
-          />
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
             <label for="nombresmadre">Nombres y Apellidos</label>
             <InputText
@@ -740,8 +661,9 @@ const guardarFormato = () => {
           </div>
         </div>
 
-        <div class="grid grid-cols-2 mb-4">
-          <div class="mt-2 flex flex-col gap-2 me-4">
+        <div class="grid grid-cols-4 gap-2">
+
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
             <label for="parentesco">Parentesco</label>
             <Select
               :options="tipoParentescoList"
@@ -752,9 +674,11 @@ const guardarFormato = () => {
               v-model="form.otroPatentesco"
               @change="agregarParentescoActive = false"
             />
-            <!--                        <small class="text-red-500">errores</small>-->
+            <!--<small class="text-red-500">errores</small>-->
+            <small class="ms-1 text-lg text-[#B00202]">Seleccionar perentescos.</small>
           </div>
-          <div class="flex flex-col mt-10 w-1/3">
+
+          <div class="flex flex-col mt-10 col-span-1 w-2/3">
             <Button
               label="Agreagar parentesco"
               icon="pi pi-plus"
@@ -763,12 +687,113 @@ const guardarFormato = () => {
               :disabled="agregarParentescoActive"
             />
           </div>
-          <small class="ms-1 mt-2 text-lg text-[#B00202]"
-            >Seleccione cuales son los parentescos con los que cuenta.</small
-          >
+
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16" v-if="cantidadParentesco">
+            <label for="cantidad">Cantidad</label>
+            <InputText
+              id="cantidad"
+              class="flex-auto"
+              autocomplete="off"
+              placeholder="Cantidad"
+            />
+          </div>
+
+          <div class="flex flex-col mt-10 col-span-1 w-1/2" v-if="cantidadParentesco">
+            <Button
+              label="Agreagar"
+              icon="pi pi-plus"
+              @click=""
+              :rounded="true"
+              :disabled="agregarParentescoActive"
+            />
+          </div>
         </div>
 
-        <div id="datosConyuge"></div>
+        <div v-if="datosConyuge">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">Datos del Conyuge</p>
+          </div>
+
+          <div class="grid grid-cols-5 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="nombresconyuge">Nombres y Apellidos</label>
+              <InputText
+                id="nombresconyuge"
+                v-model="form.nombresConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="edadconyuge">Edad</label>
+              <InputNumber
+                id="edadconyuge"
+                v-model="form.edadConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Edad"
+                :min="0"
+                :max="120"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="ocupacionconyuge">Ocupación</label>
+              <InputText
+                id="ocupacionconyuge"
+                v-model="form.nombreOcupacionConyuge"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Ocupación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="mismoinmuebleconyuge">Vive en el mismo inmueble</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleConyugeSi"
+                      type="radio"
+                      :value="true"
+                      name="mismoInmuebleConyuge"
+                      v-model="form.mismoInmuebleConyuge"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleMadreSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="mismoInmuebleConyugeNo"
+                      type="radio"
+                      :value="false"
+                      name="mismoInmuebleConyuge"
+                      v-model="form.mismoInmuebleConyuge"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="mismoInmuebleConyugeNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
         <Button type="submit" label="Terminar" />
       </form>
