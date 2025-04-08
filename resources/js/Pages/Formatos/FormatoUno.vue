@@ -9,7 +9,6 @@ const props = defineProps({
   distritos: Object,
   tiposviviendas: Object,
   tiposparentescos: Object,
-  nombresHijos: Object,
 });
 
 const distritosList = ref([]);
@@ -71,6 +70,7 @@ const form = useForm({
   edadesHermanos: [],
   nombreOcupacionesHermanos: [],
   mismoInmuebleHermanos: [],
+  gradoestudios: [],
 });
 
 // onbeforeunload = (event) => {
@@ -1163,11 +1163,7 @@ const guardarFormato = () => {
 
         <!--datos de la formacion academica-->
         <div class="border border-[#B00202] p-4 rounded-md my-2">
-          <div class="mt-2 flex flex-col gap-2 me-4 col-span-6">
-            <p class="font-bold text-lg">Datos del Padre</p>
-          </div>
-
-          <div class="grid grid-cols-5 gap-2">
+          <div class="grid grid-cols-6 gap-2">
             <InputText
               id="padre"
               value="1"
@@ -1176,13 +1172,13 @@ const guardarFormato = () => {
               type="hidden"
             />
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="nombrespadre">Nombres y Apellidos</label>
+              <label for="grado">Grado</label>
               <InputText
-                id="nombrespadre"
-                v-model="form.nombrespadre"
+                id="grado"
+                v-model="form.gradoestudios"
                 class="flex-auto"
                 autocomplete="off"
-                placeholder="Nombres y apellidos"
+                placeholder="Grado de instrucción"
               />
               <small class="text-red-500">errores</small>
             </div>
