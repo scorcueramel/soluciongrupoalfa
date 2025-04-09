@@ -9,7 +9,8 @@ const props = defineProps({
   distritos: Object,
   tiposviviendas: Object,
   tiposparentescos: Object,
-  gradosinstrucciones:Object
+  gradosinstrucciones: Object,
+  entidadesbancarias: Object,
 });
 
 const distritosList = ref([]);
@@ -25,6 +26,7 @@ const datosHermanos = ref(false);
 const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
 const gradosInstruccionesList = ref([]);
+const entidadesBancariasList = ref([]);
 
 const form = useForm({
   empresa: "",
@@ -72,24 +74,93 @@ const form = useForm({
   edadesHermanos: [],
   nombreOcupacionesHermanos: [],
   mismoInmuebleHermanos: [],
-  gradoInstruccionUno:0,
-  centroEstudioUno:"",
-  especialidadesFacultadUno:"",
-  inicioEstudiosUno:"",
-  terminoEstudiosUno:"",
-  situacionUno:false,
-  gradoInstruccionDos:0,
-  centroEstudioDos:"",
-  especialidadesFacultadDos:"",
-  inicioEstudiosDos:"",
-  terminoEstudiosDos:"",
-  situacionDos:false,
-  gradoInstruccionTres:0,
-  centroEstudioTres:"",
-  especialidadesFacultadTres:"",
-  inicioEstudiosTres:"",
-  terminoEstudiosTres:"",
-  situacionTres:false,
+  gradoInstruccionUno: 0,
+  centroEstudioUno: "",
+  especialidadesFacultadUno: "",
+  inicioEstudiosUno: "",
+  terminoEstudiosUno: "",
+  situacionUno: false,
+  gradoInstruccionDos: 0,
+  centroEstudioDos: "",
+  especialidadesFacultadDos: "",
+  inicioEstudiosDos: "",
+  terminoEstudiosDos: "",
+  situacionDos: false,
+  gradoInstruccionTres: 0,
+  centroEstudioTres: "",
+  especialidadesFacultadTres: "",
+  inicioEstudiosTres: "",
+  terminoEstudiosTres: "",
+  situacionTres: false,
+  empresaUno: "",
+  fechaIngresoUno: "",
+  fechaSalidaUno: "",
+  sueldoUno: 0,
+  cargoDesempenioUno: "",
+  motivoSalidaUno: "",
+  empresaDos: "",
+  fechaIngresoDos: "",
+  fechaSalidaDos: "",
+  sueldoDos: 0,
+  cargoDesempenioDos: "",
+  motivoSalidaDos: "",
+  empresaTres: "",
+  fechaIngresoTres: "",
+  fechaSalidaTres: "",
+  sueldoTres: 0,
+  cargoDesempenioTres: "",
+  motivoSalidaTres: "",
+  amonestacionesEmpleos: false,
+  solicitudRenuncia: false,
+  explicacion: "",
+  tienesPrestamos:false,
+  entidadBancaria:"",
+  montoDeuda:0,
+  otroIngreso:false,
+  preciseMonto:0,
+  origenOtroIngreso:"",
+  tienePropiedades:false,
+  detallePropiedades:"",
+  reportadoEnCentralesDeRiesgo:false,
+  preciseDeSerAfirmativo:"",
+  entidadDeuda:"",
+  motivoCentralDeRiesgo:"",
+  tiempoMora:"",
+  montoDeuraMora:0,
+  fecuenciaConsumoBebidasAlcoholicas:"",
+  queBebidasConsume:"",
+  tratamientoAlcholismo:false,
+  trabajoEbrio:false,
+  expliqueLlegoEbrio:"",
+  marihuana: false,
+  pbc: false,
+  cocaina: false,
+  heroina: false,
+  lcd: false,
+  extasis: false,
+  tiempoUltimaVez: false,
+  cantidadUltimoConsumo: 0,
+  familiaresEnDrogas: false,
+  roboHurtoFraude:false,
+  homicidioInvoluntario:false,
+  asalto:false,
+  planesDanioFisico:false,
+  secuestro:false,
+  violacion:false,
+  muerteLesionPersona:false,
+  traficoIlicitoDrogas:false,
+  traficoArmas:false,
+  castigadoConCarcel:false,
+  explicacionCastigadoLey:"",
+  sicarios:false,
+  asaltantes:false,
+  traficantesDrogas:false,
+  estafadores:false,
+  terroristas:false,
+  secuestradores:false,
+  extorsionadores:false,
+  otrasPersonasMargenLey:false,
+  familiaresSentenciadosPenales:false,
 });
 
 // onbeforeunload = (event) => {
@@ -175,14 +246,20 @@ onMounted(() => {
     }
   });
 
-  props.gradosinstrucciones.map((e)=>{
+  props.gradosinstrucciones.map((e) => {
     gradosInstruccionesList.value.push({
       name: e.grado_instruccion,
-      code: e.id
-    })
+      code: e.id,
+    });
+  });
+
+  props.entidadesbancarias.map((e) => {
+    entidadesBancariasList.value.push({
+      name: e.nombre_entidad,
+      code: e.id,
+    });
   });
 });
-
 const otroTipoVivienda = () => {
   if (parseInt(form.tipoVivienda) === 5) {
     otrotipovivienda.value = true;
@@ -268,12 +345,16 @@ const removerDatosConyuge = () => {
 
 const removerDatoHijo = (index) => {
   $(`#${index}`).html("");
-  cantidadDeHijosIndicada.value === 0 ? (datosHijos.value = false) : (datosHijos.value = true);
+  cantidadDeHijosIndicada.value === 0
+    ? (datosHijos.value = false)
+    : (datosHijos.value = true);
 };
 
 const removerDatoHermano = (index) => {
   $(`#${index}`).html("");
-  cantidadDeHermanosIndicada.value === 0 ? (datosHermanos.value = false) : (datosHermanos.value = true);
+  cantidadDeHermanosIndicada.value === 0
+    ? (datosHermanos.value = false)
+    : (datosHermanos.value = true);
 };
 
 const guardarFormato = () => {
@@ -398,208 +479,208 @@ const guardarFormato = () => {
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
-            <div class="grid grid-cols-3">
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="nombres">Nombres</label>
-                <InputText
-                  id="nombres"
-                  v-model="form.nombres"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Nombres"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="paterno">Apellido Paterno</label>
-                <InputText
-                  id="paterno"
-                  v-model="form.paterno"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Apellido paterno"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="materno">Apellido Materno</label>
-                <InputText
-                  id="materno"
-                  v-model="form.materno"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Apellido materno"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="tipoDocumento">Tipo de Documento de Identidad</label>
-                <Select
-                  v-model="form.tipoDocumento"
-                  :options="props.tipoDocumento"
-                  optionValue="code"
-                  optionLabel="name"
-                  placeholder="Seleccionar tipo de documento"
-                  emptyMessage="Opciones no disponibles"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="numeroDocumento">Número de Documento</label>
-                <InputText
-                  id="numeroDocumento"
-                  v-model="form.numeroDocumento"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Número de documento"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                <DatePicker
-                  id="fechaNacimiento"
-                  v-model="form.fechaNacimiento"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Fecha de nacimiento"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 col-span-3 flex flex-col gap-2 me-4">
-                <label for="lugarNacimiento">Lugar de Nacimiento</label>
-                <InputText
-                  id="lugarNacimiento"
-                  v-model="form.lugarNacimiento"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Lugar de nacimiento"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="estadoCivil">Estado Civil</label>
-                <Select
-                  v-model="form.estadoCivil"
-                  :options="props.estadoCivil"
-                  optionValue="code"
-                  optionLabel="name"
-                  placeholder="Seleccionar estado civil"
-                  emptyMessage="Opciones no disponibles"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="genero">Genero</label>
-                <Select
-                  v-model="form.genero"
-                  :options="props.genero"
-                  optionValue="code"
-                  optionLabel="name"
-                  placeholder="Seleccionar cargo"
-                  emptyMessage="Opciones no disponibles"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="distrito">Distrito</label>
-                <Select
-                  v-model="form.distrito"
-                  :options="distritosList"
-                  filter
-                  optionLabel="name"
-                  placeholder="Seleccionar distrito"
-                >
-                  <template #value="slotProps">
-                    <div v-if="slotProps.value" class="flex items-center">
-                      <div>{{ slotProps.value.name }}</div>
-                    </div>
-                    <span v-else>
-                      {{ slotProps.placeholder }}
-                    </span>
-                  </template>
-                  <template #option="slotProps">
-                    <div class="flex items-center">
-                      <div>{{ slotProps.option.name }}</div>
-                    </div>
-                  </template>
-                </Select>
-
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 col-span-2 flex flex-col gap-2 me-4">
-                <label for="direccion">Dirección</label>
-                <InputText
-                  id="direccion"
-                  v-model="form.direccion"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Dirección"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="role">¿La Casa Donde Vives Es?</label>
-                <Select
-                  v-model="form.tipoVivienda"
-                  :options="tiposViviendasList"
-                  optionValue="code"
-                  optionLabel="name"
-                  placeholder="Seleccionar tipo de vivienda"
-                  emptyMessage="Opciones no disponibles"
-                  @change="otroTipoVivienda"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div
-                class="mt-2 col-span-2 flex flex-col gap-2 me-4"
-                v-if="otrotipovivienda"
+          <div class="grid grid-cols-3">
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="nombres">Nombres</label>
+              <InputText
+                id="nombres"
+                v-model="form.nombres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Nombres"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="paterno">Apellido Paterno</label>
+              <InputText
+                id="paterno"
+                v-model="form.paterno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Apellido paterno"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="materno">Apellido Materno</label>
+              <InputText
+                id="materno"
+                v-model="form.materno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Apellido materno"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="tipoDocumento">Tipo de Documento de Identidad</label>
+              <Select
+                v-model="form.tipoDocumento"
+                :options="props.tipoDocumento"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar tipo de documento"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="numeroDocumento">Número de Documento</label>
+              <InputText
+                id="numeroDocumento"
+                v-model="form.numeroDocumento"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Número de documento"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="fechaNacimiento">Fecha de Nacimiento</label>
+              <DatePicker
+                id="fechaNacimiento"
+                v-model="form.fechaNacimiento"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha de nacimiento"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 col-span-3 flex flex-col gap-2 me-4">
+              <label for="lugarNacimiento">Lugar de Nacimiento</label>
+              <InputText
+                id="lugarNacimiento"
+                v-model="form.lugarNacimiento"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Lugar de nacimiento"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="estadoCivil">Estado Civil</label>
+              <Select
+                v-model="form.estadoCivil"
+                :options="props.estadoCivil"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar estado civil"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="genero">Genero</label>
+              <Select
+                v-model="form.genero"
+                :options="props.genero"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar cargo"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="distrito">Distrito</label>
+              <Select
+                v-model="form.distrito"
+                :options="distritosList"
+                filter
+                optionLabel="name"
+                placeholder="Seleccionar distrito"
               >
-                <label for="Otro">Otro Tipo de Vivienda</label>
-                <InputText
-                  id="otro"
-                  v-model="form.otroTipoVivienda"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Indique otro tipo de vivienda"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="telefono">Teléfono</label>
-                <InputText
-                  id="telefono"
-                  v-model="form.telefono"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Telefono"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="email">Email</label>
-                <InputText
-                  id="email"
-                  v-model="form.email"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Email"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
-              <div class="mt-2 flex flex-col gap-2 me-4">
-                <label for="brevete">Brevete</label>
-                <InputText
-                  id="brevete"
-                  v-model="form.brevete"
-                  class="flex-auto"
-                  autocomplete="off"
-                  placeholder="Brevete"
-                />
-                <small class="text-red-500">errores</small>
-              </div>
+                <template #value="slotProps">
+                  <div v-if="slotProps.value" class="flex items-center">
+                    <div>{{ slotProps.value.name }}</div>
+                  </div>
+                  <span v-else>
+                    {{ slotProps.placeholder }}
+                  </span>
+                </template>
+                <template #option="slotProps">
+                  <div class="flex items-center">
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </Select>
+
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 col-span-2 flex flex-col gap-2 me-4">
+              <label for="direccion">Dirección</label>
+              <InputText
+                id="direccion"
+                v-model="form.direccion"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Dirección"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="role">¿La Casa Donde Vives Es?</label>
+              <Select
+                v-model="form.tipoVivienda"
+                :options="tiposViviendasList"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar tipo de vivienda"
+                emptyMessage="Opciones no disponibles"
+                @change="otroTipoVivienda"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div
+              class="mt-2 col-span-2 flex flex-col gap-2 me-4"
+              v-if="otrotipovivienda"
+            >
+              <label for="Otro">Otro Tipo de Vivienda</label>
+              <InputText
+                id="otro"
+                v-model="form.otroTipoVivienda"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Indique otro tipo de vivienda"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="telefono">Teléfono</label>
+              <InputText
+                id="telefono"
+                v-model="form.telefono"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Telefono"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="email">Email</label>
+              <InputText
+                id="email"
+                v-model="form.email"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Email"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="brevete">Brevete</label>
+              <InputText
+                id="brevete"
+                v-model="form.brevete"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Brevete"
+              />
+              <small class="text-red-500">errores</small>
             </div>
           </div>
+        </div>
 
         <div
           class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
@@ -788,7 +869,9 @@ const guardarFormato = () => {
           </div>
         </div>
 
-        <div class="grid grid-cols-4 gap-2 border border-[#B00202] p-4 rounded-md my-2">
+        <div
+          class="grid grid-cols-4 gap-2 border border-[#B00202] p-4 rounded-md my-2"
+        >
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
             <label for="parentesco">Parentesco</label>
             <Select
@@ -1129,7 +1212,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="mismoinmueblehermanos">Vive en el mismo inmueble</label>
+              <label for="mismoinmueblehermanos"
+                >Vive en el mismo inmueble</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -1147,7 +1232,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1164,7 +1249,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1185,7 +1270,8 @@ const guardarFormato = () => {
         <div
           class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
         >
-          FORMACIÓN ACADÉMICA - (Mencione los 3 últimos estudios realizados o que cursa actualmente)
+          FORMACIÓN ACADÉMICA - (Mencione los 3 últimos estudios realizados o
+          que cursa actualmente)
         </div>
 
         <!--datos de la formacion academica-->
@@ -1266,7 +1352,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1283,7 +1369,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1366,7 +1452,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1383,7 +1469,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1415,7 +1501,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="especialidadfacultadtres">Especialidad/Facultad</label>
+              <label for="especialidadfacultadtres"
+                >Especialidad/Facultad</label
+              >
               <InputText
                 id="especialidadfacultadtres"
                 v-model="form.especialidadesFacultadesTres"
@@ -1466,7 +1554,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1483,7 +1571,2173 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          EXPERIENCIA LABORAL - Indique los 3 últimos empleos, empezando por el
+          más reciente
+        </div>
+
+        <!--datos de la experencia laboral-->
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-10 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="experencialaboraluno">Experiencia Laboral</label>
+              <InputText
+                id="experencialaboraluno"
+                v-model="form.empresaUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Experiencia laboral"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechaingresouno">Fecha Ingreso</label>
+              <DatePicker
+                id="fechaingresouno"
+                v-model="form.fechaIngresoUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha ingreso"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechasalidauno">Fecha Salida</label>
+              <DatePicker
+                id="fechasalidauno"
+                v-model="form.fechaSalidaUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="sueldouno">Sueldo</label>
+              <InputNumber
+                id="sueldouno"
+                v-model="form.sueldoUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Sueldo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 ms-12 col-span-2">
+              <label for="cargodesempeniauno">Cargo Desempeña</label>
+              <InputText
+                id="cargodesempeniauno"
+                v-model="form.cargoDesempenioUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Cargo desempeña"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-3">
+              <label for="motivosalidauno">Motivo De Su Salida</label>
+              <InputText
+                id="motivosalidauno"
+                v-model="form.motivoSalidaUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Motivo de su salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+          <div class="grid grid-cols-10 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="experencialaboraldos">Experiencia Laboral</label>
+              <InputText
+                id="experencialaboraldos"
+                v-model="form.empresaDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Experiencia laboral"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechaingresodos">Fecha Ingreso</label>
+              <DatePicker
+                id="fechaingresodos"
+                v-model="form.fechaIngresoDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha ingreso"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechasalidados">Fecha Salida</label>
+              <DatePicker
+                id="fechasalidados"
+                v-model="form.fechaSalidaDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="sueldodos">Sueldo</label>
+              <InputNumber
+                id="sueldodos"
+                v-model="form.sueldoDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Sueldo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 ms-12 col-span-2">
+              <label for="cargodesempeniados">Cargo Desempeña</label>
+              <InputText
+                id="cargodesempeniados"
+                v-model="form.cargoDesempenioDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Cargo desempeña"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-3">
+              <label for="motivosalidados">Motivo De Su Salida</label>
+              <InputText
+                id="motivosalidados"
+                v-model="form.motivoSalidaDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Motivo de su salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+          <div class="grid grid-cols-10 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="experencialaboraltres">Experiencia Laboral</label>
+              <InputText
+                id="experencialaboraltres"
+                v-model="form.empresaTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Experiencia laboral"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechaingresotres">Fecha Ingreso</label>
+              <DatePicker
+                id="fechaingresotres"
+                v-model="form.fechaIngresoTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha ingreso"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="fechasalidatres">Fecha Salida</label>
+              <DatePicker
+                id="fechasalidatres"
+                v-model="form.fechaSalidaTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="sueldotres">Sueldo</label>
+              <InputNumber
+                id="sueldotres"
+                v-model="form.sueldoTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Sueldo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 ms-12 col-span-2">
+              <label for="cargodesempeniatres">Cargo Desempeña</label>
+              <InputText
+                id="cargodesempeniatres"
+                v-model="form.cargoDesempenioTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Cargo desempeña"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-3">
+              <label for="motivosalidatres">Motivo De Su Salida</label>
+              <InputText
+                id="motivosalidatres"
+                v-model="form.motivoSalidaTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Motivo de su salida"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <!--en sus empleos usted-->
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+            <p class="font-bold text-lg">En Sus Empleos, Usted:</p>
+          </div>
+
+          <div class="grid grid-cols-6 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="amonestacionesEmpleosSi"
+                >Ha recibido amonestaciones escritas:
+              </label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="amonestacionesEmpleosSi"
+                      type="radio"
+                      :value="true"
+                      name="amonestacionesEmpleos"
+                      v-model="form.amonestacionesEmpleos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="amonestacionesEmpleosSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="amonestacionesEmpleosNo"
+                      type="radio"
+                      :value="false"
+                      name="amonestacionesEmpleos"
+                      v-model="form.amonestacionesEmpleos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="amonestacionesNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="solicitudrenuncia"
+                >Le han solicitado su carta de renuncia:
+              </label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="solicitudRenunciaSi"
+                      type="radio"
+                      :value="true"
+                      name="solicitudRenuncia"
+                      v-model="form.solicitudRenuncia"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="solicitudRenunciaSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="solicitudRenunciaNo"
+                      type="radio"
+                      :value="false"
+                      name="solicitudRenuncia"
+                      v-model="form.solicitudRenuncia"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="solicitudRenunciaNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                      >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
+              <label for="explicacion"
+                >En caso de respuesta afirmativa, explique:
+              </label>
+              <InputText
+                id="explicacion"
+                v-model="form.explicacion"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Explique"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <!--información financiera-->
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          INFORMACIÓN FINANCIERA
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="tieneprestamosi">¿Tiene Prestamos?</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tieneprestamosi"
+                      type="radio"
+                      :value="true"
+                      name="tienePrestamos"
+                      v-model="form.tienePrestamos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tieneprestamosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tieneprestamosno"
+                      type="radio"
+                      :value="false"
+                      name="tienesPrestamos"
+                      v-model="form.tienesPrestamos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tieneprestamosno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="motoprestamo">Precise Monto Deuda S/.</label>
+              <InputNumber
+                id="motoprestamo"
+                v-model="form.montoDeuda"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Monto de deuda"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="solicitudrenuncia">Entidad</label>
+
+              <Select
+                v-model="form.entidadBancaria"
+                :options="entidadesBancariasList"
+                filter
+                optionLabel="name"
+                placeholder="Seleccionar entidad"
+              >
+                <template #value="slotProps">
+                  <div v-if="slotProps.value" class="flex items-center">
+                    <div>{{ slotProps.value.name }}</div>
+                  </div>
+                  <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+                </template>
+                <template #option="slotProps">
+                  <div class="flex items-center">
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </Select>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="cuotamensual">Cuota Mensual S/.</label>
+              <InputNumber
+                id="cuotamensual"
+                v-model="form.montoDeuda"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Monto de cuota"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="otroingreso">Actualmente recibe otro ingreso: </label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="otroingresosi"
+                      type="radio"
+                      :value="true"
+                      name="tieneOtroIngreso"
+                      v-model="form.otroIngreso"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="otroingresosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="otroingresono"
+                      type="radio"
+                      :value="false"
+                      name="tieneOtroIngreso"
+                      v-model="form.otroIngreso"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="otroingresono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="precisemonto">Precise Monto S/.</label>
+              <InputNumber
+                id="precisemonto"
+                v-model="form.preciseMonto"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Precise el monto"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="origen">Origen</label>
+              <InputText
+                id="origen"
+                v-model="form.origenOtroIngreso"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Origen"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="tieneprestamosi">¿Tiene Propiedades?</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tienepropiedadessi"
+                      type="radio"
+                      :value="true"
+                      name="tienePropiedades"
+                      v-model="form.tienePropiedades"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tienepropiedadessi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tienepropiedadesno"
+                      type="radio"
+                      :value="false"
+                      name="tienePropiedades"
+                      v-model="form.tienePropiedades"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tienepropiedadesno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="detalle">Detalle</label>
+              <InputText
+                id="detalle"
+                v-model="form.detallePropiedades"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Detalle"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="reportadoencentralesderiesgosi">Esta Reportado en Centrales de Riesgo</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="reportadoencentralesderiesgosi"
+                      type="radio"
+                      :value="true"
+                      name="reportadoEnCentralesDeRiesgo"
+                      v-model="form.reportadoEnCentralesDeRiesgo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="reportadoencentralesderiesgosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="reportadoencentralesderiesgono"
+                      type="radio"
+                      :value="false"
+                      name="reportadoEnCentralesDeRiesgo"
+                      v-model="form.reportadoEnCentralesDeRiesgo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="reportadoencentralesderiesgono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="precisedeserafirmativo">Precise De Ser Afirmativo</label>
+              <InputText
+                id="precisedeserafirmativo"
+                v-model="form.preciseDeSerAfirmativo"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Precise"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="entidaddeuda">Entidad Deuda</label>
+
+              <Select
+                v-model="form.entidadDeuda"
+                :options="entidadesBancariasList"
+                filter
+                optionLabel="name"
+                placeholder="Seleccionar entidad deuda"
+              >
+                <template #value="slotProps">
+                  <div v-if="slotProps.value" class="flex items-center">
+                    <div>{{ slotProps.value.name }}</div>
+                  </div>
+                  <span v-else>
+              {{ slotProps.placeholder }}
+            </span>
+                </template>
+                <template #option="slotProps">
+                  <div class="flex items-center">
+                    <div>{{ slotProps.option.name }}</div>
+                  </div>
+                </template>
+              </Select>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="motivocentralriesgo">Motivo</label>
+              <InputText
+                id="motivocentralriesgo"
+                v-model="form.motivoCentralDeRiesgo"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Motivo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-1">
+              <label for="tiempomora">Tiempo de Mora</label>
+              <InputText
+                id="tiempomora"
+                v-model="form.tiempoMora"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Motivo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="motodeuda">Monto de Deuda S/.</label>
+              <InputNumber
+                id="motodeuda"
+                v-model="form.montoDeuraMora"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Monto de deuda"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <!--consumo de bebidas alcoholicas-->
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          CONSUMO DE BEBIDAS ALCOHOLICAS
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="frecuenciaconsumosbebidas">Con Qué Frecuencia Consume Bebidas Alcohólicas:</label>
+              <InputText
+                id="frecuenciaconsumosbebidas"
+                v-model="form.fecuenciaConsumoBebidasAlcoholicas"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Frecuencias de consumo"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="quebebidasconsume">Que Bebidas Consume</label>
+              <InputText
+                id="quebebidasconsume"
+                v-model="form.queBebidasConsume"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Bebidas que consume"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="tratamientoalcholismosi">Ha recibido tratamiento por alcoholismo</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tratamientoalcholismosi"
+                      type="radio"
+                      :value="true"
+                      name="tratamientoAlcholismo"
+                      v-model="form.tratamientoAlcholismo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tratamientoalcholismosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="tratamientoalcholismono"
+                      type="radio"
+                      :value="false"
+                      name="tratamientoAlcholismo"
+                      v-model="form.tratamientoAlcholismo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="tratamientoalcholismono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="trabajoebriosi">Ha Llegado a Trabajar Ebrio</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="trabajoebriosi"
+                      type="radio"
+                      :value="true"
+                      name="trabajoEbrio"
+                      v-model="form.trabajoEbrio"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="trabajoebriosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="trabajoebriono"
+                      type="radio"
+                      :value="false"
+                      name="trabajoEbrio"
+                      v-model="form.trabajoEbrio"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="trabajoebriono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
+              <label for="explicacionllegoebrio">En Caso De Respuesta Afirmativa, Explique</label>
+              <InputText
+                id="explicacionllegoebrio"
+                v-model="form.expliqueLlegoEbrio"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Explicación"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <!--consumo de bebidas alcoholicas-->
+        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+          IMPLICACIÓN EN DROGAS ILEGALES ¿Cúales drogas ilegales ha probado o consumido alguna vez?
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="marihuanasi">Marihuana</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="marihuanasi"
+                      type="radio"
+                      :value="true"
+                      name="marihuana"
+                      v-model="form.marihuana"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="marihuanasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="marihuanano"
+                      type="radio"
+                      :value="false"
+                      name="marihuana"
+                      v-model="form.marihuana"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="marihuanano"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="pbc">PBC</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="pbc"
+                      type="radio"
+                      :value="true"
+                      name="pbc"
+                      v-model="form.pbc"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="pbc"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="pbcno"
+                      type="radio"
+                      :value="false"
+                      name="pbc"
+                      v-model="form.pbc"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="pbcno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="cocainasi">Cocaína</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="cocainasi"
+                      type="radio"
+                      :value="true"
+                      name="cocaina"
+                      v-model="form.cocaina"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="cocainasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="cocainano"
+                      type="radio"
+                      :value="false"
+                      name="cocaina"
+                      v-model="form.cocaina"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="cocainano"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="heroinasi">Heroína</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="heroinasi"
+                      type="radio"
+                      :value="true"
+                      name="heroina"
+                      v-model="form.heroina"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="heroinasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="heroinano"
+                      type="radio"
+                      :value="false"
+                      name="heroina"
+                      v-model="form.heroina"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="heroinano"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="lcdsi">LCD</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="lcdsi"
+                      type="radio"
+                      :value="true"
+                      name="lcd"
+                      v-model="form.lcd"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="lcdsi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="lcdno"
+                      type="radio"
+                      :value="false"
+                      name="lcd"
+                      v-model="form.lcd"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="lcdno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="extasissi">Éxtasis</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="extasissi"
+                      type="radio"
+                      :value="true"
+                      name="extasis"
+                      v-model="form.extasis"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="extasissi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="extasisno"
+                      type="radio"
+                      :value="false"
+                      name="extasis"
+                      v-model="form.extasis"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="extasisno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="tiempo">¿Cuándo fue la última vez que probo o consumió alguna droga ilegal?</label>
+
+              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="dias"
+                      type="radio"
+                      :value="true"
+                      name="tiempoUltimaVez"
+                      v-model="form.tiempoUltimaVez"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="dias"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Días</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="meses"
+                      type="radio"
+                      :value="true"
+                      name="tiempoUltimaVez"
+                      v-model="form.tiempoUltimaVez"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="meses"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Meses</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="anios"
+                      type="radio"
+                      :value="false"
+                      name="tiempoUltimaVez"
+                      v-model="form.tiempoUltimaVez"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="anios"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Años</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="cantidad">Cantidad</label>
+              <InputNumber
+                id="cantidad"
+                v-model="form.cantidadUltimoConsumo"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Cantidad"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="familiaresendogras">¿Tiene algún familiar implicado en consumo de drogas?</label>
+              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaresendograssi"
+                      type="radio"
+                      :value="true"
+                      name="familiaresEnDrogas"
+                      v-model="form.familiaresEnDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaresendograssi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaresendograsno"
+                      type="radio"
+                      :value="false"
+                      name="familiaresEnDrogas"
+                      v-model="form.familiaresEnDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaresendograsno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!--comision de delitos -->
+        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+          COMISIÓN DE DELITOS: ¿Ha cometido, planeado, encubierto o participado alguno de estos delitos?
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="robohurtofraude">Robo - Hurto - Fraude</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="robohurtofraudesi"
+                      type="radio"
+                      :value="true"
+                      name="robohurtofraude"
+                      v-model="form.roboHurtoFraude"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="robohurtofraudesi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="robohurtofraudeno
+"
+                      type="radio"
+                      :value="false"
+                      name="robohurtofraude"
+                      v-model="form.roboHurtoFraude"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="robohurtofraudeno
+"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="homicidioinvoluntario">Homicidio involuntario</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="homicidioinvoluntario"
+                      type="radio"
+                      :value="true"
+                      name="homicidioinvoluntario"
+                      v-model="form.homicidioInvoluntario"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="homicidioinvoluntario"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="homicidioinvoluntariono"
+                      type="radio"
+                      :value="false"
+                      name="homicidioinvoluntario"
+                      v-model="form.homicidioInvoluntario"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="homicidioinvoluntariono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="asaltosi">Asalto</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="asaltosi"
+                      type="radio"
+                      :value="true"
+                      name="asalto"
+                      v-model="form.asalto"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="asaltosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="asaltono"
+                      type="radio"
+                      :value="false"
+                      name="asalto"
+                      v-model="form.asalto"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="asaltono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="planesdaniofisicosi">Planes para causar daño físico a un individuo</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planesdaniofisicosi"
+                      type="radio"
+                      :value="true"
+                      name="planesdaniofisico"
+                      v-model="form.planesDanioFisico"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planesdaniofisicosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planesdaniofisicono"
+                      type="radio"
+                      :value="false"
+                      name="planesdaniofisico"
+                      v-model="form.planesDanioFisico"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planesdaniofisicono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="secuestrosi">Secuestro</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="secuestrosi"
+                      type="radio"
+                      :value="true"
+                      name="secuestro"
+                      v-model="form.secuestro"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="secuestrosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="secuestrono"
+                      type="radio"
+                      :value="false"
+                      name="secuestro"
+                      v-model="form.secuestro"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="secuestrono"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="violacionsi">Violación</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="violacionsi"
+                      type="radio"
+                      :value="true"
+                      name="violacion"
+                      v-model="form.violacion"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="violacionsi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="violacionno"
+                      type="radio"
+                      :value="false"
+                      name="violacion"
+                      v-model="form.violacion"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="violacionno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="muertelesionpersonasi">Cualquier delito que causara muerte o lesión a otra persona</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="muertelesionpersonasi"
+                      type="radio"
+                      :value="true"
+                      name="muertelesionpersona"
+                      v-model="form.muerteLesionPersona"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="muertelesionpersonasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="muertelesionpersonano"
+                      type="radio"
+                      :value="false"
+                      name="muertelesionpersona"
+                      v-model="form.muerteLesionPersona"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="muertelesionpersonano"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="traficoilicitodrogassi">Tráfico ilícito de drogas</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficoilicitodrogassi"
+                      type="radio"
+                      :value="true"
+                      name="traficoilicitodrogas"
+                      v-model="form.traficoIlicitoDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficoilicitodrogassi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficoilicitodrogasno"
+                      type="radio"
+                      :value="false"
+                      name="traficoilicitodrogas"
+                      v-model="form.traficoIlicitoDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficoilicitodrogasno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="traficodearmassi">Tráfico de armas</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficodearmassi"
+                      type="radio"
+                      :value="true"
+                      name="traficodearmas"
+                      v-model="form.traficoArmas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficodearmassi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficodearmasno"
+                      type="radio"
+                      :value="false"
+                      name="traficodearmas"
+                      v-model="form.traficoArmas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficodearmasno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="puedesercastigadoporlaleysi">Cualquier acto. conspiración o solicitud en los cuales usted puede ser castigado con cárcel</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="puedesercastigadoporlaleysi"
+                      type="radio"
+                      :value="true"
+                      name="puedesercastigadoporlaley"
+                      v-model="form.castigadoConCarcel"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="puedesercastigadoporlaleysi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="puedesercastigadoporlaleyno"
+                      type="radio"
+                      :value="false"
+                      name="puedesercastigadoporlaley"
+                      v-model="form.castigadoConCarcel"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="puedesercastigadoporlaleyno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="explicacioncastigadoley">En caso de respuesta afirmativa, explique:</label>
+              <InputText
+                id="explicacioncastigadoley"
+                v-model="form.explicacionCastigadoLey"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Explique"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <!--personas al margen de la ley-->
+        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+          CONOCE ALGUNA PERSONA AL MARGEN DE LA LEY
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="pandilleros">Pandilleros</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="pandillerossi"
+                      type="radio"
+                      :value="true"
+                      name="pandilleros"
+                      v-model="form.pandilleros"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="pandillerossi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="pandillerosno
+"
+                      type="radio"
+                      :value="false"
+                      name="pandilleros"
+                      v-model="form.pandilleros"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="pandillerosno
+"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="sicarios">Sicarios</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="sicarios"
+                      type="radio"
+                      :value="true"
+                      name="sicarios"
+                      v-model="form.sicarios"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="sicarios"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="sicariosno"
+                      type="radio"
+                      :value="false"
+                      name="sicarios"
+                      v-model="form.sicarios"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="sicariosno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="asaltantessi">Asaltantes</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="asaltantessi"
+                      type="radio"
+                      :value="true"
+                      name="asaltantes"
+                      v-model="form.asaltantes"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="asaltantessi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="asaltantesno"
+                      type="radio"
+                      :value="false"
+                      name="asaltantes"
+                      v-model="form.asaltantes"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="asaltantesno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="traficantesdrogassi">Traficante de drogas</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficantesdrogassi"
+                      type="radio"
+                      :value="true"
+                      name="traficantesdrogas"
+                      v-model="form.traficantesDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficantesdrogassi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="traficantesdrogasno"
+                      type="radio"
+                      :value="false"
+                      name="traficantesdrogas"
+                      v-model="form.traficantesDrogas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="traficantesdrogasno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="estafadoressi">Estafadores</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="estafadoressi"
+                      type="radio"
+                      :value="true"
+                      name="estafadores"
+                      v-model="form.estafadores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="estafadoressi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="estafadoresno"
+                      type="radio"
+                      :value="false"
+                      name="estafadores"
+                      v-model="form.estafadores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="estafadoresno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="terroristassi">Terroristas</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="terroristassi"
+                      type="radio"
+                      :value="true"
+                      name="terroristas"
+                      v-model="form.terroristas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="terroristassi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="terroristasno"
+                      type="radio"
+                      :value="false"
+                      name="terroristas"
+                      v-model="form.terroristas"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="terroristasno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="secuestradoressi">Secuestradores</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="secuestradoressi"
+                      type="radio"
+                      :value="true"
+                      name="secuestradores"
+                      v-model="form.secuestradores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="secuestradoressi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="secuestradoresno"
+                      type="radio"
+                      :value="false"
+                      name="secuestradores"
+                      v-model="form.secuestradores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="secuestradoresno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="extorsionadoressi">Extorsionadores</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="extorsionadoressi"
+                      type="radio"
+                      :value="true"
+                      name="extorsionadores"
+                      v-model="form.extorsionadores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="extorsionadoressi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="extorsionadoresno"
+                      type="radio"
+                      :value="false"
+                      name="extorsionadores"
+                      v-model="form.extorsionadores"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="extorsionadoresno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
+              <label for="otraspersonamargenleysi">Otros</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="otraspersonamargenleysi"
+                      type="radio"
+                      :value="true"
+                      name="otraspersonamargenley"
+                      v-model="form.otrasPersonasMargenLey"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="otraspersonamargenleysi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="otraspersonamargenleyno"
+                      type="radio"
+                      :value="false"
+                      name="otraspersonamargenley"
+                      v-model="form.otrasPersonasMargenLey"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="otraspersonamargenleyno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="familiaressentenciadosopenalessi">Tiene familiares sentenciados en penales:</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaressentenciadosopenalessi"
+                      type="radio"
+                      :value="true"
+                      name="familiaressentenciadosopenales"
+                      v-model="form.familiaresSentenciadosPenales"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaressentenciadosopenalessi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaressentenciadosopenalesno"
+                      type="radio"
+                      :value="false"
+                      name="familiaressentenciadosopenales"
+                      v-model="form.familiaresSentenciadosPenales"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaressentenciadosopenalesno"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!--motivaiones para postular al empleo-->
+        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+          MOTIVACIONES POR LAS QUE POSTULA A LA EMPRESA
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="planeacausardaniopersonaempresa">Tiene planeado ingresar a la empresa que postula, para causar algún daño a personas o la empresa</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planeacausardaniopersonaempresasi"
+                      type="radio"
+                      :value="true"
+                      name="planeacausardaniopersonaempresa"
+                      v-model="form.planeaCausarDanioPersonaEmpresa"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planeacausardaniopersonaempresasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planeacausardaniopersonaempresano
+"
+                      type="radio"
+                      :value="false"
+                      name="planeacausardaniopersonaempresa"
+                      v-model="form.planeaCausarDanioPersonaEmpresa"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planeacausardaniopersonaempresano
+"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="planeaobtenesbenefioilegal">Tiene planeado ingresar a la empresa que postula, para obtener algún beneficio ilegal:</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planeaobtenesbenefioilegal"
+                      type="radio"
+                      :value="true"
+                      name="planeaobtenesbenefioilegal"
+                      v-model="form.planeaObtenerBeneficioIlegal"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planeaobtenesbenefioilegal"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="planeaobtenesnobenefioilegal"
+                      type="radio"
+                      :value="false"
+                      name="planeaobtenesbenefioilegal"
+                      v-model="form.planeaObtenerBeneficioIlegal"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="planeaobtenesnobenefioilegal"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
+              <label for="familiaresenlamismaempresasi">Tiene familiares o amigos que trabajan o trabajaron en la empresa que postula:</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaresenlamismaempresasi"
+                      type="radio"
+                      :value="true"
+                      name="familiaresenlamismaempresa"
+                      v-model="form.familiaresMismaEmpresa"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaresenlamismaempresasi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="familiaresenlamismaempresano"
+                      type="radio"
+                      :value="false"
+                      name="familiaresenlamismaempresa"
+                      v-model="form.familiaresMismaEmpresa"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="familiaresenlamismaempresano"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
                     >
                   </div>
                 </li>

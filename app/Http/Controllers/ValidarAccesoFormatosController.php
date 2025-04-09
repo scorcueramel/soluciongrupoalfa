@@ -6,6 +6,7 @@ use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
 
 use App\Models\Distritos;
+use App\Models\EntidadesBancarias;
 use App\Models\GradosInstrucciones;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
@@ -13,20 +14,21 @@ use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
 {
-    public function index()
-    {
-        return Inertia::render('Formatos/Access');
-    }
+  public function index()
+  {
+    return Inertia::render('Formatos/Access');
+  }
 
-    public function test()
-    {
-        return Inertia::render('Formatos/FormatoUno',[
-            'distritos' => Distritos::all(),
-            'tiposviviendas' => TiposViviendas::all(),
-            'tiposparentescos' => TiposParentescos::all(),
-            'gradosinstrucciones' => GradosInstrucciones::all()
-        ]);
-    }
+  public function test()
+  {
+    return Inertia::render('Formatos/FormatoUno', [
+      'distritos' => Distritos::all(),
+      'tiposviviendas' => TiposViviendas::all(),
+      'tiposparentescos' => TiposParentescos::all(),
+      'gradosinstrucciones' => GradosInstrucciones::all(),
+      'entidadesbancarias' => EntidadesBancarias::all()
+    ]);
+  }
 
 //    public function show(ValidarAccesoFormatosRequest $request)
 //    {
