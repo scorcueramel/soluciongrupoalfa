@@ -802,7 +802,7 @@ const guardarFormato = () => {
             />
             <!--<small class="text-red-500">errores</small>-->
             <small class="ms-1 text-lg text-[#B00202]"
-              >Seleccionar perentescos.</small
+              >Seleccionar Parentescos.</small
             >
           </div>
 
