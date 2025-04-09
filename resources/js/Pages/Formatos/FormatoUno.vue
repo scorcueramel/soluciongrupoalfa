@@ -9,6 +9,7 @@ const props = defineProps({
   distritos: Object,
   tiposviviendas: Object,
   tiposparentescos: Object,
+  gradosinstrucciones:Object
 });
 
 const distritosList = ref([]);
@@ -23,6 +24,7 @@ const cantidadDeHijosIndicada = ref(0);
 const datosHermanos = ref(false);
 const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
+const gradosInstruccionesList = ref([]);
 
 const form = useForm({
   empresa: "",
@@ -70,7 +72,24 @@ const form = useForm({
   edadesHermanos: [],
   nombreOcupacionesHermanos: [],
   mismoInmuebleHermanos: [],
-  gradoestudios: [],
+  gradoInstruccionUno:0,
+  centroEstudioUno:"",
+  especialidadesFacultadUno:"",
+  inicioEstudiosUno:"",
+  terminoEstudiosUno:"",
+  situacionUno:false,
+  gradoInstruccionDos:0,
+  centroEstudioDos:"",
+  especialidadesFacultadDos:"",
+  inicioEstudiosDos:"",
+  terminoEstudiosDos:"",
+  situacionDos:false,
+  gradoInstruccionTres:0,
+  centroEstudioTres:"",
+  especialidadesFacultadTres:"",
+  inicioEstudiosTres:"",
+  terminoEstudiosTres:"",
+  situacionTres:false,
 });
 
 // onbeforeunload = (event) => {
@@ -154,6 +173,13 @@ onMounted(() => {
         code: props.tiposparentescos[2].id,
       });
     }
+  });
+
+  props.gradosinstrucciones.map((e)=>{
+    gradosInstruccionesList.value.push({
+      name: e.grado_instruccion,
+      code: e.id
+    })
   });
 });
 
@@ -364,6 +390,7 @@ const guardarFormato = () => {
           </div>
         </div>
 
+        <!--datos personales-->
         <div
           class="col-span-3 bg-[#B00202] font-black p-2 text-white rounded-md"
         >
@@ -1163,51 +1190,65 @@ const guardarFormato = () => {
 
         <!--datos de la formacion academica-->
         <div class="border border-[#B00202] p-4 rounded-md my-2">
-          <div class="grid grid-cols-6 gap-2">
-            <InputText
-              id="padre"
-              value="1"
-              v-model="form.tipoParentescoPadre"
-              autocomplete="off"
-              type="hidden"
-            />
+          <div class="grid grid-cols-9 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="grado">Grado</label>
+              <label for="gradoInstruccionuno">Grado de Instrucción</label>
+              <Select
+                v-model="form.gradoInstruccionUno"
+                :options="gradosInstruccionesList"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar grado de instruccion"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="centroestudiosuno">Centro de Estudios</label>
               <InputText
-                id="grado"
-                v-model="form.gradoestudios"
+                id="centroestudios"
+                v-model="form.centroEstudioUno"
                 class="flex-auto"
                 autocomplete="off"
-                placeholder="Grado de instrucción"
+                placeholder="Centro de estudios"
               />
               <small class="text-red-500">errores</small>
             </div>
-            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="edadpadre">Edad</label>
-              <InputNumber
-                id="edadpadre"
-                v-model="form.edadpadre"
-                class="flex-auto"
-                autocomplete="off"
-                placeholder="Edad"
-                :min="0"
-                :max="120"
-              />
-              <small class="text-red-500">errores</small>
-            </div>
-            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="ocupacionpadre">Ocupación</label>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="especialidadfacultaduno">Especialidad/Facultad</label>
               <InputText
-                id="ocupacionpadre"
-                v-model="form.nombresocupacionpadre"
+                id="especialidadfacultad"
+                v-model="form.especialidadesFacultadUno"
                 class="flex-auto"
                 autocomplete="off"
-                placeholder="Ocupación"
+                placeholder="Especialidad/Facultad"
               />
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
+              <label for="inicioestudiouno">Inicio</label>
+              <DatePicker
+                id="inicioestudiouno"
+                v-model="form.inicioEstudiosUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Inicio"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="terminoestudiouno">Término</label>
+              <DatePicker
+                id="terminoestudiouno"
+                v-model="form.terminoEstudiosUno"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Termino"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="situacionuno">Situación</label>
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -1215,15 +1256,15 @@ const guardarFormato = () => {
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
-                      id="mismoInmueblePadreSi"
+                      id="situacionUnoSi"
                       type="radio"
                       :value="true"
-                      name="mismoInmueblePadre"
-                      v-model="form.mismoInmueblePadre"
+                      name="situacionUnoSi"
+                      v-model="form.situacionUno"
                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                     />
                     <label
-                      for="mismoInmueblePadreSi"
+                      for="situacionUnoSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                     >Si</label
                     >
@@ -1232,15 +1273,215 @@ const guardarFormato = () => {
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
-                      id="mismoInmueblePadreNo"
+                      id="situacionUnoNo"
                       type="radio"
                       :value="false"
-                      name="mismoInmueblePadre"
-                      v-model="form.mismoInmueblePadre"
+                      name="situacionUnoNo"
+                      v-model="form.situacionUno"
                       class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                     />
                     <label
-                      for="mismoInmueblePadreNo"
+                      for="situacionUnoNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid grid-cols-9 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="gradoInstrucciondos">Grado de Instrucción</label>
+              <Select
+                v-model="form.gradoInstruccionDos"
+                :options="gradosInstruccionesList"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar grado de instruccion"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="centroestudiosdos">Centro de Estudios</label>
+              <InputText
+                id="centroestudiosdos"
+                v-model="form.centroEstudioDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Centro de estudios"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="especialidadfacultaddos">Especialidad/Facultad</label>
+              <InputText
+                id="especialidadfacultaddos"
+                v-model="form.especialidadesFacultadDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Especialidad/Facultad"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="inicioestudiodos">Inicio</label>
+              <DatePicker
+                id="inicioestudiodos"
+                v-model="form.inicioEstudiosDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Inicio"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="terminoestudiodos">Término</label>
+              <DatePicker
+                id="terminoestudiodos"
+                v-model="form.terminoEstudiosDos"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Termino"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="situaciondos">Situación</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="situacionDosSi"
+                      type="radio"
+                      :value="true"
+                      name="situacionDosSi"
+                      v-model="form.situacionDos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="situacionDosSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="situacionDosNo"
+                      type="radio"
+                      :value="false"
+                      name="situacionDosNo"
+                      v-model="form.situacionDos"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="situacionDosNo"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="grid grid-cols-9 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="gradoInstruccionTres">Grado de Instrucción</label>
+              <Select
+                v-model="form.gradoInstruccionTres"
+                :options="gradosInstruccionesList"
+                optionValue="code"
+                optionLabel="name"
+                placeholder="Seleccionar grado de instruccion"
+                emptyMessage="Opciones no disponibles"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="centroestudiostres">Centro de Estudios</label>
+              <InputText
+                id="centroestudiostres"
+                v-model="form.centroEstudioTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Centro de estudios"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="especialidadfacultadtres">Especialidad/Facultad</label>
+              <InputText
+                id="especialidadfacultadtres"
+                v-model="form.especialidadesFacultadesTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Especialidad/Facultad"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="inicioestudiotres">Inicio</label>
+              <DatePicker
+                id="inicioestudiotres"
+                v-model="form.inicioEstudiosTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Inicio"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="terminoestudiotres">Término</label>
+              <DatePicker
+                id="terminoestudiotres"
+                v-model="form.terminoEstudiosTres"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Termino"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+              <label for="situaciontres">Situación</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="situacionTresSi"
+                      type="radio"
+                      :value="true"
+                      name="situacionTresSi"
+                      v-model="form.situacionTres"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="situacionTresSi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="situacionTresNo"
+                      type="radio"
+                      :value="false"
+                      name="situacionTresNo"
+                      v-model="form.situacionTres"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="situacionTresNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                     >No</label
                     >

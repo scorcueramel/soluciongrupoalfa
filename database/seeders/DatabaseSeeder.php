@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             NacionalidadSeeder::class,
             DistritoSeeder::class,
             TiposPersonasSeeder::class,
+          GradosInstruccionesSeeder::class
         ]);
     }
 }
