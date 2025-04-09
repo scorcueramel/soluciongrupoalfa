@@ -398,208 +398,208 @@ const guardarFormato = () => {
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
-          <div class="grid grid-cols-3">
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="nombres">Nombres</label>
-            <InputText
-              id="nombres"
-              v-model="form.nombres"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Nombres"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="paterno">Apellido Paterno</label>
-            <InputText
-              id="paterno"
-              v-model="form.paterno"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Apellido paterno"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="materno">Apellido Materno</label>
-            <InputText
-              id="materno"
-              v-model="form.materno"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Apellido materno"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="tipoDocumento">Tipo de Documento de Identidad</label>
-            <Select
-              v-model="form.tipoDocumento"
-              :options="props.tipoDocumento"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar tipo de documento"
-              emptyMessage="Opciones no disponibles"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="numeroDocumento">Número de Documento</label>
-            <InputText
-              id="numeroDocumento"
-              v-model="form.numeroDocumento"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Número de documento"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="fechaNacimiento">Fecha de Nacimiento</label>
-            <DatePicker
-              id="fechaNacimiento"
-              v-model="form.fechaNacimiento"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Fecha de nacimiento"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 col-span-3 flex flex-col gap-2 me-4">
-            <label for="lugarNacimiento">Lugar de Nacimiento</label>
-            <InputText
-              id="lugarNacimiento"
-              v-model="form.lugarNacimiento"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Lugar de nacimiento"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="estadoCivil">Estado Civil</label>
-            <Select
-              v-model="form.estadoCivil"
-              :options="props.estadoCivil"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar estado civil"
-              emptyMessage="Opciones no disponibles"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="genero">Genero</label>
-            <Select
-              v-model="form.genero"
-              :options="props.genero"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar cargo"
-              emptyMessage="Opciones no disponibles"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="distrito">Distrito</label>
-            <Select
-              v-model="form.distrito"
-              :options="distritosList"
-              filter
-              optionLabel="name"
-              placeholder="Seleccionar distrito"
-            >
-              <template #value="slotProps">
-                <div v-if="slotProps.value" class="flex items-center">
-                  <div>{{ slotProps.value.name }}</div>
-                </div>
-                <span v-else>
-                  {{ slotProps.placeholder }}
-                </span>
-              </template>
-              <template #option="slotProps">
-                <div class="flex items-center">
-                  <div>{{ slotProps.option.name }}</div>
-                </div>
-              </template>
-            </Select>
+            <div class="grid grid-cols-3">
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="nombres">Nombres</label>
+                <InputText
+                  id="nombres"
+                  v-model="form.nombres"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Nombres"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="paterno">Apellido Paterno</label>
+                <InputText
+                  id="paterno"
+                  v-model="form.paterno"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Apellido paterno"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="materno">Apellido Materno</label>
+                <InputText
+                  id="materno"
+                  v-model="form.materno"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Apellido materno"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="tipoDocumento">Tipo de Documento de Identidad</label>
+                <Select
+                  v-model="form.tipoDocumento"
+                  :options="props.tipoDocumento"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar tipo de documento"
+                  emptyMessage="Opciones no disponibles"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="numeroDocumento">Número de Documento</label>
+                <InputText
+                  id="numeroDocumento"
+                  v-model="form.numeroDocumento"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Número de documento"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                <DatePicker
+                  id="fechaNacimiento"
+                  v-model="form.fechaNacimiento"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Fecha de nacimiento"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 col-span-3 flex flex-col gap-2 me-4">
+                <label for="lugarNacimiento">Lugar de Nacimiento</label>
+                <InputText
+                  id="lugarNacimiento"
+                  v-model="form.lugarNacimiento"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Lugar de nacimiento"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="estadoCivil">Estado Civil</label>
+                <Select
+                  v-model="form.estadoCivil"
+                  :options="props.estadoCivil"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar estado civil"
+                  emptyMessage="Opciones no disponibles"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="genero">Genero</label>
+                <Select
+                  v-model="form.genero"
+                  :options="props.genero"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar cargo"
+                  emptyMessage="Opciones no disponibles"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="distrito">Distrito</label>
+                <Select
+                  v-model="form.distrito"
+                  :options="distritosList"
+                  filter
+                  optionLabel="name"
+                  placeholder="Seleccionar distrito"
+                >
+                  <template #value="slotProps">
+                    <div v-if="slotProps.value" class="flex items-center">
+                      <div>{{ slotProps.value.name }}</div>
+                    </div>
+                    <span v-else>
+                      {{ slotProps.placeholder }}
+                    </span>
+                  </template>
+                  <template #option="slotProps">
+                    <div class="flex items-center">
+                      <div>{{ slotProps.option.name }}</div>
+                    </div>
+                  </template>
+                </Select>
 
-            <small class="text-red-500">errores</small>
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 col-span-2 flex flex-col gap-2 me-4">
+                <label for="direccion">Dirección</label>
+                <InputText
+                  id="direccion"
+                  v-model="form.direccion"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Dirección"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="role">¿La Casa Donde Vives Es?</label>
+                <Select
+                  v-model="form.tipoVivienda"
+                  :options="tiposViviendasList"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar tipo de vivienda"
+                  emptyMessage="Opciones no disponibles"
+                  @change="otroTipoVivienda"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div
+                class="mt-2 col-span-2 flex flex-col gap-2 me-4"
+                v-if="otrotipovivienda"
+              >
+                <label for="Otro">Otro Tipo de Vivienda</label>
+                <InputText
+                  id="otro"
+                  v-model="form.otroTipoVivienda"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Indique otro tipo de vivienda"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="telefono">Teléfono</label>
+                <InputText
+                  id="telefono"
+                  v-model="form.telefono"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Telefono"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="email">Email</label>
+                <InputText
+                  id="email"
+                  v-model="form.email"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Email"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 me-4">
+                <label for="brevete">Brevete</label>
+                <InputText
+                  id="brevete"
+                  v-model="form.brevete"
+                  class="flex-auto"
+                  autocomplete="off"
+                  placeholder="Brevete"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+            </div>
           </div>
-          <div class="mt-2 col-span-2 flex flex-col gap-2 me-4">
-            <label for="direccion">Dirección</label>
-            <InputText
-              id="direccion"
-              v-model="form.direccion"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Dirección"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="role">¿La Casa Donde Vives Es?</label>
-            <Select
-              v-model="form.tipoVivienda"
-              :options="tiposViviendasList"
-              optionValue="code"
-              optionLabel="name"
-              placeholder="Seleccionar tipo de vivienda"
-              emptyMessage="Opciones no disponibles"
-              @change="otroTipoVivienda"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div
-            class="mt-2 col-span-2 flex flex-col gap-2 me-4"
-            v-if="otrotipovivienda"
-          >
-            <label for="Otro">Otro Tipo de Vivienda</label>
-            <InputText
-              id="otro"
-              v-model="form.otroTipoVivienda"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Indique otro tipo de vivienda"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="telefono">Teléfono</label>
-            <InputText
-              id="telefono"
-              v-model="form.telefono"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Telefono"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="email">Email</label>
-            <InputText
-              id="email"
-              v-model="form.email"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Email"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-          <div class="mt-2 flex flex-col gap-2 me-4">
-            <label for="brevete">Brevete</label>
-            <InputText
-              id="brevete"
-              v-model="form.brevete"
-              class="flex-auto"
-              autocomplete="off"
-              placeholder="Brevete"
-            />
-            <small class="text-red-500">errores</small>
-          </div>
-        </div>
-        </div>
 
         <div
           class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
@@ -820,7 +820,7 @@ const guardarFormato = () => {
             class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16"
             v-if="cantidadHijos"
           >
-            <label for="cantidad">Cantidad</label>
+            <label for="cantidad">¿Cúantos Hijos Tiene?</label>
             <InputText
               id="cantidad"
               class="flex-auto"
@@ -847,7 +847,7 @@ const guardarFormato = () => {
             class="mt-2 flex flex-col gap-2 me-4 col-span-1 my-16"
             v-if="cantidadHermanos"
           >
-            <label for="cantidad">Cantidad</label>
+            <label for="cantidad">¿Cúantos Hermanos Tiene?</label>
             <InputText
               id="cantidad"
               class="flex-auto"
@@ -1251,7 +1251,7 @@ const guardarFormato = () => {
               <label for="situacionuno">Situación</label>
 
               <ul
-                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                class="block items-center w-full text-sm font-medium text-gray-900 bg-white"
               >
                 <li class="w-full">
                   <div class="flex items-center">
@@ -1265,8 +1265,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionUnoSi"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      class="w-full ms-2 text-sm font-medium text-gray-900"
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1282,8 +1282,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionUnoNo"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1351,7 +1351,7 @@ const guardarFormato = () => {
               <label for="situaciondos">Situación</label>
 
               <ul
-                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                class="block items-center w-full text-sm font-medium text-gray-900 bg-white"
               >
                 <li class="w-full">
                   <div class="flex items-center">
@@ -1365,8 +1365,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionDosSi"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      class="w-full ms-2 text-sm font-medium text-gray-900"
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1382,8 +1382,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionDosNo"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1451,7 +1451,7 @@ const guardarFormato = () => {
               <label for="situaciontres">Situación</label>
 
               <ul
-                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                class="block items-center w-full text-sm font-medium text-gray-900 bg-white"
               >
                 <li class="w-full">
                   <div class="flex items-center">
@@ -1465,8 +1465,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionTresSi"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      class="w-full ms-2 text-sm font-medium text-gray-900"
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1482,8 +1482,8 @@ const guardarFormato = () => {
                     />
                     <label
                       for="situacionTresNo"
-                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1491,8 +1491,6 @@ const guardarFormato = () => {
             </div>
           </div>
         </div>
-
-
 
         <Button type="submit" label="Terminar" />
       </form>
