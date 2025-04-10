@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('empresa_id')->constrained('empresas');
             $table->foreignId('cargo_id')->constrained('cargos');
             $table->foreignId('usuario_id')->constrained('users');
-            $table->date('fecha_solicitud');
+            $table->string('fecha_solicitud');
             $table->text('firma');
             $table->timestamps();
         });

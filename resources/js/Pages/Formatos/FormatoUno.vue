@@ -1,7 +1,7 @@
 <script setup>
-import {Head, useForm} from "@inertiajs/vue3";
-import {onMounted, ref} from "vue";
-import {usePrimeVue} from "primevue/config";
+import { Head, useForm } from "@inertiajs/vue3";
+import { onMounted, ref } from "vue";
+import { usePrimeVue } from "primevue/config";
 
 const props = defineProps({
   empresas: Array,
@@ -27,13 +27,7 @@ const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
 const gradosInstruccionesList = ref([]);
 const entidadesBancariasList = ref([]);
-
-const fechaActual = () =>{
-  const date = new Date();
-  const formatear = ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" +
-    date.getFullYear();
-  return formatear;
-}
+const nombresCompletosPiePagina = ref("");
 
 const form = useForm({
   empresa: "",
@@ -234,6 +228,10 @@ onMounted(() => {
     });
   });
 });
+
+const datosPiePagina = () =>{
+  nombresCompletosPiePagina.value = form.nombres + " " + form.paterno + " " + form.materno
+}
 
 const changeToSpanish = () => {
   const primevue = usePrimeVue();
@@ -549,6 +547,7 @@ const guardarFormato = () => {
                 class="flex-auto"
                 autocomplete="off"
                 placeholder="Número de documento"
+                @click="datosPiePagina"
               />
               <small class="text-red-500">errores</small>
             </div>
@@ -772,7 +771,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmueblePadreSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -789,7 +788,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmueblePadreNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -859,7 +858,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleMadreSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -876,7 +875,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleMadreNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -901,7 +900,7 @@ const guardarFormato = () => {
             />
             <!--<small class="text-red-500">errores</small>-->
             <small class="ms-1 text-lg text-[#B00202]"
-            >Seleccionar Parentescos.</small
+              >Seleccionar Parentescos.</small
             >
           </div>
 
@@ -1017,7 +1016,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmuebleconyuge"
-              >Vive en el mismo inmueble</label
+                >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1036,7 +1035,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleConyugeSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1053,7 +1052,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleConyugeNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1123,7 +1122,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmuebleconyuge"
-              >Vive en el mismo inmueble</label
+                >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1142,7 +1141,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHijosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1159,7 +1158,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHijosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1229,7 +1228,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmueblehermanos"
-              >Vive en el mismo inmueble</label
+                >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1248,7 +1247,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1265,7 +1264,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1368,7 +1367,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1385,7 +1384,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1468,7 +1467,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1485,7 +1484,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1518,7 +1517,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
               <label for="especialidadfacultadtres"
-              >Especialidad/Facultad</label
+                >Especialidad/Facultad</label
               >
               <InputText
                 id="especialidadfacultadtres"
@@ -1570,7 +1569,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                    >Completa</label
+                      >Completa</label
                     >
                   </div>
                 </li>
@@ -1587,7 +1586,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                    >Incompleta</label
+                      >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1820,7 +1819,7 @@ const guardarFormato = () => {
           <div class="grid grid-cols-6 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="amonestacionesEmpleosSi"
-              >Ha recibido amonestaciones escritas:
+                >Ha recibido amonestaciones escritas:
               </label>
 
               <ul
@@ -1839,7 +1838,7 @@ const guardarFormato = () => {
                     <label
                       for="amonestacionesEmpleosSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1856,7 +1855,7 @@ const guardarFormato = () => {
                     <label
                       for="amonestacionesNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1864,7 +1863,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="solicitudrenuncia"
-              >Le han solicitado su carta de renuncia:
+                >Le han solicitado su carta de renuncia:
               </label>
 
               <ul
@@ -1883,7 +1882,7 @@ const guardarFormato = () => {
                     <label
                       for="solicitudRenunciaSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1900,7 +1899,7 @@ const guardarFormato = () => {
                     <label
                       for="solicitudRenunciaNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1908,7 +1907,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
               <label for="explicacion"
-              >En caso de respuesta afirmativa, explique:
+                >En caso de respuesta afirmativa, explique:
               </label>
               <InputText
                 id="explicacion"
@@ -1950,7 +1949,7 @@ const guardarFormato = () => {
                     <label
                       for="tieneprestamosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -1967,7 +1966,7 @@ const guardarFormato = () => {
                     <label
                       for="tieneprestamosno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -1999,8 +1998,8 @@ const guardarFormato = () => {
                     <div>{{ slotProps.value.name }}</div>
                   </div>
                   <span v-else>
-              {{ slotProps.placeholder }}
-            </span>
+                    {{ slotProps.placeholder }}
+                  </span>
                 </template>
                 <template #option="slotProps">
                   <div class="flex items-center">
@@ -2039,7 +2038,7 @@ const guardarFormato = () => {
                     <label
                       for="otroingresosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2056,7 +2055,7 @@ const guardarFormato = () => {
                     <label
                       for="otroingresono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2103,7 +2102,7 @@ const guardarFormato = () => {
                     <label
                       for="tienepropiedadessi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2120,7 +2119,7 @@ const guardarFormato = () => {
                     <label
                       for="tienepropiedadesno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2138,7 +2137,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="reportadoencentralesderiesgosi">Esta Reportado en Centrales de Riesgo</label>
+              <label for="reportadoencentralesderiesgosi"
+                >Esta Reportado en Centrales de Riesgo</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -2156,7 +2157,7 @@ const guardarFormato = () => {
                     <label
                       for="reportadoencentralesderiesgosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2173,14 +2174,16 @@ const guardarFormato = () => {
                     <label
                       for="reportadoencentralesderiesgono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
-              <label for="precisedeserafirmativo">Precise De Ser Afirmativo</label>
+              <label for="precisedeserafirmativo"
+                >Precise De Ser Afirmativo</label
+              >
               <InputText
                 id="precisedeserafirmativo"
                 v-model="form.preciseDeSerAfirmativo"
@@ -2205,8 +2208,8 @@ const guardarFormato = () => {
                     <div>{{ slotProps.value.name }}</div>
                   </div>
                   <span v-else>
-              {{ slotProps.placeholder }}
-            </span>
+                    {{ slotProps.placeholder }}
+                  </span>
                 </template>
                 <template #option="slotProps">
                   <div class="flex items-center">
@@ -2261,7 +2264,9 @@ const guardarFormato = () => {
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-6 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="frecuenciaconsumosbebidas">Con Qué Frecuencia Consume Bebidas Alcohólicas:</label>
+              <label for="frecuenciaconsumosbebidas"
+                >Con Qué Frecuencia Consume Bebidas Alcohólicas:</label
+              >
               <InputText
                 id="frecuenciaconsumosbebidas"
                 v-model="form.fecuenciaConsumoBebidasAlcoholicas"
@@ -2283,7 +2288,9 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
-              <label for="tratamientoalcholismosi">Ha recibido tratamiento por alcoholismo</label>
+              <label for="tratamientoalcholismosi"
+                >Ha recibido tratamiento por alcoholismo</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -2301,7 +2308,7 @@ const guardarFormato = () => {
                     <label
                       for="tratamientoalcholismosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2318,7 +2325,7 @@ const guardarFormato = () => {
                     <label
                       for="tratamientoalcholismono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2343,7 +2350,7 @@ const guardarFormato = () => {
                     <label
                       for="trabajoebriosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2360,14 +2367,16 @@ const guardarFormato = () => {
                     <label
                       for="trabajoebriono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-2 col-span-2">
-              <label for="explicacionllegoebrio">En Caso De Respuesta Afirmativa, Explique</label>
+              <label for="explicacionllegoebrio"
+                >En Caso De Respuesta Afirmativa, Explique</label
+              >
               <InputText
                 id="explicacionllegoebrio"
                 v-model="form.expliqueLlegoEbrio"
@@ -2381,8 +2390,11 @@ const guardarFormato = () => {
         </div>
 
         <!--consumo de bebidas alcoholicas-->
-        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
-          IMPLICACIÓN EN DROGAS ILEGALES ¿Cúales drogas ilegales ha probado o consumido alguna vez?
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          IMPLICACIÓN EN DROGAS ILEGALES ¿Cúales drogas ilegales ha probado o
+          consumido alguna vez?
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
@@ -2406,7 +2418,7 @@ const guardarFormato = () => {
                     <label
                       for="marihuanasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2423,7 +2435,7 @@ const guardarFormato = () => {
                     <label
                       for="marihuanano"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2448,7 +2460,7 @@ const guardarFormato = () => {
                     <label
                       for="pbc"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2465,7 +2477,7 @@ const guardarFormato = () => {
                     <label
                       for="pbcno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2490,7 +2502,7 @@ const guardarFormato = () => {
                     <label
                       for="cocainasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2507,7 +2519,7 @@ const guardarFormato = () => {
                     <label
                       for="cocainano"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2532,7 +2544,7 @@ const guardarFormato = () => {
                     <label
                       for="heroinasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2549,7 +2561,7 @@ const guardarFormato = () => {
                     <label
                       for="heroinano"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2574,7 +2586,7 @@ const guardarFormato = () => {
                     <label
                       for="lcdsi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2591,7 +2603,7 @@ const guardarFormato = () => {
                     <label
                       for="lcdno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2616,7 +2628,7 @@ const guardarFormato = () => {
                     <label
                       for="extasissi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2633,16 +2645,21 @@ const guardarFormato = () => {
                     <label
                       for="extasisno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="tiempo">¿Cuándo fue la última vez que probo o consumió alguna droga ilegal?</label>
+              <label for="tiempo"
+                >¿Cuándo fue la última vez que probo o consumió alguna droga
+                ilegal?</label
+              >
 
-              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
@@ -2656,7 +2673,7 @@ const guardarFormato = () => {
                     <label
                       for="dias"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Días</label
+                      >Días</label
                     >
                   </div>
                 </li>
@@ -2673,7 +2690,7 @@ const guardarFormato = () => {
                     <label
                       for="meses"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Meses</label
+                      >Meses</label
                     >
                   </div>
                 </li>
@@ -2690,7 +2707,7 @@ const guardarFormato = () => {
                     <label
                       for="anios"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Años</label
+                      >Años</label
                     >
                   </div>
                 </li>
@@ -2708,8 +2725,12 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
-              <label for="familiaresendogras">¿Tiene algún familiar implicado en consumo de drogas?</label>
-              <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+              <label for="familiaresendogras"
+                >¿Tiene algún familiar implicado en consumo de drogas?</label
+              >
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
                 <li class="w-full">
                   <div class="flex items-center">
                     <input
@@ -2723,7 +2744,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaresendograssi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2740,7 +2761,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaresendograsno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2750,8 +2771,11 @@ const guardarFormato = () => {
         </div>
 
         <!--comision de delitos -->
-        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
-          COMISIÓN DE DELITOS: ¿Ha cometido, planeado, encubierto o participado alguno de estos delitos?
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
+          COMISIÓN DE DELITOS: ¿Ha cometido, planeado, encubierto o participado
+          alguno de estos delitos?
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
@@ -2775,7 +2799,7 @@ const guardarFormato = () => {
                     <label
                       for="robohurtofraudesi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2794,7 +2818,7 @@ const guardarFormato = () => {
                       for="robohurtofraudeno
 "
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2819,7 +2843,7 @@ const guardarFormato = () => {
                     <label
                       for="homicidioinvoluntario"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2836,7 +2860,7 @@ const guardarFormato = () => {
                     <label
                       for="homicidioinvoluntariono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2861,7 +2885,7 @@ const guardarFormato = () => {
                     <label
                       for="asaltosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2878,14 +2902,16 @@ const guardarFormato = () => {
                     <label
                       for="asaltono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
-              <label for="planesdaniofisicosi">Planes para causar daño físico a un individuo</label>
+              <label for="planesdaniofisicosi"
+                >Planes para causar daño físico a un individuo</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -2903,7 +2929,7 @@ const guardarFormato = () => {
                     <label
                       for="planesdaniofisicosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2920,7 +2946,7 @@ const guardarFormato = () => {
                     <label
                       for="planesdaniofisicono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2945,7 +2971,7 @@ const guardarFormato = () => {
                     <label
                       for="secuestrosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -2962,7 +2988,7 @@ const guardarFormato = () => {
                     <label
                       for="secuestrono"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -2987,7 +3013,7 @@ const guardarFormato = () => {
                     <label
                       for="violacionsi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3004,14 +3030,17 @@ const guardarFormato = () => {
                     <label
                       for="violacionno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
-              <label for="muertelesionpersonasi">Cualquier delito que causara muerte o lesión a otra persona</label>
+              <label for="muertelesionpersonasi"
+                >Cualquier delito que causara muerte o lesión a otra
+                persona</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3029,7 +3058,7 @@ const guardarFormato = () => {
                     <label
                       for="muertelesionpersonasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3046,14 +3075,16 @@ const guardarFormato = () => {
                     <label
                       for="muertelesionpersonano"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1 ps-3">
-              <label for="traficoilicitodrogassi">Tráfico ilícito de drogas</label>
+              <label for="traficoilicitodrogassi"
+                >Tráfico ilícito de drogas</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3071,7 +3102,7 @@ const guardarFormato = () => {
                     <label
                       for="traficoilicitodrogassi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3088,7 +3119,7 @@ const guardarFormato = () => {
                     <label
                       for="traficoilicitodrogasno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3113,7 +3144,7 @@ const guardarFormato = () => {
                     <label
                       for="traficodearmassi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3130,15 +3161,17 @@ const guardarFormato = () => {
                     <label
                       for="traficodearmasno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="puedesercastigadoporlaleysi">Cualquier acto. conspiración o solicitud en los cuales usted
-                puede ser castigado con cárcel</label>
+              <label for="puedesercastigadoporlaleysi"
+                >Cualquier acto. conspiración o solicitud en los cuales usted
+                puede ser castigado con cárcel</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3156,7 +3189,7 @@ const guardarFormato = () => {
                     <label
                       for="puedesercastigadoporlaleysi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3173,14 +3206,16 @@ const guardarFormato = () => {
                     <label
                       for="puedesercastigadoporlaleyno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="explicacioncastigadoley">En caso de respuesta afirmativa, explique:</label>
+              <label for="explicacioncastigadoley"
+                >En caso de respuesta afirmativa, explique:</label
+              >
               <InputText
                 id="explicacioncastigadoley"
                 v-model="form.explicacionCastigadoLey"
@@ -3194,7 +3229,9 @@ const guardarFormato = () => {
         </div>
 
         <!--personas al margen de la ley-->
-        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
           CONOCE ALGUNA PERSONA AL MARGEN DE LA LEY
         </div>
 
@@ -3219,7 +3256,7 @@ const guardarFormato = () => {
                     <label
                       for="pandillerossi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3238,7 +3275,7 @@ const guardarFormato = () => {
                       for="pandillerosno
 "
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3263,7 +3300,7 @@ const guardarFormato = () => {
                     <label
                       for="sicarios"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3280,7 +3317,7 @@ const guardarFormato = () => {
                     <label
                       for="sicariosno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3305,7 +3342,7 @@ const guardarFormato = () => {
                     <label
                       for="asaltantessi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3322,7 +3359,7 @@ const guardarFormato = () => {
                     <label
                       for="asaltantesno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3347,7 +3384,7 @@ const guardarFormato = () => {
                     <label
                       for="traficantesdrogassi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3364,7 +3401,7 @@ const guardarFormato = () => {
                     <label
                       for="traficantesdrogasno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3389,7 +3426,7 @@ const guardarFormato = () => {
                     <label
                       for="estafadoressi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3406,7 +3443,7 @@ const guardarFormato = () => {
                     <label
                       for="estafadoresno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3431,7 +3468,7 @@ const guardarFormato = () => {
                     <label
                       for="terroristassi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3448,7 +3485,7 @@ const guardarFormato = () => {
                     <label
                       for="terroristasno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3473,7 +3510,7 @@ const guardarFormato = () => {
                     <label
                       for="secuestradoressi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3490,7 +3527,7 @@ const guardarFormato = () => {
                     <label
                       for="secuestradoresno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3515,7 +3552,7 @@ const guardarFormato = () => {
                     <label
                       for="extorsionadoressi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3532,7 +3569,7 @@ const guardarFormato = () => {
                     <label
                       for="extorsionadoresno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3557,7 +3594,7 @@ const guardarFormato = () => {
                     <label
                       for="otraspersonamargenleysi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3574,14 +3611,16 @@ const guardarFormato = () => {
                     <label
                       for="otraspersonamargenleyno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="familiaressentenciadosopenalessi">Tiene familiares sentenciados en penales:</label>
+              <label for="familiaressentenciadosopenalessi"
+                >Tiene familiares sentenciados en penales:</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3599,7 +3638,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaressentenciadosopenalessi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3616,7 +3655,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaressentenciadosopenalesno"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3626,15 +3665,19 @@ const guardarFormato = () => {
         </div>
 
         <!--motivaiones para postular al empleo-->
-        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
           MOTIVACIONES POR LAS QUE POSTULA A LA EMPRESA
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="planeacausardaniopersonaempresa">Tiene planeado ingresar a la empresa que postula, para causar
-                algún daño a personas o la empresa</label>
+              <label for="planeacausardaniopersonaempresa"
+                >Tiene planeado ingresar a la empresa que postula, para causar
+                algún daño a personas o la empresa</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3652,7 +3695,7 @@ const guardarFormato = () => {
                     <label
                       for="planeacausardaniopersonaempresasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3671,15 +3714,17 @@ const guardarFormato = () => {
                       for="planeacausardaniopersonaempresano
 "
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="planeaobtenesbenefioilegal">Tiene planeado ingresar a la empresa que postula, para obtener
-                algún beneficio ilegal:</label>
+              <label for="planeaobtenesbenefioilegal"
+                >Tiene planeado ingresar a la empresa que postula, para obtener
+                algún beneficio ilegal:</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3697,7 +3742,7 @@ const guardarFormato = () => {
                     <label
                       for="planeaobtenesbenefioilegal"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3714,15 +3759,17 @@ const guardarFormato = () => {
                     <label
                       for="planeaobtenesnobenefioilegal"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="familiaresenlamismaempresasi">Tiene familiares o amigos que trabajan o trabajaron en la
-                empresa que postula:</label>
+              <label for="familiaresenlamismaempresasi"
+                >Tiene familiares o amigos que trabajan o trabajaron en la
+                empresa que postula:</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3740,7 +3787,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaresenlamismaempresasi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3757,7 +3804,7 @@ const guardarFormato = () => {
                     <label
                       for="familiaresenlamismaempresano"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3767,14 +3814,18 @@ const guardarFormato = () => {
         </div>
 
         <!--acerca del poligrafo-->
-        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+        <div
+          class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md"
+        >
           ACERCA DEL POLIGRAFO
         </div>
 
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-6 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="hapasadoexamendepoligrafo">Alguna vez ha pasado exámen de polígrafo</label>
+              <label for="hapasadoexamendepoligrafo"
+                >Alguna vez ha pasado exámen de polígrafo</label
+              >
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3792,7 +3843,7 @@ const guardarFormato = () => {
                     <label
                       for="hapasadoexamendepoligrafosi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >Si</label
+                      >Si</label
                     >
                   </div>
                 </li>
@@ -3811,7 +3862,7 @@ const guardarFormato = () => {
                       for="hapasadoexamendepoligrafono
 "
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                    >No</label
+                      >No</label
                     >
                   </div>
                 </li>
@@ -3819,7 +3870,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
               <label for="explicacionpasoexamenantes"
-              >En caso de respuesta afirmativa, explique:
+                >En caso de respuesta afirmativa, explique:
               </label>
               <InputText
                 id="explicacionpasoexamenantes"
@@ -3831,9 +3882,7 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="empresparalaquepostulo"
-              >Empresa
-              </label>
+              <label for="empresparalaquepostulo">Empresa </label>
               <InputText
                 id="empresparalaquepostulo"
                 v-model="form.empresaPostuloAntes"
@@ -3855,9 +3904,7 @@ const guardarFormato = () => {
               <small class="text-red-500">errores</small>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="motivopasoantesexamen"
-              >Motivo
-              </label>
+              <label for="motivopasoantesexamen">Motivo </label>
               <InputText
                 id="motivopasoantesexamen"
                 v-model="form.motivoPasoAntesExamen"
@@ -3876,13 +3923,115 @@ const guardarFormato = () => {
             role="alert"
           >
             <span class="font-medium text-lg">
-              El presente formulario es de uso exclusivo para la realización del examen de polígrafo, cualquier información adicional a sus respuestas; por favor, realizarla al poligrafista durante la entrevista en el examen. Gracias.
+              El presente formulario es de uso exclusivo para la realización del
+              examen de polígrafo, cualquier información adicional a sus
+              respuestas; por favor, realizarla al poligrafista durante la
+              entrevista en el examen. Gracias.
             </span>
           </div>
         </div>
 
-        <Button type="submit" label="Terminar"/>
+        <div class="flex justify-end ">
+          <div class="mt-2 flex flex-col gap-2 col-span-2"></div>
+          <div class="mt-2 flex flex-col gap-2 col-span-2">
+            <p>
+              Ciudad de,
+              <InputText
+                id="fechaActualExamen"
+                v-model="form.fechaActualExamen"
+                class="flex-auto w-1/4"
+                autocomplete="off"
+                placeholder="Nombre de la ciudad"
+              />,
+              <InputText
+                id="diaActualExamen"
+                v-model="form.diaActualExamen"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="día"
+              />
+              de
+              <InputText
+                id="mesActualExamen"
+                v-model="form.mesActualExamen"
+                class="flex-auto w-1/4"
+                autocomplete="off"
+                placeholder=" Nombre del mes"
+              />
+              <InputText
+                id="anioActualExamen"
+                v-model="form.anioActualExamen"
+                class="flex-auto w-1/4 ms-2"
+                autocomplete="off"
+                placeholder="Año en curso"
+              />
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-4 gap-2 mb-4 ms-4">
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ">
+            <p>
+              Nombres y Apellidos
+              <InputText
+                class="flex-auto w-1/2 ms-4"
+                autocomplete="off"
+                placeholder="Nombres y apellidos"
+                :value="nombresCompletosPiePagina"
+                :disabled="true"
+                id="nombresApellidosPie"
+              />
+            </p>
+            <p>
+              DNI
+              <InputText
+                class="flex-auto w-1/2 ms-4"
+                autocomplete="off"
+                placeholder="Número de documento"
+                :value="form.numeroDocumento"
+                :disabled="true"
+                id="numeroDocumentoPie"
+              />
+            </p>
+          </div>
+          <div class="mt-2 flex flex-col gap-2 me-4 col-span-2"></div>
+        </div>
+
+        <Button type="submit" label="Terminar" />
       </form>
     </div>
   </div>
 </template>
+<style scoped lang="scss">
+#fechaActualExamen,
+#diaActualExamen,
+#mesActualExamen,
+#anioActualExamen,
+#nombresApellidosPie,
+#numeroDocumentoPie{
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid gray;
+  border-radius: 0;
+  background: transparent;
+
+  &#diaActualExamen {
+    width: 40px;
+  }
+
+  &#mesActualExamen {
+    width: 140px;
+  }
+
+  &#anioActualExamen {
+    width: 100px;
+  }
+
+  &#nombresApellidosPie{
+    width: 400px;
+  }
+  &#numeroDocumentoPie{
+    width: 150px;
+  }
+}
+</style>
