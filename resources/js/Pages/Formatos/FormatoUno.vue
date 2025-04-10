@@ -1,7 +1,7 @@
 <script setup>
-import { Head, useForm } from "@inertiajs/vue3";
-import { onMounted, ref } from "vue";
-import { usePrimeVue } from "primevue/config";
+import {Head, useForm} from "@inertiajs/vue3";
+import {onMounted, ref} from "vue";
+import {usePrimeVue} from "primevue/config";
 
 const props = defineProps({
   empresas: Array,
@@ -27,6 +27,13 @@ const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
 const gradosInstruccionesList = ref([]);
 const entidadesBancariasList = ref([]);
+
+const fechaActual = () =>{
+  const date = new Date();
+  const formatear = ("0" + date.getDate()).slice(-2) + "-" + ("0"+(date.getMonth()+1)).slice(-2) + "-" +
+    date.getFullYear();
+  return formatear;
+}
 
 const form = useForm({
   empresa: "",
@@ -113,25 +120,25 @@ const form = useForm({
   amonestacionesEmpleos: false,
   solicitudRenuncia: false,
   explicacion: "",
-  tienesPrestamos:false,
-  entidadBancaria:"",
-  montoDeuda:0,
-  otroIngreso:false,
-  preciseMonto:0,
-  origenOtroIngreso:"",
-  tienePropiedades:false,
-  detallePropiedades:"",
-  reportadoEnCentralesDeRiesgo:false,
-  preciseDeSerAfirmativo:"",
-  entidadDeuda:"",
-  motivoCentralDeRiesgo:"",
-  tiempoMora:"",
-  montoDeuraMora:0,
-  fecuenciaConsumoBebidasAlcoholicas:"",
-  queBebidasConsume:"",
-  tratamientoAlcholismo:false,
-  trabajoEbrio:false,
-  expliqueLlegoEbrio:"",
+  tienesPrestamos: false,
+  entidadBancaria: "",
+  montoDeuda: 0,
+  otroIngreso: false,
+  preciseMonto: 0,
+  origenOtroIngreso: "",
+  tienePropiedades: false,
+  detallePropiedades: "",
+  reportadoEnCentralesDeRiesgo: false,
+  preciseDeSerAfirmativo: "",
+  entidadDeuda: "",
+  motivoCentralDeRiesgo: "",
+  tiempoMora: "",
+  montoDeuraMora: 0,
+  fecuenciaConsumoBebidasAlcoholicas: "",
+  queBebidasConsume: "",
+  tratamientoAlcholismo: false,
+  trabajoEbrio: false,
+  expliqueLlegoEbrio: "",
   marihuana: false,
   pbc: false,
   cocaina: false,
@@ -141,72 +148,39 @@ const form = useForm({
   tiempoUltimaVez: false,
   cantidadUltimoConsumo: 0,
   familiaresEnDrogas: false,
-  roboHurtoFraude:false,
-  homicidioInvoluntario:false,
-  asalto:false,
-  planesDanioFisico:false,
-  secuestro:false,
-  violacion:false,
-  muerteLesionPersona:false,
-  traficoIlicitoDrogas:false,
-  traficoArmas:false,
-  castigadoConCarcel:false,
-  explicacionCastigadoLey:"",
-  sicarios:false,
-  asaltantes:false,
-  traficantesDrogas:false,
-  estafadores:false,
-  terroristas:false,
-  secuestradores:false,
-  extorsionadores:false,
-  otrasPersonasMargenLey:false,
-  familiaresSentenciadosPenales:false,
+  roboHurtoFraude: false,
+  homicidioInvoluntario: false,
+  asalto: false,
+  planesDanioFisico: false,
+  secuestro: false,
+  violacion: false,
+  muerteLesionPersona: false,
+  traficoIlicitoDrogas: false,
+  traficoArmas: false,
+  castigadoConCarcel: false,
+  explicacionCastigadoLey: "",
+  sicarios: false,
+  asaltantes: false,
+  traficantesDrogas: false,
+  estafadores: false,
+  terroristas: false,
+  secuestradores: false,
+  extorsionadores: false,
+  otrasPersonasMargenLey: false,
+  familiaresSentenciadosPenales: false,
+  planeaCausarDanioPersonaEmpresa: false,
+  planeaObtenerBeneficioIlegal: false,
+  familiaresMismaEmpresa: false,
+  pasoAntesExamenPoligrafo: false,
+  explicacionExamenAnterior: "",
+  empresaPostuloAntes: "",
+  fechaExamenAnterior: "",
+  motivoPasoAntesExamen: "",
 });
 
 // onbeforeunload = (event) => {
 //     event.preventDefault();
 // };
-
-const changeToSpanish = () => {
-  const primevue = usePrimeVue();
-  primevue.config.locale.dayNamesMin = [
-    "Dom",
-    "Lun",
-    "Mar",
-    "Mie",
-    "Jue",
-    "Vie",
-    "Sab",
-  ];
-  primevue.config.locale.monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-  primevue.config.locale.monthNamesShort = [
-    "Ene",
-    "Feb",
-    "Mar",
-    "Abr",
-    "May",
-    "Jun",
-    "Jul",
-    "Ago",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dic",
-  ];
-};
 
 onMounted(() => {
   changeToSpanish();
@@ -260,6 +234,48 @@ onMounted(() => {
     });
   });
 });
+
+const changeToSpanish = () => {
+  const primevue = usePrimeVue();
+  primevue.config.locale.dayNamesMin = [
+    "Dom",
+    "Lun",
+    "Mar",
+    "Mie",
+    "Jue",
+    "Vie",
+    "Sab",
+  ];
+  primevue.config.locale.monthNames = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+  primevue.config.locale.monthNamesShort = [
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
+  ];
+};
+
 const otroTipoVivienda = () => {
   if (parseInt(form.tipoVivienda) === 5) {
     otrotipovivienda.value = true;
@@ -756,7 +772,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmueblePadreSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -773,7 +789,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmueblePadreNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -843,7 +859,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleMadreSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -860,7 +876,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleMadreNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -885,7 +901,7 @@ const guardarFormato = () => {
             />
             <!--<small class="text-red-500">errores</small>-->
             <small class="ms-1 text-lg text-[#B00202]"
-              >Seleccionar Parentescos.</small
+            >Seleccionar Parentescos.</small
             >
           </div>
 
@@ -1001,7 +1017,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmuebleconyuge"
-                >Vive en el mismo inmueble</label
+              >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1020,7 +1036,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleConyugeSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -1037,7 +1053,7 @@ const guardarFormato = () => {
                     <label
                       for="mismoInmuebleConyugeNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -1107,7 +1123,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmuebleconyuge"
-                >Vive en el mismo inmueble</label
+              >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1126,7 +1142,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHijosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -1143,7 +1159,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHijosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -1213,7 +1229,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="mismoinmueblehermanos"
-                >Vive en el mismo inmueble</label
+              >Vive en el mismo inmueble</label
               >
 
               <ul
@@ -1232,7 +1248,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosSi' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -1249,7 +1265,7 @@ const guardarFormato = () => {
                     <label
                       :for="'mismoInmuebleHermanosNo' + item"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -1352,7 +1368,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                      >Completa</label
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1369,7 +1385,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionUnoNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                      >Incompleta</label
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1452,7 +1468,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                      >Completa</label
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1469,7 +1485,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionDosNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                      >Incompleta</label
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1502,7 +1518,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
               <label for="especialidadfacultadtres"
-                >Especialidad/Facultad</label
+              >Especialidad/Facultad</label
               >
               <InputText
                 id="especialidadfacultadtres"
@@ -1554,7 +1570,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresSi"
                       class="w-full ms-2 text-sm font-medium text-gray-900"
-                      >Completa</label
+                    >Completa</label
                     >
                   </div>
                 </li>
@@ -1571,7 +1587,7 @@ const guardarFormato = () => {
                     <label
                       for="situacionTresNo"
                       class="w-full py-1 ms-2 text-sm font-medium text-gray-900"
-                      >Incompleta</label
+                    >Incompleta</label
                     >
                   </div>
                 </li>
@@ -1804,7 +1820,7 @@ const guardarFormato = () => {
           <div class="grid grid-cols-6 gap-2">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="amonestacionesEmpleosSi"
-                >Ha recibido amonestaciones escritas:
+              >Ha recibido amonestaciones escritas:
               </label>
 
               <ul
@@ -1823,7 +1839,7 @@ const guardarFormato = () => {
                     <label
                       for="amonestacionesEmpleosSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -1840,7 +1856,7 @@ const guardarFormato = () => {
                     <label
                       for="amonestacionesNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -1848,7 +1864,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
               <label for="solicitudrenuncia"
-                >Le han solicitado su carta de renuncia:
+              >Le han solicitado su carta de renuncia:
               </label>
 
               <ul
@@ -1867,7 +1883,7 @@ const guardarFormato = () => {
                     <label
                       for="solicitudRenunciaSi"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >Si</label
+                    >Si</label
                     >
                   </div>
                 </li>
@@ -1884,7 +1900,7 @@ const guardarFormato = () => {
                     <label
                       for="solicitudRenunciaNo"
                       class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
-                      >No</label
+                    >No</label
                     >
                   </div>
                 </li>
@@ -1892,7 +1908,7 @@ const guardarFormato = () => {
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-4">
               <label for="explicacion"
-                >En caso de respuesta afirmativa, explique:
+              >En caso de respuesta afirmativa, explique:
               </label>
               <InputText
                 id="explicacion"
@@ -3121,7 +3137,8 @@ const guardarFormato = () => {
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="puedesercastigadoporlaleysi">Cualquier acto. conspiración o solicitud en los cuales usted puede ser castigado con cárcel</label>
+              <label for="puedesercastigadoporlaleysi">Cualquier acto. conspiración o solicitud en los cuales usted
+                puede ser castigado con cárcel</label>
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3616,7 +3633,8 @@ const guardarFormato = () => {
         <div class="border border-[#B00202] p-4 rounded-md my-2">
           <div class="grid grid-cols-6 gap-2 divide-x-2 divide-[#B00202]">
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
-              <label for="planeacausardaniopersonaempresa">Tiene planeado ingresar a la empresa que postula, para causar algún daño a personas o la empresa</label>
+              <label for="planeacausardaniopersonaempresa">Tiene planeado ingresar a la empresa que postula, para causar
+                algún daño a personas o la empresa</label>
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3660,7 +3678,8 @@ const guardarFormato = () => {
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="planeaobtenesbenefioilegal">Tiene planeado ingresar a la empresa que postula, para obtener algún beneficio ilegal:</label>
+              <label for="planeaobtenesbenefioilegal">Tiene planeado ingresar a la empresa que postula, para obtener
+                algún beneficio ilegal:</label>
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3702,7 +3721,8 @@ const guardarFormato = () => {
               </ul>
             </div>
             <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ps-3">
-              <label for="familiaresenlamismaempresasi">Tiene familiares o amigos que trabajan o trabajaron en la empresa que postula:</label>
+              <label for="familiaresenlamismaempresasi">Tiene familiares o amigos que trabajan o trabajaron en la
+                empresa que postula:</label>
 
               <ul
                 class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
@@ -3746,7 +3766,122 @@ const guardarFormato = () => {
           </div>
         </div>
 
-        <Button type="submit" label="Terminar" />
+        <!--acerca del poligrafo-->
+        <div class="col-span-4 bg-[#B00202] font-black p-2 text-white rounded-md">
+          ACERCA DEL POLIGRAFO
+        </div>
+
+        <div class="border border-[#B00202] p-4 rounded-md my-2">
+          <div class="grid grid-cols-6 gap-2">
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="hapasadoexamendepoligrafo">Alguna vez ha pasado exámen de polígrafo</label>
+
+              <ul
+                class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+              >
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="hapasadoexamendepoligrafosi"
+                      type="radio"
+                      :value="true"
+                      name="hapasadoexamendepoligrafo"
+                      v-model="form.pasoAntesExamenPoligrafo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="hapasadoexamendepoligrafosi"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >Si</label
+                    >
+                  </div>
+                </li>
+                <li class="w-full">
+                  <div class="flex items-center">
+                    <input
+                      id="hapasadoexamendepoligrafono
+"
+                      type="radio"
+                      :value="false"
+                      name="hapasadoexamendepoligrafo"
+                      v-model="form.pasoAntesExamenPoligrafo"
+                      class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
+                    />
+                    <label
+                      for="hapasadoexamendepoligrafono
+"
+                      class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
+                    >No</label
+                    >
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="explicacionpasoexamenantes"
+              >En caso de respuesta afirmativa, explique:
+              </label>
+              <InputText
+                id="explicacionpasoexamenantes"
+                v-model="form.explicacionExamenAnterior"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Explique"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="empresparalaquepostulo"
+              >Empresa
+              </label>
+              <InputText
+                id="empresparalaquepostulo"
+                v-model="form.empresaPostuloAntes"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Empres"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4">
+              <label for="fechapasoexamenanterior">Fecha</label>
+              <DatePicker
+                id="fechapasoexamenanterior"
+                v-model="form.fechaExamenAnterior"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Fecha"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+            <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
+              <label for="motivopasoantesexamen"
+              >Motivo
+              </label>
+              <InputText
+                id="motivopasoantesexamen"
+                v-model="form.motivoPasoAntesExamen"
+                class="flex-auto"
+                autocomplete="off"
+                placeholder="Empres"
+              />
+              <small class="text-red-500">errores</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="my-4 text-justify">
+          <div
+            class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50"
+            role="alert"
+          >
+            <span class="font-medium text-lg">
+              El presente formulario es de uso exclusivo para la realización del examen de polígrafo, cualquier información adicional a sus respuestas; por favor, realizarla al poligrafista durante la entrevista en el examen. Gracias.
+            </span>
+          </div>
+        </div>
+
+        <Button type="submit" label="Terminar"/>
       </form>
     </div>
   </div>
