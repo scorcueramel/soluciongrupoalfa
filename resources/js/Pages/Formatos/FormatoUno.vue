@@ -4067,7 +4067,7 @@ const getCoordinate = (event) => {
       </StepPanel>
     </StepItem>
     <StepItem value="2">
-      <Step>Header II</Step>
+      <Step>COMISIÓN DE DELITOS: ¿Ha cometido, planeado, encubierto o participado alguno de estos delitos?</Step>
       <StepPanel v-slot="{ activateCallback }">
         <div class="flex flex-col h-48">
           <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">Content II</div>
