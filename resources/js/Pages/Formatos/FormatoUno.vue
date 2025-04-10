@@ -3,6 +3,8 @@ import { Head, useForm } from "@inertiajs/vue3";
 import { onMounted, ref } from "vue";
 import { usePrimeVue } from "primevue/config";
 
+import VueDrawingCanvas from "vue-drawing-canvas";
+
 const props = defineProps({
   empresas: Array,
   cargos: Array,
@@ -28,6 +30,7 @@ const cantidadHermanos = ref(false);
 const gradosInstruccionesList = ref([]);
 const entidadesBancariasList = ref([]);
 const nombresCompletosPiePagina = ref("");
+const image = ref("");
 
 const form = useForm({
   empresa: "",
@@ -172,9 +175,9 @@ const form = useForm({
   motivoPasoAntesExamen: "",
 });
 
-// onbeforeunload = (event) => {
-//     event.preventDefault();
-// };
+/*onbeforeunload = (event) => {
+    event.preventDefault();
+};*/
 
 onMounted(() => {
   changeToSpanish();
@@ -374,6 +377,12 @@ const removerDatoHermano = (index) => {
 const guardarFormato = () => {
   console.log(form);
 };
+
+const getCoordinate = (event) => {
+  let coordinates = this.$refs.VueCanvasDrawing.getCoordinates(event);
+  this.x = coordinates.x;
+  this.y = coordinates.y;
+}
 </script>
 
 <template>
@@ -3997,10 +4006,92 @@ const guardarFormato = () => {
           <div class="mt-2 flex flex-col gap-2 me-4 col-span-2"></div>
         </div>
 
+       <div class="flex justify-center mt-16">
+          <vue-drawing-canvas ref="VueCanvasDrawing" @mousemove="getCoordinate($event)" :lineWidth="1" saveAs="jpeg" v-model:image="image" :width="400" :height="200" style="border: 1px solid gray" v-model="image"/>
+          <div class="hidden">
+            <img :src="image" alt="imagen de la firma">
+          </div>
+        </div>
+        <p class="text-center mt-4">
+          <button type="button" @click.prevent="$refs.VueCanvasDrawing.reset()" class="bg-red-500 p-2 rounded-lg text-white">Limpiar Firma</button>
+        </p>
+        <p class="text-center mt-4 text-lg">Firma</p>
+
         <Button type="submit" label="Terminar" />
       </form>
     </div>
   </div>
+
+
+
+
+
+
+  <Stepper value="1">
+    <StepItem value="1">
+      <Step>EMPRESA A LA QUE POSTULA</Step>
+      <StepPanel v-slot="{ activateCallback }">
+        <div class="flex flex-col">
+          <div class="border border-[#B00202] p-4 rounded-md my-2">
+            <div class="grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-2 mb-4">
+              <div class="mt-2 flex flex-col gap-2 me-2">
+                <label for="razonSocial">Razón Social</label>
+                <Select
+                  v-model="form.empresa"
+                  :options="props.empresas"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar razón social"
+                  emptyMessage="Opciones no disponibles"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+              <div class="mt-2 flex flex-col gap-2 ms-0 xl:ms-2 lg:ms-2 md:ms-2 me-2">
+                <label for="cargo">Cargo</label>
+                <Select
+                  v-model="form.cargo"
+                  :options="props.cargos"
+                  optionValue="code"
+                  optionLabel="name"
+                  placeholder="Seleccionar cargo"
+                  emptyMessage="Opciones no disponibles"
+                />
+                <small class="text-red-500">errores</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="py-6">
+          <Button label="Next" @click="activateCallback('2')" />
+        </div>
+      </StepPanel>
+    </StepItem>
+    <StepItem value="2">
+      <Step>Header II</Step>
+      <StepPanel v-slot="{ activateCallback }">
+        <div class="flex flex-col h-48">
+          <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">Content II</div>
+        </div>
+        <div class="flex py-6 gap-2">
+          <Button label="Back" severity="secondary" @click="activateCallback('1')" />
+          <Button label="Next" @click="activateCallback('3')" />
+        </div>
+      </StepPanel>
+    </StepItem>
+    <StepItem value="3">
+      <Step>Header III</Step>
+      <StepPanel v-slot="{ activateCallback }">
+        <div class="flex flex-col h-48">
+          <div class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium">Content III</div>
+        </div>
+        <div class="py-6">
+          <Button label="Back" severity="secondary" @click="activateCallback('2')" />
+        </div>
+      </StepPanel>
+    </StepItem>
+  </Stepper>
+
+
 </template>
 <style scoped lang="scss">
 #fechaActualExamen,

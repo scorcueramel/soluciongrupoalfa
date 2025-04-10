@@ -30,6 +30,7 @@
         "tailwindcss-primeui": "^0.3.2",
         "unplugin-vue-components": "^0.27.3",
         "vite": "^5.0.0",
-        "vue": "^3.4.0"
+        "vue": "^3.4.0",
+        "vue-drawing-canvas": "^1.0.14"
     }
 }
