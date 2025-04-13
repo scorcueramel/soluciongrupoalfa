@@ -30,15 +30,21 @@ class ValidarAccesoFormatosController extends Controller
     ]);
   }
 
-//    public function show(ValidarAccesoFormatosRequest $request)
-//    {
-//        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
-//
-//        if (!is_null($accesoFormato)) {
-//            if ($accesoFormato->acceso_formato) {
-//                return Inertia::render('Formatos/FormatoUno', ['success' => 'Bienvenido, puedes continuar con la evaluación.']);
-//            }
-//        }
-//        return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
-//    }
+/*    public function show(ValidarAccesoFormatosRequest $request)
+    {
+        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
+
+        if (!is_null($accesoFormato)) {
+            if ($accesoFormato->acceso_formato) {
+              return Inertia::render('Formatos/FormatoUno', [
+                'distritos' => Distritos::all(),
+                'tiposviviendas' => TiposViviendas::all(),
+                'tiposparentescos' => TiposParentescos::all(),
+                'gradosinstrucciones' => GradosInstrucciones::all(),
+                'entidadesbancarias' => EntidadesBancarias::all()
+              ]);
+            }
+        }
+        return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+    }*/
 }
