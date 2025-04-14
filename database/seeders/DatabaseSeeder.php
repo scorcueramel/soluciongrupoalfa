@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
       TiposPersonasSeeder::class,
       GradosInstruccionesSeeder::class,
       EntidadesBancariasSeeder::class,
+      EmpresaSeeder::class,
     ]);
   }
 }

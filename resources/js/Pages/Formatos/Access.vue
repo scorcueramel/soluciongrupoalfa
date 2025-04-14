@@ -91,7 +91,7 @@ const submit = () => {
                                 id="documento"
                                 type="text"
                                 placeholder="Documento"
-                                class="w-full md:w-[30rem] mb-4"
+                                class="w-full mb-4"
                                 v-model="form.documento"
                             />
                             <Message

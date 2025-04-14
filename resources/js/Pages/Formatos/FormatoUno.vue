@@ -6,7 +6,7 @@ import {usePrimeVue} from "primevue/config";
 import VueDrawingCanvas from "vue-drawing-canvas";
 
 const props = defineProps({
-  empresas: Array,
+  empresas: Object,
   cargos: Array,
   distritos: Object,
   tiposviviendas: Object,
@@ -15,10 +15,7 @@ const props = defineProps({
   entidadesbancarias: Object,
 });
 
-const distritosList = ref([]);
-const tiposViviendasList = ref([]);
 const otrotipovivienda = ref(false);
-const tipoParentescoList = ref([]);
 const agregarParentescoActive = ref(true);
 const datosConyuge = ref(false);
 const cantidadHijos = ref(false);
@@ -27,10 +24,14 @@ const cantidadDeHijosIndicada = ref(0);
 const datosHermanos = ref(false);
 const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
-const gradosInstruccionesList = ref([]);
-const entidadesBancariasList = ref([]);
 const nombresCompletosPiePagina = ref("");
 const image = ref("");
+const tiposViviendasList = ref([]);
+const distritosList = ref([]);
+const tipoParentescoList = ref([]);
+const entidadesBancariasList = ref([]);
+const gradosInstruccionesList = ref([]);
+const empresasList = ref([]);
 
 const form = useForm({
   empresa: "",
@@ -175,9 +176,9 @@ const form = useForm({
   motivoPasoAntesExamen: "",
 });
 
-/*onbeforeunload = (event) => {
+onbeforeunload = (event) => {
     event.preventDefault();
-};*/
+};
 
 onMounted(() => {
   changeToSpanish();
@@ -229,6 +230,14 @@ onMounted(() => {
       name: e.nombre_entidad,
       code: e.id,
     });
+  });
+
+  props.empresas.map((e)=>{
+    console.log(e)
+    empresasList.value.push({
+      name: e.nombre_comercial,
+      code: e.id
+    })
   });
 });
 
@@ -482,12 +491,27 @@ const getCoordinate = (event) => {
                   <label for="razonSocial">Razón Social</label>
                   <Select
                     v-model="form.empresa"
-                    :options="props.empresas"
-                    optionValue="code"
+                    :options="empresasList"
+                    filter
                     optionLabel="name"
+                    optionValue="code"
                     placeholder="Seleccionar razón social"
                     emptyMessage="Opciones no disponibles"
-                  />
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value" class="flex items-center">
+                        <div>{{ slotProps.value.name }}</div>
+                      </div>
+                      <span v-else>
+                    {{ slotProps.placeholder }}
+                  </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div class="flex items-center">
+                        <div>{{ slotProps.option.name }}</div>
+                      </div>
+                    </template>
+                  </Select>
                   <small class="text-red-500">errores</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 ms-0 xl:ms-2 lg:ms-2 md:ms-2 me-2">
@@ -3940,36 +3964,39 @@ const getCoordinate = (event) => {
                       v-model="form.fechaActualExamen"
                       class="flex-auto w-1/4"
                       autocomplete="off"
-                      placeholder="Nombre de la ciudad"
+                      placeholder="Ciudad"
                     />,
-                    <InputText
+                    <input type="text"
                       id="diaActualExamen"
                       v-model="form.diaActualExamen"
-                      class="flex-auto"
+                      class="flex-auto w-14"
                       autocomplete="off"
-                      placeholder="día"
+                      placeholder="Día"
+                      maxlength="2"
                     />
                     de
-                    <InputText
+                    <input type="text"
                       id="mesActualExamen"
                       v-model="form.mesActualExamen"
-                      class="flex-auto w-1/4"
+                      class="flex-auto w-1/6"
                       autocomplete="off"
-                      placeholder=" Nombre del mes"
+                      placeholder=" Mes"
+                      maxlength="9"
                     />
-                    <InputText
+                    <input type="text"
                       id="anioActualExamen"
                       v-model="form.anioActualExamen"
-                      class="flex-auto w-1/4 ms-2"
+                      class="flex-auto w-20 ms-2"
                       autocomplete="off"
-                      placeholder="Año en curso"
+                      placeholder="Año"
+                      maxlength="4"
                     />
                   </p>
                 </div>
               </div>
 
               <div class="grid grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 gap-2 py-4">
-                <div class="mt-2 flex flex-col gap-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
+                <div class="mt-2 flex flex-col gap-2 col-span-2 xl:col-span-1 lg:col-span-2 md:col-span-1">
                   <p>
                     Nombres y Apellidos
                     <InputText
@@ -3996,9 +4023,7 @@ const getCoordinate = (event) => {
                 <div class="mt-2 flex flex-col gap-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1"></div>
               </div>
 
-
-              <div class="grid grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 md:grid-cols-1 gap-2 py-4">
-                <div class="mt-2 flex flex-col gap-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+              <div class="mt-2 flex flex-col gap-2">
                   <div class="flex justify-center mt-16">
                     <vue-drawing-canvas
                       ref="VueCanvasDrawing"
@@ -4008,17 +4033,19 @@ const getCoordinate = (event) => {
                       saveAs="jpeg"
                       v-model:image="image"
                       style="border: 1px solid gray"
-                      class="w-[280px] h-[150px] xl:w-[400px] xl:h-[200px] lg:w-[400px] lg:h-[200px] md:w-[400px] md:h-[200px]"/>
+                      :width="280"
+                      :height="180"
+                      />
                     <div class="hidden">
                       <img :src="image" alt="imagen de la firma">
                     </div>
                   </div>
                   <p class="text-center mt-4">
-                    <button type="button" @click.prevent="$refs.VueCanvasDrawing.reset()" class="bg-red-500 p-2 rounded-lg text-white">Limpiar Firma</button>
+                    <button type="button" @click.prevent="$refs.VueCanvasDrawing.reset()" class="bg-red-500 p-2 rounded-lg text-white">Corregir Firma</button>
                   </p>
                   <p class="text-center mt-4 text-lg">Firma</p>
-                </div>
               </div>
+
             </div>
             <div class="flex pt-4 mb-6 gap-2">
               <Button label="Anterior" severity="secondary" @click="activateCallback('12')"/>
@@ -4042,7 +4069,6 @@ const getCoordinate = (event) => {
   border-bottom: 1px solid gray;
   border-radius: 0;
   background: transparent;
-  width: auto;
 }
 </style>
 
