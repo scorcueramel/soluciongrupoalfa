@@ -17,7 +17,10 @@ const props = defineProps({
     users: Object,
     roles: Object,
     perPage: Number,
+    tiposdocumentos : Object,
 });
+
+const tiposDocumentosList = ref([]);
 
 loadToast();
 
@@ -58,6 +61,15 @@ const onPageChange = (event) => {
     router.get(route('user.index'), { page: event.page + 1 }, { preserveState: true });
 };
 
+onMounted(() => {
+  props.tiposdocumentos.forEach((e) => {
+    tiposDocumentosList.value.push({
+      name: e.tipo_documento,
+      code: e.id,
+    });
+  });
+})
+
 watch(
     () => _.cloneDeep(data.params),
     debounce(() => {
@@ -80,6 +92,7 @@ watch(
                 @close="data.createOpen = false"
                 :roles="roles"
                 :title="props.title"
+                :tiposdocumentos="tiposDocumentosList"
             />
             <Edit
                 :show="data.editOpen"

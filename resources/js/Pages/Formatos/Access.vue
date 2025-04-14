@@ -93,6 +93,7 @@ const submit = () => {
                                 placeholder="Documento"
                                 class="w-full mb-4"
                                 v-model="form.documento"
+                                autofocus
                             />
                             <Message
                                 v-if="form.errors.documento"

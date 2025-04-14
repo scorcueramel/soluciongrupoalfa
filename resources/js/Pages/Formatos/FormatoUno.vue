@@ -1,18 +1,22 @@
 <script setup>
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, useForm } from "@inertiajs/vue3";
 import {onMounted, ref} from "vue";
 import {usePrimeVue} from "primevue/config";
 
 import VueDrawingCanvas from "vue-drawing-canvas";
 
 const props = defineProps({
-  razonessociales: Object,
   cargos: Array,
   distritos: Object,
+  entidadesbancarias: Object,
+  estadosciviles: Object,
+  generos: Object,
+  gradosinstrucciones: Object,
+  nacionalidades: Object,
+  razonessociales: Object,
   tiposviviendas: Object,
   tiposparentescos: Object,
-  gradosinstrucciones: Object,
-  entidadesbancarias: Object,
+  tiposdocumentos: Object,
 });
 
 const otrotipovivienda = ref(false);
@@ -32,6 +36,10 @@ const tipoParentescoList = ref([]);
 const entidadesBancariasList = ref([]);
 const gradosInstruccionesList = ref([]);
 const empresasList = ref([]);
+const tiposdocumentosList = ref([]);
+const generosList = ref([]);
+const estadoscivilesList = ref([]);
+const nacionalidadesList = ref([]);
 
 const form = useForm({
   empresa: "",
@@ -39,6 +47,7 @@ const form = useForm({
   nombres: "",
   paterno: "",
   materno: "",
+  nacionalidad: 0,
   tipoDocumento: "",
   numeroDocumento: "",
   fechaNacimiento: "",
@@ -174,6 +183,7 @@ const form = useForm({
   empresaPostuloAntes: "",
   fechaExamenAnterior: "",
   motivoPasoAntesExamen: "",
+  imagenFirma: "",
 });
 
 onbeforeunload = (event) => {
@@ -236,6 +246,34 @@ onMounted(() => {
     empresasList.value.push({
       name: e.nombre_comercial,
       code: e.id
+    })
+  });
+
+  props.tiposdocumentos.map((e)=>{
+    tiposdocumentosList.value.push({
+      name: e.tipo_documento,
+      code: e.id,
+    })
+  });
+
+  props.generos.map((e)=>{
+    generosList.value.push({
+      name: e.genero,
+      code: e.id,
+    })
+  });
+
+  props.estadosciviles.map((e)=>{
+    estadoscivilesList.value.push({
+      name: e.estado_civil,
+      code: e.id,
+    })
+  });
+
+  props.nacionalidades.map((e)=>{
+    nacionalidadesList.value.push({
+      name: e.nacionalidad,
+      code: e.id,
     })
   });
 });
@@ -402,6 +440,7 @@ const getCoordinate = (event) => {
   this.x = coordinates.x;
   this.y = coordinates.y;
 }
+
 </script>
 
 <template>
@@ -412,73 +451,73 @@ const getCoordinate = (event) => {
   <div class="px-0 xl:px-10 lg:px-10 md:px-10">
     <form @submit.prevent="guardarFormato">
 
-      <div class="my-6">
-        <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
-        <div
-          class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4"
-        >
-          <div class="border border-[#10B981] flex justify-center items-center">
-            <img
-              src="/demo/images/logo.png"
-              width="166"
-              alt="logo"
-              class="p-8"
-            />
-          </div>
-          <div
-            class="col-span-2 border border-[#10B981] text-center flex justify-center items-center w-full px-10 py-4 xl:py-0 lg:py-0"
-          >
-            <h4 class="text-lg font-bold">
-              FORMATO DE SOLICITUD DE DATOS PERSONALES PARA PRUEBAS DE PRE -
-              EMPLEO
-            </h4>
-          </div>
-          <div
-            class="border border-[#10B981] text-end flex justify-center items-center w-full py-4 xl:py-0 lg:py-0 md:px-2"
-          >
-            <div class="grid grid-cols-2 py-4">
-              <div class="text-start">
-                <p class="font-bold">Código:</p>
+      <Card>
+        <template #content>
+          <div class="my-6">
+            <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
+            <div class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4">
+              <div class="border-none flex justify-center items-center">
+                <img
+                  src="/demo/images/logo.png"
+                  width="166"
+                  alt="logo"
+                  class="p-8"
+                />
               </div>
-              <div class="text-end">
-                <p>GAC-F-58</p>
+              <div
+                class="col-span-2 border-none text-center flex justify-center items-center w-full px-10 py-4 xl:py-0 lg:py-0"
+              >
+                <h4 class="text-lg font-bold">
+                  FORMATO DE SOLICITUD DE DATOS PERSONALES PARA PRUEBAS DE PRE -
+                  EMPLEO
+                </h4>
               </div>
-              <div class="text-start">
-                <p class="font-bold">Versión:</p>
-              </div>
-              <div class="text-end">
-                <p>01</p>
-              </div>
-              <div class="text-start">
-                <p class="font-bold">Fecha:</p>
-              </div>
-              <div class="text-end">
-                <p>03/04/2025</p>
-              </div>
-              <div class="col-span-2 text-center">
-                <p class="font-bold">Informe:</p>
-              </div>
-              <div class="text-center col-span-2">
-                <p>INF 03-2025</p>
+              <div class="border-none text-end flex justify-center items-center w-full py-4 xl:py-0 lg:py-0 md:px-2">
+                <div class="grid grid-cols-2 py-4">
+                  <div class="text-start">
+                    <p class="font-bold">Código:</p>
+                  </div>
+                  <div class="text-end">
+                    <p>GAC-F-58</p>
+                  </div>
+                  <div class="text-start">
+                    <p class="font-bold">Versión:</p>
+                  </div>
+                  <div class="text-end">
+                    <p>01</p>
+                  </div>
+                  <div class="text-start">
+                    <p class="font-bold">Fecha:</p>
+                  </div>
+                  <div class="text-end">
+                    <p>03/04/2025</p>
+                  </div>
+                  <div class="col-span-2 text-center">
+                    <p class="font-bold">Informe:</p>
+                  </div>
+                  <div class="text-center col-span-2">
+                    <p>INF 03-2025</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="my-4 text-justify">
-          <div
-            class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50"
-            role="alert"
-          >
+            <div class="my-4 text-justify">
+              <div
+                class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50"
+                role="alert"
+              >
               <span class="font-medium text-lg">
                 El presente formulario debe ser llenado en su totalidad;
                 agradeceremos responder en forma precisa y con sinceridad en todo
                 el formulario sin excepción, cualquier pregunta realizarla al
                 personal de atención al cliente.
               </span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </template>
+      </Card>
 
       <Stepper value="1">
         <StepItem value="1">
@@ -570,10 +609,36 @@ const getCoordinate = (event) => {
                   <small class="text-red-500">errores</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <label for="nacionalidad">Nacionalidad</label>
+                  <Select
+                    v-model="form.nacionalidad"
+                    :options="nacionalidadesList"
+                    filter
+                    optionLabel="name"
+                    placeholder="Seleccionar nacionalidad"
+                  >
+                    <template #value="slotProps">
+                      <div v-if="slotProps.value" class="flex items-center">
+                        <div>{{ slotProps.value.name }}</div>
+                      </div>
+                      <span v-else>
+                    {{ slotProps.placeholder }}
+                  </span>
+                    </template>
+                    <template #option="slotProps">
+                      <div class="flex items-center">
+                        <div>{{ slotProps.option.name }}</div>
+                      </div>
+                    </template>
+                  </Select>
+
+                  <small class="text-red-500">errores</small>
+                </div>
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="tipoDocumento">Tipo de Documento de Identidad</label>
                   <Select
                     v-model="form.tipoDocumento"
-                    :options="props.tipoDocumento"
+                    :options="tiposdocumentosList"
                     optionValue="code"
                     optionLabel="name"
                     placeholder="Seleccionar tipo de documento"
@@ -619,7 +684,7 @@ const getCoordinate = (event) => {
                   <label for="estadoCivil">Estado Civil</label>
                   <Select
                     v-model="form.estadoCivil"
-                    :options="props.estadoCivil"
+                    :options="estadoscivilesList"
                     optionValue="code"
                     optionLabel="name"
                     placeholder="Seleccionar estado civil"
@@ -631,10 +696,10 @@ const getCoordinate = (event) => {
                   <label for="genero">Genero</label>
                   <Select
                     v-model="form.genero"
-                    :options="props.genero"
+                    :options="generosList"
                     optionValue="code"
                     optionLabel="name"
-                    placeholder="Seleccionar cargo"
+                    placeholder="Seleccionar genero"
                     emptyMessage="Opciones no disponibles"
                   />
                   <small class="text-red-500">errores</small>
@@ -1298,7 +1363,7 @@ const getCoordinate = (event) => {
           <Step>FORMACIÓN ACADÉMICA</Step>
           <StepPanel v-slot="{ activateCallback }">
             <div class="flex flex-col mt-4">
-              <p>Mencione los 3 últimos estudios realizados o que cursa actualmente</p>
+              <p class="me-4">Mencione los 3 últimos estudios realizados o que cursa actualmente</p>
 
               <!--datos de la formacion academica-->
               <p class="mt-5 text-lg font-bold">Estudios 1</p>
@@ -1618,7 +1683,7 @@ const getCoordinate = (event) => {
           <Step>EXPERIENCIA LABORAL</Step>
           <StepPanel v-slot="{ activateCallback }">
             <div class="flex flex-col mt-4">
-              <p>Indique los 3 últimos empleos, empezando por el más reciente</p>
+              <p class="me-4">Indique los 3 últimos empleos, empezando por el más reciente</p>
 
               <!--datos de la experencia laboral-->
               <p class="mt-5 text-lg font-bold">Empleo 1</p>
@@ -1680,12 +1745,13 @@ const getCoordinate = (event) => {
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidauno">Motivo De Su Salida</label>
-                  <InputText
+                  <Textarea
                     id="motivosalidauno"
                     v-model="form.motivoSalidaUno"
                     class="flex-auto"
                     autocomplete="off"
                     placeholder="Motivo de su salida"
+                    rows="1" cols="30"
                   />
                   <small class="text-red-500">errores</small>
                 </div>
@@ -1749,12 +1815,13 @@ const getCoordinate = (event) => {
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidados">Motivo De Su Salida</label>
-                  <InputText
+                  <Textarea
                     id="motivosalidados"
                     v-model="form.motivoSalidaDos"
                     class="flex-auto"
                     autocomplete="off"
                     placeholder="Motivo de su salida"
+                    rows="1" cols="30"
                   />
                   <small class="text-red-500">errores</small>
                 </div>
@@ -1818,12 +1885,13 @@ const getCoordinate = (event) => {
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidatres">Motivo De Su Salida</label>
-                  <InputText
+                  <Textarea
                     id="motivosalidatres"
                     v-model="form.motivoSalidaTres"
                     class="flex-auto"
                     autocomplete="off"
                     placeholder="Motivo de su salida"
+                    rows="1" cols="30"
                   />
                   <small class="text-red-500">errores</small>
                 </div>
@@ -2801,8 +2869,7 @@ const getCoordinate = (event) => {
           <Step>COMISIÓN DE DELITOS</Step>
           <StepPanel v-slot="{ activateCallback }">
             <div class="flex flex-col mt-4">
-              <p>¿Ha cometido, planeado, encubierto o participado alguno de estos delitos?</p>
-
+              <p class="me-4">¿Ha cometido, planeado, encubierto o participado alguno de estos delitos?</p>
                 <div class="grid grid-cols-2 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-3 gap-2 xl:divide-x-2 xl:divide-[#B00202] lg:divide-x-2 lg:divide-[#B00202] md:divide-x-2 md:divide-[#B00202] py-4">
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                     <label for="robohurtofraude"
@@ -3683,7 +3750,7 @@ const getCoordinate = (event) => {
           </StepPanel>
         </StepItem>
         <StepItem value="11">
-          <Step>MOTIVACIONES POR LAS QUE POSTULA A LA EMPRESA</Step>
+          <Step>MOTIVACIONES POR QUE POSTULA A LA EMPRESA</Step>
           <StepPanel v-slot="{ activateCallback }">
             <div class="flex flex-col mt-4">
               <div class="grid grid-cols-2 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-3 gap-2 xl:divide-x-2 xl:divide-[#B00202] lg:divide-x-2 lg:divide-[#B00202] md:divide-x-2 md:divide-[#B00202] py-4">
@@ -4029,13 +4096,13 @@ const getCoordinate = (event) => {
                       :lock="false"
                       :lineWidth="1"
                       saveAs="jpeg"
-                      v-model:image="image"
+                      v-model:image="form.imagenFirma"
                       style="border: 1px solid gray"
                       :width="280"
                       :height="180"
                       />
                     <div class="hidden">
-                      <img :src="image" alt="imagen de la firma">
+                      <img :src="form.imagenFirma" alt="imagen de la firma">
                     </div>
                   </div>
                   <p class="text-center mt-4">

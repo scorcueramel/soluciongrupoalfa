@@ -10,7 +10,7 @@ class EstadosCiviles extends Model
     use HasFactory;
 
     protected $fillable = [
-        'estados_civiles',
+        'estado_civil',
         'codigo',
     ];
 }

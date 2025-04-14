@@ -3,7 +3,7 @@
 import AppLayout from "@/sakai/layout/AppLayout.vue";
 import Create from "@/Pages/Role/Create.vue";
 import Edit from "@/Pages/Role/Edit.vue";
-import { usePage, useForm } from '@inertiajs/vue3';
+import { usePage, useForm, Head } from '@inertiajs/vue3';
 
 import { onMounted, reactive, ref, watch, computed } from "vue";
 import pkg from "lodash";
@@ -38,7 +38,7 @@ const data = reactive({
 
 const deleteData = () => {
     deleteDialog.value = false;
-    
+
     form.delete(route("role.destroy", data.role?.id), {
         preserveScroll: true,
         onSuccess: () => {
@@ -69,8 +69,9 @@ watch(
 </script>
 
 <template>
-    <app-layout>             
-        <div class="card">            
+    <app-layout>
+        <Head title="Usuarios" />
+        <div class="card">
             <Create
                 :show="data.createOpen"
                 @close="data.createOpen = false"
@@ -111,13 +112,13 @@ watch(
                     <template #body="slotProps">
                         <div @click="(permissionDialog = true),(data.role = slotProps.data)" v-if="slotProps.data.permissions.length == props.permissions.length" class="whitespace-nowrap cursor-pointer text-blue-600 dark:text-blue-400 font-bold underline">
                             All Permission
-                        </div>   
+                        </div>
                         <div @click="(permissionDialog = true),(data.role = slotProps.data)" v-else-if="slotProps.data.permissions.length > 0" class="whitespace-nowrap cursor-pointer text-blue-600 dark:text-blue-400 font-bold underline">
                             {{ slotProps.data.permissions.length }} Permission
-                        </div>            
+                        </div>
                         <div v-else>
                             {{ slotProps.data.permissions.length }} Permission
-                        </div>                                    
+                        </div>
                     </template>
                 </Column>
                 <Column field="created_at" header="Created"></Column>

@@ -10,6 +10,7 @@ import Aura from '@primevue/themes/aura';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
+import FocusTrap from 'primevue/focustrap';
 
 import '@/sakai/assets/styles.scss';
 import '@/sakai/assets/tailwind.css';
@@ -33,6 +34,7 @@ createInertiaApp({
             })
             .use(ToastService)
             .use(ConfirmationService)
+            .directive('focustrap',FocusTrap)
             .mixin({
                 methods: {
                     can: function (permissions) {

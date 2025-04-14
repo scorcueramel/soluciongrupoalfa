@@ -8,33 +8,51 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        $superadmin = User::create([
-            'name'              => 'Superadmin',
-            'email'             => 'superadmin@superadmin.com',
-            'password'          => bcrypt('superadmin'),
-            'email_verified_at' => date('Y-m-d H:i')
-        ]);
-        $superadmin->assignRole('superadmin');
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
+  {
+    $superadmin = User::create([
+      'tipo_documento' => 1,
+      'name' => 'Superadmin',
+      'apellido_paterno' => 'superadmin',
+      'apellido_materno' => 'superadmin',
+      'codigo' => 'SPA-',
+      'numero_documento' => '12345678',
+      'telefono' => '987654321',
+      'email' => 'superadmin@superadmin.com',
+      'password' => bcrypt('superadmin'),
+      'email_verified_at' => date('Y-m-d H:i')
+    ]);
+    $superadmin->assignRole('superadmin');
 
-        $admin = User::create([
-            'name'              => 'Admin',
-            'email'             => 'admin@admin.com',
-            'password'          => bcrypt('admin'),
-            'email_verified_at' => date('Y-m-d H:i')
-        ]);
-        $admin->assignRole('admin');
+    $admin = User::create([
+      'tipo_documento' => 1,
+      'name' => 'Admin',
+      'apellido_paterno' => 'admin',
+      'apellido_materno' => 'admin',
+      'codigo' => 'ADM-',
+      'numero_documento' => '12345678',
+      'telefono' => '987654321',
+      'email' => 'admin@admin.com',
+      'password' => bcrypt('admin'),
+      'email_verified_at' => date('Y-m-d H:i')
+    ]);
+    $admin->assignRole('admin');
 
-        $operator = User::create([
-            'name'              => 'Operator',
-            'email'             => 'operator@operator.com',
-            'password'          => bcrypt('operator'),
-            'email_verified_at' => date('Y-m-d H:i')
-        ]);
-        $operator->assignRole('operator');
-    }
+    $operator = User::create([
+      'tipo_documento' => 1,
+      'name' => 'Operator',
+      'apellido_paterno' => 'operdaor',
+      'apellido_materno' => 'operdaor',
+      'codigo' => 'OP-',
+      'numero_documento' => '12345678',
+      'telefono' => '987654321',
+      'email' => 'operator@operator.com',
+      'password' => bcrypt('operator'),
+      'email_verified_at' => date('Y-m-d H:i')
+    ]);
+    $operator->assignRole('operator');
+  }
 }
