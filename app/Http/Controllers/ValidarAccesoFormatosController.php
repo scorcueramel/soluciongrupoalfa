@@ -38,7 +38,7 @@ class ValidarAccesoFormatosController extends Controller
         if (!is_null($accesoFormato)) {
             if ($accesoFormato->acceso_formato) {
               return Inertia::render('Formatos/FormatoUno', [
-                'empresas' => Empresas::all(),
+                'razonessociales' => Empresas::all(),
                 'distritos' => Distritos::all(),
                 'tiposviviendas' => TiposViviendas::all(),
                 'tiposparentescos' => TiposParentescos::all(),

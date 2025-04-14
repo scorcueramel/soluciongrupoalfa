@@ -6,7 +6,7 @@ import {usePrimeVue} from "primevue/config";
 import VueDrawingCanvas from "vue-drawing-canvas";
 
 const props = defineProps({
-  empresas: Object,
+  razonessociales: Object,
   cargos: Array,
   distritos: Object,
   tiposviviendas: Object,
@@ -232,8 +232,7 @@ onMounted(() => {
     });
   });
 
-  props.empresas.map((e)=>{
-    console.log(e)
+  props.razonessociales.map((e)=>{
     empresasList.value.push({
       name: e.nombre_comercial,
       code: e.id
@@ -494,7 +493,6 @@ const getCoordinate = (event) => {
                     :options="empresasList"
                     filter
                     optionLabel="name"
-                    optionValue="code"
                     placeholder="Seleccionar razón social"
                     emptyMessage="Opciones no disponibles"
                   >
