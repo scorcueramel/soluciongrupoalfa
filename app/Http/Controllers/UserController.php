@@ -60,7 +60,6 @@ class UserController extends Controller
   {
     DB::beginTransaction();
     try {
-      dd($request->all());
       $user = User::create([
         'name' => $request->name,
         'tipo_documento' => $request->tipo_documento,

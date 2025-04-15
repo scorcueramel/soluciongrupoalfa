@@ -1,6 +1,6 @@
 <script setup>
-import { useForm } from "@inertiajs/vue3";
-import { watchEffect } from "vue";
+import {useForm} from "@inertiajs/vue3";
+import {watchEffect} from "vue";
 
 const props = defineProps({
   show: Boolean,
@@ -13,11 +13,11 @@ const emit = defineEmits(["close"]);
 
 const form = useForm({
   name: "",
-  apellido_paterno:"",
-  apellido_materno:"",
-  codigo_poligrafista:"",
-  numero_documento:"",
-  telefono:"",
+  apellido_paterno: "",
+  apellido_materno: "",
+  codigo_poligrafista: "",
+  numero_documento: "",
+  telefono: "",
   email: "",
   password: "",
   password_confirmation: "",
@@ -67,8 +67,8 @@ watchEffect(() => {
             placeholder="Nombres"
           />
           <small v-if="form.errors.name" class="text-red-500">{{
-            form.errors.name
-          }}</small>
+              form.errors.name
+            }}</small>
         </div>
         <div class="flex flex-col gap-2">
           <label for="apellidoPaterno">Apellido Paterno</label>
@@ -79,9 +79,9 @@ watchEffect(() => {
             autocomplete="off"
             placeholder="Aplleido paterno"
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
-            form.errors.apellido_paterno
-          }}</small>
+          <small v-if="form.errors.apellido_paterno" class="text-red-500">{{
+              form.errors.apellido_paterno
+            }}</small>
         </div>
         <div class="flex flex-col gap-2">
           <label for="apellidoMaterno">Apellido Materno</label>
@@ -92,7 +92,7 @@ watchEffect(() => {
             autocomplete="off"
             placeholder="Aplleido materno"
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
+          <small v-if="form.errors.apellido_materno" class="text-red-500">{{
               form.errors.apellido_materno
             }}</small>
         </div>
@@ -107,8 +107,8 @@ watchEffect(() => {
             :disabled="true"
             readonly
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
-              form.errors.codigo
+          <small v-if="form.errors.codigo_poligrafista" class="text-red-500">{{
+              form.errors.codigo_poligrafista
             }}</small>
         </div>
         <div class="flex flex-col gap-2">
@@ -120,7 +120,7 @@ watchEffect(() => {
             optionLabel="name"
             placeholder="Seleccionar tipo de documento"
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
+          <small v-if="form.errors.tipo_documento" class="text-red-500">{{
               form.errors.tipo_documento
             }}</small>
         </div>
@@ -160,8 +160,8 @@ watchEffect(() => {
             placeholder="Email"
           />
           <small v-if="form.errors.email" class="text-red-500">{{
-            form.errors.email
-          }}</small>
+              form.errors.email
+            }}</small>
         </div>
         <div class="flex flex-col gap-2">
           <label for="password">Password</label>
@@ -173,8 +173,8 @@ watchEffect(() => {
             autocomplete="off"
           />
           <small v-if="form.errors.password" class="text-red-500">{{
-            form.errors.password
-          }}</small>
+              form.errors.password
+            }}</small>
         </div>
         <div class="flex flex-col gap-2">
           <label for="password_confirmation">Confirmation Password</label>
@@ -185,8 +185,8 @@ watchEffect(() => {
             placeholder="Confirmation Password"
           />
           <small v-if="form.errors.password_confirmation" class="text-red-500">{{
-            form.errors.password_confirmation
-          }}</small>
+              form.errors.password_confirmation
+            }}</small>
         </div>
         <div class="flex flex-col gap-2">
           <label for="role">Role</label>
@@ -198,8 +198,8 @@ watchEffect(() => {
             placeholder="Seleccionar rol"
           />
           <small v-if="form.errors.role" class="text-red-500">{{
-            form.errors.role
-          }}</small>
+              form.errors.role
+            }}</small>
         </div>
         <div class="flex justify-end gap-2">
           <Button

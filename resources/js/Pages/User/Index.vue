@@ -81,7 +81,6 @@ watch(
         });
     }, 150)
 );
-
 </script>
 
 <template>
@@ -100,6 +99,7 @@ watch(
                 :roles="roles"
                 :user="data.user"
                 :title="props.title"
+                :tiposdocumentos="tiposdocumentos"
             />
             <Button v-show="can(['create user'])" label="Create" @click="data.createOpen = true" icon="pi pi-plus" />
             <DataTable lazy :value="users.data" paginator  :rows="users.per_page" :totalRecords="users.total" :first="(users.current_page - 1) * users.per_page"   @page="onPageChange"  tableStyle="min-width: 50rem">
