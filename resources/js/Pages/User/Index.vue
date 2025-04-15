@@ -21,7 +21,6 @@ const props = defineProps({
 });
 
 const tiposDocumentosList = ref([]);
-const usuariosList = ref([]);
 
 loadToast();
 
@@ -69,10 +68,6 @@ onMounted(() => {
       code: e.id,
     });
   });
-
-  props.users.data.forEach((user) => {
-    usuariosList.value.push(user);
-  });
 })
 
 watch(
@@ -109,7 +104,7 @@ watch(
             <Button v-show="can(['create user'])" label="Nuevo usuario" @click="data.createOpen = true" icon="pi pi-plus" />
             <DataTable
               lazy
-              :value="usuariosList"
+              :value="users.data"
               paginator
               :rows="users.per_page"
               :totalRecords="users.total"
