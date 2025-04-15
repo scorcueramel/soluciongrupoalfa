@@ -1,6 +1,6 @@
 <script setup>
 import { useForm } from "@inertiajs/vue3";
-import { watchEffect } from "vue";
+import {ref, watchEffect} from "vue";
 
 const props = defineProps({
   show: Boolean,
@@ -10,6 +10,7 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["close"]);
+const getNameForCode = ref("");
 
 const form = useForm({
   name: "",
@@ -26,15 +27,16 @@ const form = useForm({
 });
 
 const create = () => {
+  form.codigo_poligrafista = getNameForCode.value;
   form.post(route("user.store"), {
     preserveScroll: true,
     onSuccess: () => {
       emit("close");
       form.reset();
     },
-    onError: (+                                            Q => null,
+    onError: () => null,
     onFinish: () => null,
-+36);
+  });
 };
 
 watchEffect(() => {
@@ -42,6 +44,10 @@ watchEffect(() => {
     form.errors = {};
   }
 });
+
+const generateCodeUser = () =>{
+    getNameForCode.value = form.name.trim().charAt(0).toUpperCase() + form.apellido_paterno.trim().charAt(0).toUpperCase() + form.apellido_materno.trim().charAt(0).toUpperCase()+"-";
+}
 
 </script>
 
@@ -96,11 +102,12 @@ watchEffect(() => {
               form.errors.apellido_materno
             }}</small>
         </div>
-        <div class="flex flex-col gap-2 hidden">
+        <div class="hidden">
           <label for="codigoPoligrafista">Codigo</label>
           <InputText
             id="codigoPoligrafista"
             v-model="form.codigo_poligrafista"
+            :value="getNameForCode"
             class="flex-auto"
             autocomplete="off"
             placeholder="Codigo"
@@ -108,7 +115,7 @@ watchEffect(() => {
             readonly
           />
           <small v-if="form.errors.name" class="text-red-500">{{
-              form.errors.codigo
+              form.errors.codigo_poligrafista
             }}</small>
         </div>
         <div class="flex flex-col gap-2">
@@ -120,12 +127,12 @@ watchEffect(() => {
             optionLabel="name"
             placeholder="Seleccionar tipo de documento"
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
+          <small v-if="form.errors.tipo_documento" class="text-red-500">{{
               form.errors.tipo_documento
             }}</small>
         </div>
         <div class="flex flex-col gap-2">
-          <label for="numeroDocumento">Nùmero de Documento</label>
+          <label for="numeroDocumento">Número de Documento</label>
           <InputText
             id="numeroDocumento"
             v-model="form.numero_documento"
@@ -138,7 +145,7 @@ watchEffect(() => {
             }}</small>
         </div>
         <div class="flex flex-col gap-2">
-          <label for="telefono">Telèfono</label>
+          <label for="telefono">Teléfono</label>
           <InputText
             id="telefono"
             v-model="form.telefono"
@@ -146,7 +153,7 @@ watchEffect(() => {
             autocomplete="off"
             placeholder="Nùmero de teléfono"
           />
-          <small v-if="form.errors.name" class="text-red-500">{{
+          <small v-if="form.errors.telefono" class="text-red-500">{{
               form.errors.telefono
             }}</small>
         </div>
@@ -208,7 +215,7 @@ watchEffect(() => {
             severity="secondary"
             @click="emit('close')"
           ></Button>
-          <Button type="submit" label="Guardar"></Button>
+          <Button type="submit" label="Guardar" @click="generateCodeUser"></Button>
         </div>
       </div>
     </form>

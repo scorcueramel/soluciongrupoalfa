@@ -21,6 +21,7 @@ const props = defineProps({
 });
 
 const tiposDocumentosList = ref([]);
+const usuariosList = ref([]);
 
 loadToast();
 
@@ -68,6 +69,10 @@ onMounted(() => {
       code: e.id,
     });
   });
+
+  props.users.data.forEach((user) => {
+    usuariosList.value.push(user);
+  });
 })
 
 watch(
@@ -81,7 +86,6 @@ watch(
         });
     }, 150)
 );
-
 </script>
 
 <template>
@@ -100,16 +104,27 @@ watch(
                 :roles="roles"
                 :user="data.user"
                 :title="props.title"
+                :tiposdocumentos="tiposdocumentos"
             />
-            <Button v-show="can(['create user'])" label="Create" @click="data.createOpen = true" icon="pi pi-plus" />
-            <DataTable lazy :value="users.data" paginator  :rows="users.per_page" :totalRecords="users.total" :first="(users.current_page - 1) * users.per_page"   @page="onPageChange"  tableStyle="min-width: 50rem">
+            <Button v-show="can(['create user'])" label="Nuevo usuario" @click="data.createOpen = true" icon="pi pi-plus" />
+            <DataTable
+              lazy
+              :value="usuariosList"
+              paginator
+              :rows="users.per_page"
+              :totalRecords="users.total"
+              :first="(users.current_page - 1) * users.per_page"
+              @page="onPageChange"
+              tableStyle="min-width: 50rem"
+              stripedRows
+            >
                 <template #header>
                     <div class="flex justify-end">
                         <IconField>
                             <InputIcon>
                                 <i class="pi pi-search" />
                             </InputIcon>
-                            <InputText v-model="data.params.search" placeholder="Keyword Search" />
+                            <InputText v-model="data.params.search" placeholder="Buscar Usuario..." />
                         </IconField>
                     </div>
                 </template>
@@ -141,17 +156,17 @@ watch(
                 </Column>
             </DataTable>
 
-            <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
+            <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Eliminar Usuario" :modal="true">
                 <div class="flex items-center gap-4">
                     <i class="pi pi-exclamation-triangle !text-3xl" />
                     <span v-if="data.user"
-                        >Are you sure you want to delete <b>{{ data.user.name }}</b
+                        >¿Estás seguro de eliminar al usuario <b>{{ data.user.name }}</b
                         >?</span
                     >
                 </div>
                 <template #footer>
                     <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />
-                    <Button label="Yes" icon="pi pi-check" @click="deleteData" />
+                    <Button label="Eliminar" icon="pi pi-check" @click="deleteData" />
                 </template>
             </Dialog>
         </div>

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name',50);
             $table->string('apellido_paterno',50);
             $table->string('apellido_materno',50);
-            $table->string('codigo',20)->nullable();
+            $table->string('codigo_poligrafista',20)->nullable();
             $table->integer('conteo_evaluaciones')->default(0)->nullable();
             $table->string('numero_documento',20);
             $table->string('telefono',20);

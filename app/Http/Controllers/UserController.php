@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TiposDocumentos;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +27,7 @@ class UserController extends Controller
   /**
    * Display a listing of the resource.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Inertia\Response
    */
   public function index(UserIndexRequest $request)
   {
@@ -60,13 +61,12 @@ class UserController extends Controller
   {
     DB::beginTransaction();
     try {
-      dd($request->all());
       $user = User::create([
-        'name' => $request->name,
+        'name' => Str::title($request->name),
+        'apellido_paterno' => Str::title($request->apellido_paterno),
+        'apellido_materno' => Str::title($request->apellido_materno),
         'tipo_documento' => $request->tipo_documento,
-        'apellido_paterno' => $request->apellido_paterno,
-        'apellido_materno' => $request->apellido_materno,
-        'codigo' => $request->codigo_poligrafista,
+        'codigo_poligrafista' => $request->codigo_poligrafista,
         'numero_documento' => $request->numero_documento,
         'telefono' => $request->telefono,
         'email' => $request->email,
@@ -88,7 +88,13 @@ class UserController extends Controller
     try {
       $user = User::findOrFail($id);
       $user->update([
-        'name' => $request->name,
+        'name' => Str::title($request->name),
+        'apellido_paterno' => Str::title($request->apellido_paterno),
+        'apellido_materno' => Str::title($request->apellido_materno),
+        'tipo_documento' => $request->tipo_documento,
+        'codigo_poligrafista' => $request->codigo_poligrafista,
+        'numero_documento' => $request->numero_documento,
+        'telefono' => $request->telefono,
         'email' => $request->email,
         'password' => $request->password ? Hash::make($request->password) : $user->password,
       ]);
