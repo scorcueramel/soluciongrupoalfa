@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
   public function run(): void
   {
     $superadmin = User::create([
-      'tipo_documento' => 1,
+      'tipodocumento_id' => 1,
       'name' => 'Superadmin',
       'apellido_paterno' => 'superadmin',
       'apellido_materno' => 'superadmin',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
     $superadmin->assignRole('superadmin');
 
     $admin = User::create([
-      'tipo_documento' => 1,
+      'tipodocumento_id' => 1,
       'name' => 'Admin',
       'apellido_paterno' => 'admin',
       'apellido_materno' => 'admin',
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
     $admin->assignRole('admin');
 
     $operator = User::create([
-      'tipo_documento' => 1,
+      'tipodocumento_id' => 1,
       'name' => 'Operator',
       'apellido_paterno' => 'operdaor',
       'apellido_materno' => 'operdaor',

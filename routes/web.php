@@ -43,14 +43,16 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('/user', UserController::class)->except('create', 'show', 'edit');
     Route::post('/user/destroy-bulk', [UserController::class, 'destroyBulk'])->name('user.destroy-bulk');
 
+    Route::get('/formatos', [ValidarAccesoFormatosController::class, 'allowAccessToFormat'])->name('formatos.acceso');
+
     Route::resource('/role', RoleController::class)->except('create', 'show', 'edit');
 
     Route::resource('/permission', PermissionController::class)->except('create', 'show', 'edit');
 
 });
 
+/*Validacion de acceso a formatos, solo personas autorizadas*/
 Route::get('/formato', [ValidarAccesoFormatosController::class, 'index'])->name('formato.index');
 Route::post('/formato', [ValidarAccesoFormatosController::class, 'show'])->name('formato.validar.acceso');
-//Route::get('/formato-test', [ValidarAccesoFormatosController::class, 'test'])->name('formato.validar.acceso');
 
 require __DIR__ . '/auth.php';

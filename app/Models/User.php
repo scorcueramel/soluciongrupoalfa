@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -20,7 +22,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'tipo_documento',
+        'tipodocumento_id',
         'name',
         'apellido_paterno',
         'apellido_materno',
@@ -72,5 +74,9 @@ class User extends Authenticatable
         return $this->getAllPermissions()->mapWithKeys(function ($pr) {
             return [$pr['name'] => true];
         });
+    }
+
+    public function tipodocumento():belongsTo{
+      return $this->belongsTo(TiposDocumentos::class);
     }
 }

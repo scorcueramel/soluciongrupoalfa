@@ -32,6 +32,7 @@ class UserController extends Controller
   public function index(UserIndexRequest $request)
   {
     $users = User::query();
+
     if ($request->has('search')) {
       $users->where('name', 'LIKE', "%" . $request->search . "%");
       $users->orWhere('email', 'LIKE', "%" . $request->search . "%");
@@ -52,7 +53,7 @@ class UserController extends Controller
       'tiposdocumentos' => TiposDocumentos::all(),
       'title' => 'Usuario',
       'filters' => $request->all(['search', 'field', 'order']),
-      'users' => $users->with('roles')->paginate(10),
+      'users' => $users->with('roles')->with('tipodocumento')->paginate(10),
       'roles' => $roles,
     ]);
   }
@@ -65,7 +66,7 @@ class UserController extends Controller
         'name' => Str::title($request->name),
         'apellido_paterno' => Str::title($request->apellido_paterno),
         'apellido_materno' => Str::title($request->apellido_materno),
-        'tipo_documento' => $request->tipo_documento,
+        'tipodocumento_id' => $request->tipo_documento,
         'codigo_poligrafista' => $request->codigo_poligrafista,
         'numero_documento' => $request->numero_documento,
         'telefono' => $request->telefono,
@@ -77,8 +78,7 @@ class UserController extends Controller
       return back()->with('success', $user->name . ' created successfully.');
     } catch (\Throwable $th) {
       DB::rollback();
-      dd($th->getMessage());
-      return back()->with('error', 'Error creating ' . $user->name . $th->getMessage());
+      return back()->with('error', 'Error creating ' . $request->name . $th->getMessage());
     }
   }
 
@@ -91,7 +91,7 @@ class UserController extends Controller
         'name' => Str::title($request->name),
         'apellido_paterno' => Str::title($request->apellido_paterno),
         'apellido_materno' => Str::title($request->apellido_materno),
-        'tipo_documento' => $request->tipo_documento,
+        'tipodocumento_id' => $request->tipo_documento,
         'codigo_poligrafista' => $request->codigo_poligrafista,
         'numero_documento' => $request->numero_documento,
         'telefono' => $request->telefono,

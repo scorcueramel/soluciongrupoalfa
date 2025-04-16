@@ -125,7 +125,7 @@ const router = createRouter({
         {
             path: '/auth/access',
             name: 'accessDenied',
-            component: () => import('@/views/pages/auth/Access.vue')
+            component: () => import('@/views/pages/auth/AccessFormat.vue')
         },
         {
             path: '/auth/error',

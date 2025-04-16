@@ -5,17 +5,22 @@ import AppMenuItem from './AppMenuItem.vue';
 
 const model = ref([
     {
-        items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/dashboard' }]
+        items: [{ label: 'Panel', icon: 'pi pi-fw pi-home', to: '/dashboard' }]
     },
     {
-        // label: 'Master',
-        items: [{ label: 'User', icon: 'pi pi-fw pi-user', to: '/user', can:'read user' }]
-    },
-    {
-        // label: 'Setting',
+        label: 'Gestión de accesos',
+        class: 'active-menuitem',
         items: [
-            { label: 'Role', icon: 'pi pi-fw pi-id-card', to: '/role', can:'read role' },
-            { label: 'Permission', icon: 'pi pi-fw pi-mobile', to: '/permission', class: 'rotated-icon', can:'read permission' },
+          { label: 'Accesos', icon: 'pi pi-fw pi-key',
+            items:[
+              //cambiar "can : read user" por read habilitar formatos
+              { label: 'Habilitar Formatos', icon: 'pi pi-fw pi-file-edit', to: '/formatos',can: 'read user'},
+              { label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can:'read user' },
+              { label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can:'read role' },
+              { label: 'Permisos', icon: 'pi pi-fw pi-mobile', to: '/permission', class: 'rotated-icon', can:'read permission' },
+            ]
+          }
+            //  },
         ]
     }
 ]);

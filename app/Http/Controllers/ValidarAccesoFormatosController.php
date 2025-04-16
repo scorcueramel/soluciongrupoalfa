@@ -21,7 +21,11 @@ class ValidarAccesoFormatosController extends Controller
 {
   public function index()
   {
-    return Inertia::render('Formatos/Access');
+    return Inertia::render('Formatos/AccessFormat');
+  }
+
+  public function allowAccessToFormat(){
+    return Inertia::render('Formatos/AccesoEvaluados');
   }
 
 //  public function test()
@@ -35,26 +39,26 @@ class ValidarAccesoFormatosController extends Controller
 //    ]);
 //  }
 
-    public function show(ValidarAccesoFormatosRequest $request)
-    {
-        $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
+  public function show(ValidarAccesoFormatosRequest $request)
+  {
+    $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
 
-        if (!is_null($accesoFormato)) {
-            if ($accesoFormato->acceso_formato) {
-              return Inertia::render('Formatos/FormatoUno', [
-                'distritos' => Distritos::all(),
-                'entidadesbancarias' => EntidadesBancarias::all(),
-                'estadosciviles' => EstadosCiviles::all(),
-                'generos' => Generos::all(),
-                'gradosinstrucciones' => GradosInstrucciones::all(),
-                'nacionalidades' => Nacionalidades::all(),
-                'razonessociales' => Empresas::all(),
-                'tiposdocumentos' => TiposDocumentos::all(),
-                'tiposparentescos' => TiposParentescos::all(),
-                'tiposviviendas' => TiposViviendas::all(),
-              ]);
-            }
-        }
-        return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+    if (!is_null($accesoFormato)) {
+      if ($accesoFormato->acceso_formato) {
+        return Inertia::render('Formatos/FormatoUno', [
+          'distritos' => Distritos::all(),
+          'entidadesbancarias' => EntidadesBancarias::all(),
+          'estadosciviles' => EstadosCiviles::all(),
+          'generos' => Generos::all(),
+          'gradosinstrucciones' => GradosInstrucciones::all(),
+          'nacionalidades' => Nacionalidades::all(),
+          'razonessociales' => Empresas::all(),
+          'tiposdocumentos' => TiposDocumentos::all(),
+          'tiposparentescos' => TiposParentescos::all(),
+          'tiposviviendas' => TiposViviendas::all(),
+        ]);
+      }
     }
+    return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+  }
 }

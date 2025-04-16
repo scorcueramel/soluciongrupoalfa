@@ -55,7 +55,7 @@ watchEffect(() => {
     form.apellido_paterno = props.user?.apellido_paterno;
     form.apellido_materno = props.user?.apellido_materno;
     form.codigo_poligrafista = props.user?.codigo_poligrafista;
-    form.tipo_documento = props.user?.tipo_documento;
+    form.tipo_documento = props.user?.tipodocumento_id;
     form.numero_documento = props.user?.numero_documento;
     form.telefono = props.user?.telefono;
     form.email = props.user?.email;
@@ -73,7 +73,7 @@ const generateCodeUser = () =>{
     v-model:visible="props.show"
     position="top"
     modal
-    :header="'Actualizar ' + props.title"
+    :header="'Editar ' + props.title"
     :style="{ width: '30rem' }"
     :closable="false"
   >
