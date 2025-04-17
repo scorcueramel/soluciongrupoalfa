@@ -15,11 +15,16 @@ use App\Models\Nacionalidades;
 use App\Models\TiposDocumentos;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
+use App\Services\testService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
 {
+  public function __construct(){
+
+  }
+
   public function index()
   {
     return Inertia::render('Formatos/AccessFormat');
@@ -64,6 +69,17 @@ class ValidarAccesoFormatosController extends Controller
   }
 
   public function createAllowAccessToFormat(Request $request){
-    dd($request->all());
+    $userConteoEvaluaciones = \Auth::user()->conteo_evaluaciones;
+    $userCode = \Auth::user()->codigo;
+    if ($userConteoEvaluaciones < 10){
+      dd("00".$userConteoEvaluaciones+=1);
+    }
+    if ($userConteoEvaluaciones >= 10 && $userConteoEvaluaciones <= 99){
+      dd("0".$userConteoEvaluaciones+=1);
+    }
+    else {
+      dd($userConteoEvaluaciones+=1);
+    }
+    //Aqui va toda la logica
   }
 }
