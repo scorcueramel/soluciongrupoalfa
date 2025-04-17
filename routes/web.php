@@ -44,6 +44,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::post('/user/destroy-bulk', [UserController::class, 'destroyBulk'])->name('user.destroy-bulk');
 
     Route::get('/formatos', [ValidarAccesoFormatosController::class, 'allowAccessToFormat'])->name('formatos.acceso');
+    Route::post('/formatos', [ValidarAccesoFormatosController::class, 'createAllowAccessToFormat'])->name('formatos.crear.acceso');
 
     Route::resource('/role', RoleController::class)->except('create', 'show', 'edit');
 

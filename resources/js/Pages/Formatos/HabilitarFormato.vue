@@ -15,7 +15,7 @@ const form = useForm({
 });
 
 const create = () => {
-  form.post(route("user.store"), {
+  form.post(route("formatos.crear.acceso"), {
     preserveScroll: true,
     onSuccess: () => {
       emit("close");

@@ -15,6 +15,7 @@ use App\Models\Nacionalidades;
 use App\Models\TiposDocumentos;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
@@ -60,5 +61,9 @@ class ValidarAccesoFormatosController extends Controller
       }
     }
     return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+  }
+
+  public function createAllowAccessToFormat(Request $request){
+    dd($request->all());
   }
 }
