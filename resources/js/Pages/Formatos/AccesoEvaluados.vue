@@ -4,7 +4,7 @@ import Create from "@/Pages/Formatos/HabilitarFormato.vue";
 import Edit from "@/Pages/User/Edit.vue";
 import {usePage, useForm, Head} from '@inertiajs/vue3';
 
-import {onMounted, reactive, ref, watch, computed} from "vue";
+import { reactive, ref, watch, computed} from "vue";
 import pkg from "lodash";
 import {router} from "@inertiajs/vue3";
 
@@ -17,17 +17,14 @@ import {loadToast} from '@/composables/loadToast';
 //   users: Object,
 //   roles: Object,
 //   perPage: Number,
-//   tiposdocumentos: Object,
 // });
-//
-// const tiposDocumentosList = ref([]);
-//
-// loadToast();
-//
+
+loadToast();
+
 // const deleteDialog = ref(false);
-// const detailDialog = ref(false);
-// const form = useForm({});
-//
+const detailDialog = ref(false);
+const form = useForm({});
+
 const data = reactive({
   params: {
     // search: props.filters.search,
@@ -37,7 +34,7 @@ const data = reactive({
     allowFormatOpen: false,
     // editOpen: false,
   },
-  user: null,
+  // user: null,
 });
 //
 // const deleteData = () => {
@@ -52,24 +49,11 @@ const data = reactive({
 //     onFinish: () => null,
 //   });
 // }
-//
-// const roles = props.roles?.map((role) => ({
-//   name: role.name,
-//   code: role.name,
-// }));
-//
+
 // const onPageChange = (event) => {
 //   router.get(route('user.index'), {page: event.page + 1}, {preserveState: true});
 // };
 //
-// onMounted(() => {
-//   props.tiposdocumentos.forEach((e) => {
-//     tiposDocumentosList.value.push({
-//       name: e.tipo_documento,
-//       code: e.id,
-//     });
-//   });
-// })
 //
 // watch(
 //   () => _.cloneDeep(data.params),
