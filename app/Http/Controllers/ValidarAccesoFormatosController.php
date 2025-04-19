@@ -79,8 +79,21 @@ class ValidarAccesoFormatosController extends Controller
 
   public function createAllowAccessToFormat(AccesoFormatosStoreRequest $request)
   {
-    $test = $this->accesoFormatosService->createAccessFormat($request->data);
-    $jsonDecode = json_decode($test->content());
+    $accesoFormato = $this->accesoFormatosService->createAccessFormat($request->data);
+    $jsonDecode = json_decode($accesoFormato->content());
+
+    if ($jsonDecode->code === 200) {
+      return back()->with('success', $jsonDecode->message);
+    }
+
+    if ($jsonDecode->code === 500) {
+      return back()->with('error', $jsonDecode->message);
+    }
+  }
+
+  public function restrictAccessToFormat(string $id){
+    $response = $this->accesoFormatosService->allowAndDisallowFormat($id);
+    $jsonDecode = json_decode($response->content());
 
     if ($jsonDecode->code === 200) {
       return back()->with('success', $jsonDecode->message);

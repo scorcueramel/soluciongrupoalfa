@@ -4,7 +4,7 @@ import Create from "@/Pages/Formatos/HabilitarFormato.vue";
 import Edit from "@/Pages/User/Edit.vue";
 import {usePage, useForm, Head} from '@inertiajs/vue3';
 
-import {reactive, ref, watch, computed, onMounted} from "vue";
+import {reactive, ref, watch, computed} from "vue";
 import pkg from "lodash";
 import {router} from "@inertiajs/vue3";
 
@@ -65,9 +65,55 @@ watch(
   }, 150)
 );
 
-onMounted(() => {
-  console.log(props.evaluados)
-})
+const restringirAcceso = (data) => {
+  Swal.fire({
+    title: "¿Restringir acceso a formato?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si",
+    cancelButtonText: "No",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.get(`/formatos/${data.id}/accesos`, {
+          preserveScroll: true,
+          onSuccess: () => null,
+          onError: () => null,
+          onFinish: () => {
+            console.log('alerta')
+          },
+        }
+      )
+      ;
+    }
+  });
+}
+
+const permitirAcceso = (data) => {
+  Swal.fire({
+    title: "¿Permitir acceso a formato?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si",
+    cancelButtonText: "No",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      router.get(`/formatos/${data.id}/accesos`, {
+          preserveScroll: true,
+          onSuccess: () => null,
+          onError: () => null,
+          onFinish: () => {
+            console.log('alerta')
+          },
+        }
+      )
+      ;
+    }
+  });
+}
 
 </script>
 
@@ -123,17 +169,18 @@ onMounted(() => {
         <Column>
           <template #header>Acceso a formato</template>
           <template #body="slotProps">
-            <div class="text-center">
-              <Button v-show="slotProps.data.acceso_formato" rounded severity="success" @click="alert('Holi Holiiii')">SI</Button>
-              <Button v-show="!slotProps.data.acceso_formato" rounded severity="danger" @click="deleteDialog = true; data.user = slotProps.data">NO</Button>
-            </div>
+              <Button v-show="slotProps.data.acceso_formato" outlined label="SI" text severity="success"
+                      @click="restringirAcceso(slotProps.data)"/>
+              <Button v-show="!slotProps.data.acceso_formato" outlined text severity="danger"
+                      @click="permitirAcceso(slotProps.data)">NO
+              </Button>
           </template>
         </Column>
         <Column>
           <template #header>Cod. Poligrafista</template>
           <template #body="slotProps">
             <div class="text-center">
-              {{slotProps.data.codigo_poligrafista+""+slotProps.data.numero_evaluaciones}}
+              {{ slotProps.data.codigo_poligrafista + "" + slotProps.data.numero_evaluaciones }}
             </div>
           </template>
         </Column>

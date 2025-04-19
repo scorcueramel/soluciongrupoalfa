@@ -45,6 +45,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/formatos', [ValidarAccesoFormatosController::class, 'allowAccessToFormat'])->name('formatos.acceso');
     Route::post('/formatos', [ValidarAccesoFormatosController::class, 'createAllowAccessToFormat'])->name('formatos.crear.acceso');
+    Route::get('/formatos/{id}/accesos', [ValidarAccesoFormatosController::class, 'restrictAccessToFormat'])->name('formato.restringir.acceso');
 
     Route::resource('/role', RoleController::class)->except('create', 'show', 'edit');
 
