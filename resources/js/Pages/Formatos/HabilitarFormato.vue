@@ -2,6 +2,7 @@
 import { useForm } from "@inertiajs/vue3";
 import {ref, watchEffect} from "vue";
 import RadioButton from 'primevue/radiobutton';
+import Message from 'primevue/message';
 
 const props = defineProps({
   show: Boolean,
@@ -11,7 +12,7 @@ const emit = defineEmits(["close"]);
 
 const form = useForm({
   numero_documento:"",
-  acceder_formato: true
+  acceder_formato: false,
 });
 
 const create = () => {
@@ -37,12 +38,13 @@ watchEffect(() => {
 <template>
     <Dialog
       v-model:visible="props.show"
-      header="Habilitar Formulario"
+      header="Habilitar Acceso a Formato"
       position="top"
       modal
       :style="{ width: '30rem' }"
       :closable="false"
     >
+    <Message class="mt-1 mb-5"><b>Recuerda,</b> cuando habilitas el acceso al formato, tu conteo de evaluaciones incrementa en 1 a partir de la última evalución realizda</Message>
     <form @submit.prevent="create">
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2">
@@ -61,11 +63,11 @@ watchEffect(() => {
         <div class="flex flex-wrap gap-2">
           <label class="w-full">Acceder a Formato</label>
           <div class="flex items-center gap-2">
-            <RadioButton v-model="form.acceder_formato" inputId="acceder_formatoSi" name="acceder_formato" :value="false"  />
+            <RadioButton v-model="form.acceder_formato" inputId="acceder_formatoSi" name="acceder_formato" :value="true"  />
             <label for="acceder_formatoSi" class="text-sm">Si</label>
           </div>
           <div class="flex items-center gap-2">
-            <RadioButton v-model="form.acceder_formato" inputId="acceder_formatoNo" name="acceder_formato" :value="true" />
+            <RadioButton v-model="form.acceder_formato" inputId="acceder_formatoNo" name="acceder_formato" :value="false" />
             <label for="acceder_formatoNo">No</label>
           </div>
         </div>

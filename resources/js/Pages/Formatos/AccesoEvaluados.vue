@@ -4,39 +4,37 @@ import Create from "@/Pages/Formatos/HabilitarFormato.vue";
 import Edit from "@/Pages/User/Edit.vue";
 import {usePage, useForm, Head} from '@inertiajs/vue3';
 
-import { reactive, ref, watch, computed} from "vue";
+import {reactive, ref, watch, computed, onMounted} from "vue";
 import pkg from "lodash";
 import {router} from "@inertiajs/vue3";
 
 const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
 
-// const props = defineProps({
-//   title: String,
-//   filters: Object,
-//   users: Object,
-//   roles: Object,
-//   perPage: Number,
-// });
+const props = defineProps({
+  filters: Object,
+  evaluados: Object,
+  perPage: Number,
+});
 
 loadToast();
 
 // const deleteDialog = ref(false);
-const detailDialog = ref(false);
+// const detailDialog = ref(false);
 const form = useForm({});
 
 const data = reactive({
   params: {
-    // search: props.filters.search,
-    // field: props.filters.field,
-    // order: props.filters.order,
-    // perPage: props.perPage,
+    search: props.filters.search,
+    field: props.filters.field,
+    order: props.filters.order,
+    perPage: props.perPage,
     allowFormatOpen: false,
-    // editOpen: false,
+    editOpen: false,
   },
-  // user: null,
+  evaludado: null,
 });
-//
+
 // const deleteData = () => {
 //   deleteDialog.value = false;
 //
@@ -50,22 +48,26 @@ const data = reactive({
 //   });
 // }
 
-// const onPageChange = (event) => {
-//   router.get(route('user.index'), {page: event.page + 1}, {preserveState: true});
-// };
-//
-//
-// watch(
-//   () => _.cloneDeep(data.params),
-//   debounce(() => {
-//     let params = pickBy(data.params);
-//     router.get(route("user.index"), params, {
-//       replace: true,
-//       preserveState: true,
-//       preserveScroll: true,
-//     });
-//   }, 150)
-// );
+const onPageChange = (event) => {
+  // router.get(route('user.index'), {page: event.page + 1}, {preserveState: true});
+};
+
+
+watch(
+  () => _.cloneDeep(data.params),
+  debounce(() => {
+    let params = pickBy(data.params);
+    router.get(route("user.index"), params, {
+      replace: true,
+      preserveState: true,
+      preserveScroll: true,
+    });
+  }, 150)
+);
+
+onMounted(() => {
+  console.log(props.evaluados)
+})
 
 </script>
 
@@ -73,10 +75,10 @@ const data = reactive({
   <app-layout>
     <Head title="Acceso a Evaluados"></Head>
     <div class="card">
-            <Create
-              :show="data.allowFormatOpen"
-              @close="data.allowFormatOpen = false"
-            />
+      <Create
+        :show="data.allowFormatOpen"
+        @close="data.allowFormatOpen = false"
+      />
       <!--      <Edit-->
       <!--        :show="data.editOpen"-->
       <!--        @close="data.editOpen = false"-->
@@ -85,60 +87,70 @@ const data = reactive({
       <!--        :title="props.title"-->
       <!--        :tiposdocumentos="tiposdocumentos"-->
       <!--      />-->
-            <!--Cambiar los permisos correspondientes a create allow format-->
-            <Button v-show="can(['create user'])" label="Habilitar Formulario" @click="data.allowFormatOpen = true" icon="pi pi-plus"/>
-      <!--      <DataTable-->
-      <!--        :value="users.data"-->
-      <!--        paginator-->
-      <!--        :rows="users.per_page"-->
-      <!--        :totalRecords="users.total"-->
-      <!--        :first="(users.current_page - 1) * users.per_page"-->
-      <!--        @page="onPageChange"-->
-      <!--        tableStyle="min-width: 50rem"-->
-      <!--        stripedRows-->
-      <!--      >-->
-      <!--        <template #header>-->
-      <!--          <div class="flex justify-end">-->
-      <!--            <IconField>-->
-      <!--              <InputIcon>-->
-      <!--                <i class="pi pi-search"/>-->
-      <!--              </InputIcon>-->
-      <!--              <InputText v-model="data.params.search" placeholder="Buscar Usuario..."/>-->
-      <!--            </IconField>-->
-      <!--          </div>-->
-      <!--        </template>-->
-      <!--        <template #empty> No data found.</template>-->
-      <!--        <template #loading> Loading data. Please wait.</template>-->
+      <!--Cambiar los permisos correspondientes a create allow format-->
+      <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true"
+              icon="pi pi-plus"/>
+      <DataTable
+        :value="evaluados.data"
+        paginator
+        :rows="evaluados.per_page"
+        :totalRecords="evaluados.total"
+        :first="(evaluados.current_page - 1) * evaluados.per_page"
+        @page="onPageChange"
+        tableStyle="min-width: 50rem"
+        stripedRows
+      >
+        <template #header>
+          <div class="flex justify-end">
+            <IconField>
+              <InputIcon>
+                <i class="pi pi-search"/>
+              </InputIcon>
+              <InputText v-model="data.params.search" placeholder="Buscar Evaluado..."/>
+            </IconField>
+          </div>
+        </template>
+        <template #empty> Sin datos para mostrar.</template>
+        <template #loading> Cargando datos. Porfavor espere.</template>
 
-      <!--        <Column header="No">-->
-      <!--          <template #body="slotProps">-->
-      <!--            {{ slotProps.index + 1 }}-->
-      <!--          </template>-->
-      <!--        </Column>-->
+        <Column header="No">
+          <template #body="slotProps">
+            {{ slotProps.index + 1 }}
+          </template>
+        </Column>
 
-      <!--        <Column field="name" header="Nombres"></Column>-->
-      <!--        <Column field="apellido_paterno" header="Ap. Paternos"></Column>-->
-      <!--        <Column field="apellido_materno" header="Ap. Maternos"></Column>-->
-      <!--        <Column field="email" header="Correo"></Column>-->
-      <!--        <Column header="Rol">-->
-      <!--          <template #body="slotProps">-->
-      <!--            {{ slotProps.data.roles[0].name }}-->
-      <!--          </template>-->
-      <!--        </Column>-->
-      <!--        <Column field="created_at" header="Fec. Registro"></Column>-->
-      <!--        <Column field="updated_at" header="Fec. Actualización"></Column>-->
-      <!--        <Column :exportable="false" style="min-width: 12rem">-->
-      <!--          <template #body="slotProps">-->
-      <!--            <Button v-show="can(['update user'])" icon="pi pi-pencil" outlined rounded class="mr-2" @click="-->
-      <!--                                                    (data.editOpen = true),-->
-      <!--                                                        (data.user = slotProps.data)"/>-->
-      <!--            <Button v-show="can(['delete user'])" icon="pi pi-trash" outlined rounded severity="danger"-->
-      <!--                    @click="deleteDialog = true; data.user = slotProps.data"/>-->
-      <!--            <Button icon="pi pi-eye" outlined rounded severity="info" class="ml-2"-->
-      <!--                    @click="detailDialog = true; data.user = slotProps.data"/>-->
-      <!--          </template>-->
-      <!--        </Column>-->
-      <!--      </DataTable>-->
+        <Column field="documento_persona" header="Documento evaluado"></Column>
+        <Column>
+          <template #header>Acceso a formato</template>
+          <template #body="slotProps">
+            <div class="text-center">
+              <Button v-show="slotProps.data.acceso_formato" rounded severity="success" @click="alert('Holi Holiiii')">SI</Button>
+              <Button v-show="!slotProps.data.acceso_formato" rounded severity="danger" @click="deleteDialog = true; data.user = slotProps.data">NO</Button>
+            </div>
+          </template>
+        </Column>
+        <Column>
+          <template #header>Cod. Poligrafista</template>
+          <template #body="slotProps">
+            <div class="text-center">
+              {{slotProps.data.codigo_poligrafista+""+slotProps.data.numero_evaluaciones}}
+            </div>
+          </template>
+        </Column>
+        <Column field="fecha_examen" header="Fecha Evaluación"></Column>
+
+        <!--              <Column :exportable="false" style="min-width: 12rem">-->
+        <!--                <template #body="slotProps">-->
+        <!--                  <Button v-show="can(['update user'])" icon="pi pi-pencil" outlined rounded class="mr-2" @click="-->
+        <!--                                                          (data.editOpen = true),-->
+        <!--                                                              (data.user = slotProps.data)"/>-->
+        <!--                  <Button v-show="can(['delete user'])" icon="pi pi-trash" outlined rounded severity="danger"-->
+        <!--                          @click="deleteDialog = true; data.user = slotProps.data"/>-->
+        <!--                  <Button icon="pi pi-eye" outlined rounded severity="info" class="ml-2"-->
+        <!--                          @click="detailDialog = true; data.user = slotProps.data"/>-->
+        <!--                </template>-->
+        <!--              </Column>-->
+      </DataTable>
 
       <!--      <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Eliminar Usuario" :modal="true">-->
       <!--        <div class="flex items-center gap-4">-->

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AccesoFormatosIndexRequest;
+use App\Http\Requests\AccesoFormatosStoreRequest;
 use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
 
@@ -15,14 +17,15 @@ use App\Models\Nacionalidades;
 use App\Models\TiposDocumentos;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
-use App\Services\testService;
-use Illuminate\Http\Request;
+use App\Services\AccesoFormatosService;
 use Inertia\Inertia;
 
 class ValidarAccesoFormatosController extends Controller
 {
-  public function __construct(){
-
+  public function __construct(
+    private AccesoFormatosService $accesoFormatosService
+  )
+  {
   }
 
   public function index()
@@ -30,20 +33,25 @@ class ValidarAccesoFormatosController extends Controller
     return Inertia::render('Formatos/AccessFormat');
   }
 
-  public function allowAccessToFormat(){
-    return Inertia::render('Formatos/AccesoEvaluados');
-  }
+  public function allowAccessToFormat(AccesoFormatosIndexRequest $request)
+  {
+    $evaluados = AccesoFormatos::query();
 
-//  public function test()
-//  {
-//    return Inertia::render('Formatos/FormatoUno', [
-//      'distritos' => Distritos::all(),
-//      'tiposviviendas' => TiposViviendas::all(),
-//      'tiposparentescos' => TiposParentescos::all(),
-//      'gradosinstrucciones' => GradosInstrucciones::all(),
-//      'entidadesbancarias' => EntidadesBancarias::all()
-//    ]);
-//  }
+    if ($request->has('search')) {
+      $evaluados->where('documento_formato', 'LIKE', '%' . $request->search . '%');
+      $evaluados->orWhere('codigo_formato', 'LIKE', '%' . $request->search . '%');
+      $evaluados->orWhere('fecha_examen', 'LIKE', '%' . $request->search . '%');
+    }
+
+    if ($request->has(['field', 'order'])) {
+      $evaluados->orderBy($request->field, $request->order);
+    }
+
+    return Inertia::render('Formatos/AccesoEvaluados',[
+      'evaluados'=>$evaluados->paginate(10),
+      'filters' => $request->all(['search', 'field', 'order']),
+    ]);
+  }
 
   public function show(ValidarAccesoFormatosRequest $request)
   {
@@ -65,21 +73,21 @@ class ValidarAccesoFormatosController extends Controller
         ]);
       }
     }
-    return Inertia::render('Formatos/Access', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+
+    return Inertia::render('Formatos/AccessFormat', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
   }
 
-  public function createAllowAccessToFormat(Request $request){
-    $userConteoEvaluaciones = \Auth::user()->conteo_evaluaciones;
-    $userCode = \Auth::user()->codigo;
-    if ($userConteoEvaluaciones < 10){
-      dd("00".$userConteoEvaluaciones+=1);
+  public function createAllowAccessToFormat(AccesoFormatosStoreRequest $request)
+  {
+    $test = $this->accesoFormatosService->createAccessFormat($request->data);
+    $jsonDecode = json_decode($test->content());
+
+    if ($jsonDecode->code === 200) {
+      return back()->with('success', $jsonDecode->message);
     }
-    if ($userConteoEvaluaciones >= 10 && $userConteoEvaluaciones <= 99){
-      dd("0".$userConteoEvaluaciones+=1);
+
+    if ($jsonDecode->code === 500) {
+      return back()->with('error', $jsonDecode->message);
     }
-    else {
-      dd($userConteoEvaluaciones+=1);
-    }
-    //Aqui va toda la logica
   }
 }

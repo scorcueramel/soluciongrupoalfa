@@ -75,10 +75,10 @@ class UserController extends Controller
       ]);
       $user->assignRole($request->role);
       DB::commit();
-      return back()->with('success', $user->name . ' created successfully.');
+      return back()->with('success', 'Usuario ' . $user->name . ' creado satisfactoriamente.');
     } catch (\Throwable $th) {
       DB::rollback();
-      return back()->with('error', 'Error creating ' . $request->name . $th->getMessage());
+      return back()->with('error', 'Error al crear el usuario ' . $request->name . $th->getMessage());
     }
   }
 
@@ -100,10 +100,10 @@ class UserController extends Controller
       ]);
       $user->syncRoles($request->role);
       DB::commit();
-      return back()->with('success', $user->name . ' updated successfully.');
+      return back()->with('success', 'Usuario ' . $user->name . ' actualizado satisfactoriamente.');
     } catch (\Throwable $th) {
       DB::rollback();
-      return back()->with('error', 'Error updating ' . $user->name . $th->getMessage());
+      return back()->with('error', 'Error al actualizar el usuario ' . $user->name . $th->getMessage());
     }
   }
 
