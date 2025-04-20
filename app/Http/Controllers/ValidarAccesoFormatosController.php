@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AccesoFormatosIndexRequest;
 use App\Http\Requests\AccesoFormatosStoreRequest;
+use App\Http\Requests\AccesoFormatosUpdateRequest;
 use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
 
@@ -38,8 +39,8 @@ class ValidarAccesoFormatosController extends Controller
     $evaluados = AccesoFormatos::query();
 
     if ($request->has('search')) {
-      $evaluados->where('documento_formato', 'LIKE', '%' . $request->search . '%');
-      $evaluados->orWhere('codigo_formato', 'LIKE', '%' . $request->search . '%');
+      $evaluados->where('documento_persona', 'LIKE', '%' . $request->search . '%');
+      $evaluados->orWhere('codigo_poligrafista', 'LIKE', '%' . $request->search . '%');
       $evaluados->orWhere('fecha_examen', 'LIKE', '%' . $request->search . '%');
     }
 
@@ -93,6 +94,32 @@ class ValidarAccesoFormatosController extends Controller
 
   public function restrictAccessToFormat(string $id){
     $response = $this->accesoFormatosService->allowAndDisallowFormat($id);
+    $jsonDecode = json_decode($response->content());
+
+    if ($jsonDecode->code === 200) {
+      return back()->with('success', $jsonDecode->message);
+    }
+
+    if ($jsonDecode->code === 500) {
+      return back()->with('error', $jsonDecode->message);
+    }
+  }
+
+  public function update(AccesoFormatosUpdateRequest $request){
+    $response = $this->accesoFormatosService->allowAccessUpdate($request->data);
+    $jsonDecode = json_decode($response->content());
+
+    if ($jsonDecode->code === 200) {
+      return back()->with('success', $jsonDecode->message);
+    }
+
+    if ($jsonDecode->code === 500) {
+      return back()->with('error', $jsonDecode->message);
+    }
+  }
+
+  public function deletedEvaluatedFormat(string $id){
+    $response = $this->accesoFormatosService->deleteAccessFormatEvaluated($id);
     $jsonDecode = json_decode($response->content());
 
     if ($jsonDecode->code === 200) {

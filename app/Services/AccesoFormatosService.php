@@ -40,7 +40,7 @@ class AccesoFormatosService
 
       User::find(\Auth::user()->id)->update(['conteo_evaluaciones' => $counterIncrement]);
 
-      return response()->json(['code' => 200, 'message' => 'Formulario Habilitado Satisfactoriamente']);
+      return response()->json(['code' => 200, 'message' => 'Examinado Habilitado Satisfactoriamente']);
     } catch (\Throwable $th) {
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
@@ -61,6 +61,40 @@ class AccesoFormatosService
         $getEvaluated->save();
       }
       return response()->json(['code' => 200, 'message' => 'Se restringio el acceso al formato al evaluado']);
+    } catch (\Throwable $th) {
+      DB::rollback();
+      return response()->json(['code' => 500, 'message' => $th->getMessage()]);
+    }
+  }
+
+  public static function allowAccessUpdate(array $data):JsonResponse{
+    DB::beginTransaction();
+    try {
+      DB::commit();
+      $conteEval = \Auth::user()->conteo_evaluaciones;
+      $userCode = \Auth::user()->codigo_poligrafista;
+
+      foreach ($data as $d) {
+        $evaluado = AccesoFormatos::findOrFail($d->id)->update([
+          'documento_persona' => $d->numero_documento,
+          'acceso_formato' => $d->acceder_formato,
+          'codigo_poligrafista' => $userCode,
+        ]);
+      }
+
+      return response()->json(['code' => 200, 'message' => ' Actualizado Satisfactoriamente']);
+    } catch (\Throwable $th) {
+      DB::rollback();
+      return response()->json(['code' => 500, 'message' => $th->getMessage()]);
+    }
+  }
+
+  public static function deleteAccessFormatEvaluated(string $id):JsonResponse{
+    DB::beginTransaction();
+    try {
+      DB::commit();
+      $getEvaluated = AccesoFormatos::findOrFail($id)->delete();
+      return response()->json(['code' => 200, 'message' => 'Se elimino al evaluado de la lista.']);
     } catch (\Throwable $th) {
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
