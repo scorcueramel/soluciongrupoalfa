@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
       GeneroSeeder::class,
       EstadoCivilSeeder::class,
       UserSeeder::class,
+      TipoViviendaSeeder::class
     ]);
 
     AccesoFormatos::create([

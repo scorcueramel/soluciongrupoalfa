@@ -37,6 +37,9 @@ class ValidarAccesoFormatosController extends Controller
   public function allowAccessToFormat(AccesoFormatosIndexRequest $request)
   {
     $evaluados = AccesoFormatos::query();
+    $codigoUsuario = \Auth::user()->codigo_poligrafista;
+
+    $evaluados->where('codigo_poligrafista','=',$codigoUsuario);
 
     if ($request->has('search')) {
       $evaluados->where('documento_persona', 'LIKE', '%' . $request->search . '%');
@@ -71,6 +74,7 @@ class ValidarAccesoFormatosController extends Controller
           'tiposdocumentos' => TiposDocumentos::all(),
           'tiposparentescos' => TiposParentescos::all(),
           'tiposviviendas' => TiposViviendas::all(),
+          'datosevaluado' => $accesoFormato,
         ]);
       }
     }

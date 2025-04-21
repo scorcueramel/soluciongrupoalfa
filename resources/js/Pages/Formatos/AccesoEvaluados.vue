@@ -10,6 +10,7 @@ import {router} from "@inertiajs/vue3";
 
 const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
+import Card from "primevue/card";
 
 const props = defineProps({
   filters: Object,
@@ -20,7 +21,7 @@ const props = defineProps({
 loadToast();
 
 const deleteDialog = ref(false);
-// const detailDialog = ref(false);
+
 const form = useForm({});
 
 const data = reactive({
@@ -121,6 +122,19 @@ const permitirAcceso = (data) => {
 <template>
   <app-layout>
     <Head title="Acceso a Evaluados"></Head>
+
+    <Card class="mb-8">
+      <template #content>
+        <div class="flex flex-wrap justify-between items-center">
+          <h2 class="text-2xl font-bold">GESTIÓN DE ACCESO A FORMATOS</h2>
+          <!--Cambiar los permisos correspondientes a create allow format-->
+          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true"
+                  icon="pi pi-plus"/>
+        </div>
+      </template>
+    </Card>
+
+
     <div class="card">
       <Create
         :show="data.allowFormatOpen"
@@ -131,9 +145,6 @@ const permitirAcceso = (data) => {
         @close="data.editOpen = false"
         :evaluado="data.evaluado"
       />
-      <!--Cambiar los permisos correspondientes a create allow format-->
-      <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true"
-              icon="pi pi-plus"/>
       <DataTable
         :value="evaluados.data"
         paginator
@@ -165,11 +176,12 @@ const permitirAcceso = (data) => {
         <Column>
           <template #header>Acceso a formato</template>
           <template #body="slotProps">
-            <Button v-show="slotProps.data.acceso_formato" outlined label="SI" text severity="success"
-                    @click="restringirAcceso(slotProps.data)"/>
-            <Button v-show="!slotProps.data.acceso_formato" outlined text severity="danger"
-                    @click="permitirAcceso(slotProps.data)">NO
-            </Button>
+            <div class="text-center">
+              <Button v-show="slotProps.data.acceso_formato" outlined text label="SI" severity="success"
+                      @click="restringirAcceso(slotProps.data)"/>
+              <Button v-show="!slotProps.data.acceso_formato" outlined text label="NO" severity="danger"
+                      @click="permitirAcceso(slotProps.data)"/>
+            </div>
           </template>
         </Column>
         <Column>
@@ -187,17 +199,15 @@ const permitirAcceso = (data) => {
                     @click="(data.editOpen = true),(data.evaluado = slotProps.data)"/>
             <Button v-show="can(['delete user'])" icon="pi pi-trash" outlined rounded severity="danger"
                     @click="deleteDialog = true; data.evaluado = slotProps.data"/>
-            <Button icon="pi pi-eye" outlined rounded severity="info" class="ml-2"
-                    @click="detailDialog = true; data.user = slotProps.data"/>
           </template>
         </Column>
       </DataTable>
 
-      <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Eliminar Examidado" :modal="true">
+      <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Eliminar Evaluado" :modal="true">
         <div class="flex items-center gap-4">
           <i class="pi pi-exclamation-triangle !text-3xl"/>
           <span v-if="data.evaluado"
-          >¿Estás seguro de eliminar al examinado <b>{{ data.evaluado.documento_persona }}</b
+          >¿Estás seguro de eliminar al evaluado con dni <b>{{ data.evaluado.documento_persona }}</b
           >?</span
           >
         </div>
@@ -206,20 +216,6 @@ const permitirAcceso = (data) => {
           <Button label="Eliminar" icon="pi pi-check" @click="deleteData"/>
         </template>
       </Dialog>
-
-      <!--      <Dialog v-model:visible="detailDialog" :style="{ width: '450px' }" header="Datos del usuario" :modal="true">-->
-      <!--        <div class="flex items-center gap-4">-->
-      <!--          <i class="pi pi-user !text-3xl"/>-->
-      <!--          <div class="grig grid-cols-1">-->
-      <!--            <div class="col-span-2">-->
-      <!--              <span v-if="data.user">Nombres y Apellidos: <b class="ms-2">{{ data.user.name }} {{ data.user.apellido_paterno }} {{ data.user.apellido_materno }}</b></span>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <template #footer>-->
-      <!--          <Button label="Cerrar" text @click="detailDialog = false"/>-->
-      <!--        </template>-->
-      <!--      </Dialog>-->
     </div>
   </app-layout>
 </template>

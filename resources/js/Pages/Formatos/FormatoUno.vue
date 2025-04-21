@@ -17,6 +17,7 @@ const props = defineProps({
   tiposviviendas: Object,
   tiposparentescos: Object,
   tiposdocumentos: Object,
+  datosevaluado:Object,
 });
 
 const otrotipovivienda = ref(false);
@@ -441,6 +442,8 @@ const getCoordinate = (event) => {
   this.y = coordinates.y;
 }
 
+const getDate = new Date();
+
 </script>
 
 <template>
@@ -451,10 +454,9 @@ const getCoordinate = (event) => {
   <div class="px-0 xl:px-10 lg:px-10 md:px-10">
     <form @submit.prevent="guardarFormato">
 
-      <Card>
+      <Card class="my-6">
         <template #content>
-          <div class="my-6">
-            <!-- Recordar que el codigo debe ser del poligrafista que esta activando el formato verificar que al momento de activar la opcion para que cliente pueda rellenar el formato se obtenga el codigo del poligrafista para su posterior envio (Revisarlo en el modelo de datos) -->
+          <div class="my-4">
             <div class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4">
               <div class="border-none flex justify-center items-center">
                 <img
@@ -478,7 +480,7 @@ const getCoordinate = (event) => {
                     <p class="font-bold">Código:</p>
                   </div>
                   <div class="text-end">
-                    <p>GAC-F-58</p>
+                    <p>{{props.datosevaluado.codigo_poligrafista}}{{props.datosevaluado.numero_evaluaciones}}</p>
                   </div>
                   <div class="text-start">
                     <p class="font-bold">Versión:</p>
@@ -490,7 +492,7 @@ const getCoordinate = (event) => {
                     <p class="font-bold">Fecha:</p>
                   </div>
                   <div class="text-end">
-                    <p>03/04/2025</p>
+                    <p>{{getDate.toLocaleDateString()}}</p>
                   </div>
                   <div class="col-span-2 text-center">
                     <p class="font-bold">Informe:</p>
@@ -816,7 +818,7 @@ const getCoordinate = (event) => {
                 <p class="font-bold text-lg">Datos del Padre</p>
               </div>
 
-              <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-2">
+              <div class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 gap-2">
                 <InputText
                   id="padre"
                   value="1"
@@ -824,7 +826,7 @@ const getCoordinate = (event) => {
                   autocomplete="off"
                   type="hidden"
                 />
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2">
                   <label for="nombrespadre">Nombres y Apellidos</label>
                   <InputText
                     id="nombrespadre"
@@ -908,8 +910,8 @@ const getCoordinate = (event) => {
                 <p class="font-bold text-lg">Datos de la Madre</p>
               </div>
 
-              <div class="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-4 md:grid-cols-3 gap-2">
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+              <div class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 gap-2">
+                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ">
                   <label for="nombresmadre">Nombres y Apellidos</label>
                   <InputText
                     id="nombresmadre"
@@ -1077,7 +1079,7 @@ const getCoordinate = (event) => {
                     />
                     <small class="text-red-500">errores</small>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-0 md:me-4 col-span-1">
                     <label for="edadconyuge">Edad</label>
                     <InputNumber
                       id="edadconyuge"
@@ -1090,7 +1092,7 @@ const getCoordinate = (event) => {
                     />
                     <small class="text-red-500">errores</small>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-0 md:me-4 col-span-1">
                     <label for="ocupacionconyuge">Ocupación</label>
                     <InputText
                       id="ocupacionconyuge"
