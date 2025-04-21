@@ -82,9 +82,7 @@ const restringirAcceso = (data) => {
           preserveScroll: true,
           onSuccess: () => null,
           onError: () => null,
-          onFinish: () => {
-            console.log('alerta')
-          },
+          onFinish: () => null,
         }
       )
       ;

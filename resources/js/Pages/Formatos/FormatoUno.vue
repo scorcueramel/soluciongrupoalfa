@@ -1,11 +1,15 @@
 <script setup>
 import {Head, useForm } from "@inertiajs/vue3";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watchEffect} from "vue";
 import {usePrimeVue} from "primevue/config";
+import {loadToast} from '@/composables/loadToast';
 
 import VueDrawingCanvas from "vue-drawing-canvas";
 
+loadToast();
+
 const props = defineProps({
+  show:Boolean,
   cargos: Array,
   distritos: Object,
   entidadesbancarias: Object,
@@ -19,6 +23,8 @@ const props = defineProps({
   tiposdocumentos: Object,
   datosevaluado:Object,
 });
+
+const emit = defineEmits(["close"]);
 
 const otrotipovivienda = ref(false);
 const agregarParentescoActive = ref(true);
@@ -41,6 +47,9 @@ const tiposdocumentosList = ref([]);
 const generosList = ref([]);
 const estadoscivilesList = ref([]);
 const nacionalidadesList = ref([]);
+const cargosLista = ref([]);
+
+const getDate = new Date();
 
 const form = useForm({
   empresa: "",
@@ -61,6 +70,7 @@ const form = useForm({
   otroTipoVivienda: "",
   telefono: "",
   email: "",
+  brevete:"",
   tipoParentescoPadre: 4,
   nombrespadre: "",
   edadpadre: 0,
@@ -277,6 +287,13 @@ onMounted(() => {
       code: e.id,
     })
   });
+
+  props.cargos.map((e)=>{
+    cargosLista.value.push({
+      name: e.cargo,
+      code: e.id,
+    })
+  })
 });
 
 const datosPiePagina = () => {
@@ -432,9 +449,11 @@ const removerDatoHermano = (index) => {
     : (datosHermanos.value = true);
 };
 
-const guardarFormato = () => {
-  console.log(form);
-};
+watchEffect(() => {
+  if (props.show) {
+    form.errors = {};
+  }
+});
 
 const getCoordinate = (event) => {
   let coordinates = this.$refs.VueDrawingCanvas.getCoordinates(event);
@@ -442,7 +461,27 @@ const getCoordinate = (event) => {
   this.y = coordinates.y;
 }
 
-const getDate = new Date();
+const registrarFormato = () => {
+  if(form.empresa === ""){
+    console.log("No selecciono una empresa a la que postular")
+  }
+  if(form.cargo === ""){
+    console.log("No selecciono un cargo al que postular")
+  }
+  if(form.nombres === ""){
+    console.log("No introdujo sus nombres")
+  }
+
+  // form.post(route('formato.store'),{
+  //   preserveScroll: true,
+  //   onSuccess: () => {
+  //     emit("close");
+  //     form.reset();
+  //   },
+  //   onError: () => null,
+  //   onFinish: () => null,
+  // })
+};
 
 </script>
 
@@ -452,7 +491,7 @@ const getDate = new Date();
   />
 
   <div class="px-0 xl:px-10 lg:px-10 md:px-10">
-    <form @submit.prevent="guardarFormato">
+    <form @submit.prevent="registrarFormato">
 
       <Card class="my-6">
         <template #content>
@@ -521,6 +560,8 @@ const getDate = new Date();
         </template>
       </Card>
 
+      <Card class="mb-6">
+        <template #content>
       <Stepper value="1">
         <StepItem value="1">
           <Step>EMPRESA A LA QUE POSTULA</Step>
@@ -551,19 +592,19 @@ const getDate = new Date();
                       </div>
                     </template>
                   </Select>
-                  <small class="text-red-500">errores</small>
+                  <small v-if="form.errors.empresa" class="text-red-500">{{form.errors.empresa}}</small>
                 </div>
                 <div class="mt-2 flex flex-col gap-2 ms-0 xl:ms-2 lg:ms-2 md:ms-2 me-2">
                   <label for="cargo">Cargo</label>
                   <Select
                     v-model="form.cargo"
-                    :options="props.cargos"
-                    optionValue="code"
+                    :options="cargosLista"
+                    filter
                     optionLabel="name"
                     placeholder="Seleccionar cargo"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+                  <small v-if="form.errors.cargo" class="text-red-500">{{form.errors.cargo}}</small>
                 </div>
               </div>
             </div>
@@ -586,7 +627,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Nombres"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="paterno">Apellido Paterno</label>
@@ -597,7 +638,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Apellido paterno"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="materno">Apellido Materno</label>
@@ -608,7 +649,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Apellido materno"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="nacionalidad">Nacionalidad</label>
@@ -634,7 +675,7 @@ const getDate = new Date();
                     </template>
                   </Select>
 
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="tipoDocumento">Tipo de Documento de Identidad</label>
@@ -646,7 +687,7 @@ const getDate = new Date();
                     placeholder="Seleccionar tipo de documento"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="numeroDocumento">Número de Documento</label>
@@ -658,7 +699,7 @@ const getDate = new Date();
                     placeholder="Número de documento"
                     @click="datosPiePagina"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechaNacimiento">Fecha de Nacimiento</label>
@@ -669,7 +710,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha de nacimiento"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="lugarNacimiento">Lugar de Nacimiento</label>
@@ -680,7 +721,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Lugar de nacimiento"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="estadoCivil">Estado Civil</label>
@@ -692,7 +733,7 @@ const getDate = new Date();
                     placeholder="Seleccionar estado civil"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="genero">Genero</label>
@@ -704,7 +745,7 @@ const getDate = new Date();
                     placeholder="Seleccionar genero"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="distrito">Distrito</label>
@@ -730,7 +771,7 @@ const getDate = new Date();
                     </template>
                   </Select>
 
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="direccion">Dirección</label>
@@ -741,7 +782,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Dirección"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="role">¿La Casa Donde Vives Es?</label>
@@ -754,7 +795,7 @@ const getDate = new Date();
                     emptyMessage="Opciones no disponibles"
                     @change="otroTipoVivienda"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                      v-if="otrotipovivienda">
@@ -766,7 +807,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Indique otro tipo de vivienda"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="telefono">Teléfono</label>
@@ -777,7 +818,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Telefono"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="email">Email</label>
@@ -788,7 +829,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Email"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="brevete">Brevete</label>
@@ -799,7 +840,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Brevete"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
             </div>
@@ -835,7 +876,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Nombres y apellidos"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="edadpadre">Edad</label>
@@ -848,7 +889,7 @@ const getDate = new Date();
                     :min="0"
                     :max="120"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="ocupacionpadre">Ocupación</label>
@@ -859,7 +900,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Ocupación"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
@@ -920,7 +961,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Nombres y apellidos"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="edadmadre">Edad</label>
@@ -933,7 +974,7 @@ const getDate = new Date();
                     :min="0"
                     :max="120"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="ocupacionmadre">Ocupación</label>
@@ -944,7 +985,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Ocupación"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
@@ -1007,7 +1048,7 @@ const getDate = new Date();
                     v-model="form.otroPatentesco"
                     @change="agregarParentescoActive = false"
                   />
-                  <!--<small class="text-red-500">errores</small>-->
+                  <!---->
                 </div>
 
                 <div class="flex flex-col xl:mt-10 mt-10 lg:mt-10 md:mt-10 sm:mt-10 col-span-1 xl:col-span-1 lg:col-span-1 md:col-span-1 w-1/3">
@@ -1077,7 +1118,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Nombres y apellidos"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-0 md:me-4 col-span-1">
                     <label for="edadconyuge">Edad</label>
@@ -1090,7 +1131,7 @@ const getDate = new Date();
                       :min="0"
                       :max="120"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-0 md:me-4 col-span-1">
                     <label for="ocupacionconyuge">Ocupación</label>
@@ -1101,7 +1142,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Ocupación"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label for="mismoinmuebleconyuge"
@@ -1175,7 +1216,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Nombres y apellidos"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label :for="'edadchijos' + item">Edad</label>
@@ -1188,7 +1229,7 @@ const getDate = new Date();
                       :min="0"
                       :max="120"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label :for="'ocupacioneshijos' + item">Ocupación</label>
@@ -1199,7 +1240,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Ocupación"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label for="mismoinmuebleconyuge"
@@ -1273,7 +1314,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Nombres y apellidos"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label :for="'edadhermanos' + item">Edad</label>
@@ -1286,7 +1327,7 @@ const getDate = new Date();
                       :min="0"
                       :max="120"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label :for="'ocupacioneshermanos' + item">Ocupación</label>
@@ -1297,7 +1338,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Ocupación"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                     <label for="mismoinmueblehermanos"
@@ -1380,7 +1421,7 @@ const getDate = new Date();
                     placeholder="Seleccionar grado de instruccion"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="centroestudiosuno">Centro de Estudios</label>
@@ -1391,7 +1432,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Centro de estudios"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="especialidadfacultaduno">Especialidad/Facultad</label>
@@ -1402,7 +1443,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Especialidad/Facultad"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="inicioestudiouno">Inicio</label>
@@ -1413,7 +1454,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Inicio"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="terminoestudiouno">Término</label>
@@ -1424,7 +1465,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Termino"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="situacionuno">Situación</label>
@@ -1438,7 +1479,7 @@ const getDate = new Date();
                           id="situacionUnoSi"
                           type="radio"
                           :value="true"
-                          name="situacionUnoSi"
+                          name="situacionUno"
                           v-model="form.situacionUno"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1455,7 +1496,7 @@ const getDate = new Date();
                           id="situacionUnoNo"
                           type="radio"
                           :value="false"
-                          name="situacionUnoNo"
+                          name="situacionUno"
                           v-model="form.situacionUno"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1481,7 +1522,7 @@ const getDate = new Date();
                     placeholder="Seleccionar grado de instruccion"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="centroestudiosdos">Centro de Estudios</label>
@@ -1492,7 +1533,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Centro de estudios"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="especialidadfacultaddos">Especialidad/Facultad</label>
@@ -1503,7 +1544,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Especialidad/Facultad"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="inicioestudiodos">Inicio</label>
@@ -1514,7 +1555,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Inicio"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="terminoestudiodos">Término</label>
@@ -1525,7 +1566,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Termino"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="situaciondos">Situación</label>
@@ -1539,7 +1580,7 @@ const getDate = new Date();
                           id="situacionDosSi"
                           type="radio"
                           :value="true"
-                          name="situacionDosSi"
+                          name="situacionDos"
                           v-model="form.situacionDos"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1556,7 +1597,7 @@ const getDate = new Date();
                           id="situacionDosNo"
                           type="radio"
                           :value="false"
-                          name="situacionDosNo"
+                          name="situacionDos"
                           v-model="form.situacionDos"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1582,7 +1623,7 @@ const getDate = new Date();
                     placeholder="Seleccionar grado de instruccion"
                     emptyMessage="Opciones no disponibles"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="centroestudiostres">Centro de Estudios</label>
@@ -1593,7 +1634,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Centro de estudios"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="especialidadfacultadtres"
@@ -1606,7 +1647,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Especialidad/Facultad"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="inicioestudiotres">Inicio</label>
@@ -1617,7 +1658,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Inicio"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="terminoestudiotres">Término</label>
@@ -1628,7 +1669,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Termino"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="situaciontres">Situación</label>
@@ -1642,7 +1683,7 @@ const getDate = new Date();
                           id="situacionTresSi"
                           type="radio"
                           :value="true"
-                          name="situacionTresSi"
+                          name="situacionTres"
                           v-model="form.situacionTres"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1659,7 +1700,7 @@ const getDate = new Date();
                           id="situacionTresNo"
                           type="radio"
                           :value="false"
-                          name="situacionTresNo"
+                          name="situacionTres"
                           v-model="form.situacionTres"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
@@ -1699,7 +1740,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Experiencia laboral"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechaingresouno">Fecha Ingreso</label>
@@ -1710,7 +1751,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha ingreso"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechasalidauno">Fecha Salida</label>
@@ -1721,7 +1762,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha salida"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="sueldouno">Sueldo</label>
@@ -1732,7 +1773,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Sueldo"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="cargodesempeniauno">Cargo Desempeña</label>
@@ -1743,7 +1784,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Cargo desempeña"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidauno">Motivo De Su Salida</label>
@@ -1755,7 +1796,7 @@ const getDate = new Date();
                     placeholder="Motivo de su salida"
                     rows="1" cols="30"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
               <p class="mt-5 text-lg font-bold">Empleo 2</p>
@@ -1769,7 +1810,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Experiencia laboral"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechaingresodos">Fecha Ingreso</label>
@@ -1780,7 +1821,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha ingreso"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechasalidados">Fecha Salida</label>
@@ -1791,7 +1832,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha salida"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="sueldodos">Sueldo</label>
@@ -1802,7 +1843,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Sueldo"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="cargodesempeniados">Cargo Desempeña</label>
@@ -1813,7 +1854,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Cargo desempeña"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidados">Motivo De Su Salida</label>
@@ -1825,7 +1866,7 @@ const getDate = new Date();
                     placeholder="Motivo de su salida"
                     rows="1" cols="30"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
               <p class="mt-5 text-lg font-bold">Empleo 3</p>
@@ -1839,7 +1880,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Experiencia laboral"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechaingresotres">Fecha Ingreso</label>
@@ -1850,7 +1891,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha ingreso"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechasalidatres">Fecha Salida</label>
@@ -1861,7 +1902,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha salida"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="sueldotres">Sueldo</label>
@@ -1872,7 +1913,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Sueldo"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="cargodesempeniatres">Cargo Desempeña</label>
@@ -1883,7 +1924,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Cargo desempeña"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                   <label for="motivosalidatres">Motivo De Su Salida</label>
@@ -1895,7 +1936,7 @@ const getDate = new Date();
                     placeholder="Motivo de su salida"
                     rows="1" cols="30"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
 
@@ -1941,7 +1982,7 @@ const getDate = new Date();
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                         />
                         <label
-                          for="amonestacionesNo"
+                          for="amonestacionesEmpleosNo"
                           class="w-full py-3 ms-2 text-sm font-medium text-gray-900"
                         >No</label
                         >
@@ -2005,7 +2046,7 @@ const getDate = new Date();
                     class="flex-auto"
                     autocomplete="off"
                     placeholder="Explique"/>
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
 
@@ -2031,8 +2072,8 @@ const getDate = new Date();
                             id="tieneprestamosi"
                             type="radio"
                             :value="true"
-                            name="tienePrestamos"
-                            v-model="form.tienePrestamos"
+                            name="tienesPrestamos"
+                            v-model="form.tienesPrestamos"
                             class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
                           />
                           <label
@@ -2061,7 +2102,7 @@ const getDate = new Date();
                       </li>
                     </ul>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.tienesPrestamos">
                     <label for="motoprestamo">Precise Monto Deuda S/.</label>
                     <InputNumber
                       id="motoprestamo"
@@ -2070,9 +2111,9 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Monto de deuda"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.tienesPrestamos">
                     <label for="solicitudrenuncia">Entidad</label>
 
                     <Select
@@ -2097,7 +2138,7 @@ const getDate = new Date();
                       </template>
                     </Select>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.tienesPrestamos">
                     <label for="cuotamensual">Cuota Mensual S/.</label>
                     <InputNumber
                       id="cuotamensual"
@@ -2106,7 +2147,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Monto de cuota"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                     <label for="otroingreso">Actualmente recibe otro ingreso: </label>
@@ -2150,7 +2191,7 @@ const getDate = new Date();
                       </li>
                     </ul>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.otroIngreso">
                     <label for="precisemonto">Precise Monto S/.</label>
                     <InputNumber
                       id="precisemonto"
@@ -2159,9 +2200,9 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Precise el monto"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="form.otroIngreso">
                     <label for="origen">Origen</label>
                     <Textarea
                       id="origen"
@@ -2171,7 +2212,7 @@ const getDate = new Date();
                       placeholder="Origen"
                       rows="1" cols="10"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                     <label for="tieneprestamosi">¿Tiene Propiedades?</label>
@@ -2215,7 +2256,7 @@ const getDate = new Date();
                       </li>
                     </ul>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="form.tienePropiedades">
                     <label for="detalle">Detalle</label>
                     <Textarea
                       id="detalle"
@@ -2225,7 +2266,7 @@ const getDate = new Date();
                       placeholder="Detalle"
                       rows="1" cols="10"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                     <label for="reportadoencentralesderiesgosi"
@@ -2271,7 +2312,7 @@ const getDate = new Date();
                       </li>
                     </ul>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="form.reportadoEnCentralesDeRiesgo">
                     <label for="precisedeserafirmativo"
                     >Precise De Ser Afirmativo</label
                     >
@@ -2283,9 +2324,9 @@ const getDate = new Date();
                       placeholder="Precise"
                       rows="1" cols="10"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.reportadoEnCentralesDeRiesgo">
                     <label for="entidaddeuda">Entidad Deuda</label>
 
                     <Select
@@ -2310,7 +2351,7 @@ const getDate = new Date();
                       </template>
                     </Select>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.reportadoEnCentralesDeRiesgo">
                     <label for="motivocentralriesgo">Motivo</label>
                     <InputText
                       id="motivocentralriesgo"
@@ -2319,9 +2360,9 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Motivo"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.reportadoEnCentralesDeRiesgo">
                     <label for="tiempomora">Tiempo de Mora</label>
                     <InputText
                       id="tiempomora"
@@ -2330,9 +2371,9 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Tiempo de mora"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                  <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1" v-if="form.reportadoEnCentralesDeRiesgo">
                     <label for="motodeuda">Monto de Deuda S/.</label>
                     <InputNumber
                       id="motodeuda"
@@ -2341,7 +2382,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Monto de deuda"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
             </div>
             </div>
@@ -2355,7 +2396,7 @@ const getDate = new Date();
           <Step>CONSUMO DE BEBIDAS ALCOHOLICAS</Step>
           <StepPanel v-slot="{ activateCallback }">
             <div class="flex flex-col mt-4">
-              <div class="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-6 md:grid-cols-4 gap-2">
+              <div class="grid grid-cols-2 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-4 gap-2">
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                     <label for="frecuenciaconsumosbebidas"
                     >Con Qué Frecuencia Consume Bebidas Alcohólicas:</label
@@ -2367,7 +2408,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Frecuencias de consumo"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                     <label for="quebebidasconsume">Que Bebidas Consume</label>
@@ -2378,7 +2419,7 @@ const getDate = new Date();
                       autocomplete="off"
                       placeholder="Bebidas que consume"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                   <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-2 md:col-span-2">
                     <label for="tratamientoalcholismosi"
@@ -2478,7 +2519,7 @@ const getDate = new Date();
                       placeholder="Explicación"
                       rows="1" cols="10"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
                 </div>
             </div>
@@ -2757,7 +2798,7 @@ const getDate = new Date();
                         <input
                           id="dias"
                           type="radio"
-                          :value="true"
+                          value="dias"
                           name="tiempoUltimaVez"
                           v-model="form.tiempoUltimaVez"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
@@ -2774,7 +2815,7 @@ const getDate = new Date();
                         <input
                           id="meses"
                           type="radio"
-                          :value="true"
+                          value="meses"
                           name="tiempoUltimaVez"
                           v-model="form.tiempoUltimaVez"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
@@ -2791,7 +2832,7 @@ const getDate = new Date();
                         <input
                           id="anios"
                           type="radio"
-                          :value="false"
+                          value="años"
                           name="tiempoUltimaVez"
                           v-model="form.tiempoUltimaVez"
                           class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
@@ -2814,7 +2855,7 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Cantidad"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
                 <div class="mt-2 flex flex-col gap-2 me-4 col-span-4 xl:col-span-2 lg:col-span-2 md:col-span-2 ps-0 xl:ps-3 lg:ps-3 md:ps-3">
                   <label for="familiaresendogras"
@@ -3296,7 +3337,7 @@ const getDate = new Date();
                       </li>
                     </ul>
                   </div>
-                  <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1 ps-0 xl:ps-3 lg:ps-3 md:ps-3">
+                  <div v-if="form.castigadoConCarcel" class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1 ps-0 xl:ps-3 lg:ps-3 md:ps-3">
                     <label for="explicacioncastigadoley">En caso de respuesta afirmativa,
                       explique:</label
                     >
@@ -3308,7 +3349,7 @@ const getDate = new Date();
                       placeholder="Explique"
                       rows="1" cols="10"
                     />
-                    <small class="text-red-500">errores</small>
+
                   </div>
               </div>
             </div>
@@ -3948,7 +3989,7 @@ const getDate = new Date();
                     </li>
                   </ul>
                 </div>
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
+                <div v-if="form.pasoAntesExamenPoligrafo" class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="explicacionpasoexamenantes"
                   >En caso de respuesta afirmativa, explique:
                   </label>
@@ -3960,9 +4001,9 @@ const getDate = new Date();
                     placeholder="Explique"
                     rows="1" cols="10"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
+                <div v-if="form.pasoAntesExamenPoligrafo" class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="empresparalaquepostulo">Empresa </label>
                   <InputText
                     id="empresparalaquepostulo"
@@ -3971,9 +4012,9 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Empres"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
+                <div v-if="form.pasoAntesExamenPoligrafo" class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                   <label for="fechapasoexamenanterior">Fecha</label>
                   <DatePicker
                     id="fechapasoexamenanterior"
@@ -3982,9 +4023,9 @@ const getDate = new Date();
                     autocomplete="off"
                     placeholder="Fecha"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
-                <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
+                <div v-if="form.pasoAntesExamenPoligrafo" class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-1">
                   <label for="motivopasoantesexamen">Motivo </label>
                   <Textarea
                     id="motivopasoantesexamen"
@@ -3994,7 +4035,7 @@ const getDate = new Date();
                     placeholder="Empres"
                     rows="1" cols="10"
                   />
-                  <small class="text-red-500">errores</small>
+
                 </div>
               </div>
             </div>
@@ -4121,6 +4162,8 @@ const getDate = new Date();
           </StepPanel>
         </StepItem>
       </Stepper>
+        </template>
+      </Card>
     </form>
   </div>
 </template>

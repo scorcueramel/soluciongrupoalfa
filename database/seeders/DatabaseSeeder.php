@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
     $this->call([
       PermissionSeeder::class,
       RoleSeeder::class,
+      CargosSeeder::class,
       NacionalidadSeeder::class,
       DistritoSeeder::class,
       TiposPersonasSeeder::class,
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
       GeneroSeeder::class,
       EstadoCivilSeeder::class,
       UserSeeder::class,
-      TipoViviendaSeeder::class
+      TipoViviendaSeeder::class,
     ]);
 
     AccesoFormatos::create([

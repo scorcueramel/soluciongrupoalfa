@@ -10,7 +10,8 @@ use App\Http\Controllers\UserController;
 use Spatie\Permission\Models\Permission;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ValidarAccesoFormatosController;
+use App\Http\Controllers\AccesoFormatosController;
+use App\Http\Controllers\FormatosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +44,11 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::resource('/user', UserController::class)->except('create', 'show', 'edit');
     Route::post('/user/destroy-bulk', [UserController::class, 'destroyBulk'])->name('user.destroy-bulk');
 
-    Route::get('/formatos', [ValidarAccesoFormatosController::class, 'allowAccessToFormat'])->name('formatos.acceso');
-    Route::post('/formatos', [ValidarAccesoFormatosController::class, 'createAllowAccessToFormat'])->name('formatos.crear.acceso');
-    Route::get('/formatos/{id}/accesos', [ValidarAccesoFormatosController::class, 'restrictAccessToFormat'])->name('formato.restringir.acceso');
-    Route::put('/formatos/actualizar', [ValidarAccesoFormatosController::class, 'update'])->name('formatos.actualizar.acceso');
-    Route::delete('/formato/{id}/delete', [ValidarAccesoFormatosController::class, 'deletedEvaluatedFormat'])->name('formato.evaluado.destroy');
+    Route::get('/formatos', [AccesoFormatosController::class, 'allowAccessToFormat'])->name('formatos.acceso');
+    Route::post('/formatos', [AccesoFormatosController::class, 'createAllowAccessToFormat'])->name('formatos.crear.acceso');
+    Route::get('/formatos/{id}/accesos', [AccesoFormatosController::class, 'restrictAccessToFormat'])->name('formato.restringir.acceso');
+    Route::put('/formatos/actualizar', [AccesoFormatosController::class, 'update'])->name('formatos.actualizar.acceso');
+    Route::delete('/formato/{id}/delete', [AccesoFormatosController::class, 'deletedEvaluatedFormat'])->name('formato.evaluado.destroy');
 
     Route::resource('/role', RoleController::class)->except('create', 'show', 'edit');
 
@@ -56,7 +57,8 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/
-Route::get('/formato', [ValidarAccesoFormatosController::class, 'index'])->name('formato.index');
-Route::post('/formato', [ValidarAccesoFormatosController::class, 'show'])->name('formato.validar.acceso');
+Route::get('/formato', [AccesoFormatosController::class, 'index'])->name('formato.index');
+Route::post('/formato', [FormatosController::class, 'index'])->name('formato.validar.acceso');
+Route::post('/formato/guardar', [FormatosController::class,'store'])->name('formato.store');
 
 require __DIR__ . '/auth.php';

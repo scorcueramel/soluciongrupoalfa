@@ -11,16 +11,22 @@ const model = ref([
   },
   {
     label: 'Gestión de accesos',
+    class: 'active-menuitem',
     items: [
       {
         label: 'Accesos', icon: 'pi pi-fw pi-key',
-        class: 'active-menuitem',
         items: [
           //cambiar "can : read user" por read habilitar formatos
           {label: 'Habilitar Formatos', icon: 'pi pi-fw pi-file-edit', to: '/formatos', can: 'read user'},
           {label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can: 'read user'},
           {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can: 'read role'},
-          {label: 'Permisos',icon: 'pi pi-fw pi-mobile',to: '/permission',class: 'rotated-icon',can: 'read permission'},
+          {
+            label: 'Permisos',
+            icon: 'pi pi-fw pi-mobile',
+            to: '/permission',
+            class: 'rotated-icon',
+            can: 'read permission'
+          },
         ]
       }
     ]
@@ -31,10 +37,11 @@ const model = ref([
     ]
   },
   {
+    label: 'Gestión de formatos',
+    class: 'active-menuitem',
     items: [
       {
         label: 'Formatos', icon: 'pi pi-fw pi-folder-open',
-        class: 'active-menuitem',
         items: [
           //cambiar "can : read user" por read habilitar formatos
           {label: 'Formatos 01', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},

@@ -1,5 +1,5 @@
 <script setup>
-import { useForm, Head } from "@inertiajs/vue3";
+import {useForm, Head, router} from "@inertiajs/vue3";
 import { ref } from "vue";
 import Alert from "@/Components/Alert.vue";
 
@@ -19,7 +19,6 @@ const submit = () => {
         documentoVacio.value = "Debes ingresar tu número de documento";
     } else {
         documentoVacio.value = "";
-
         form.post(route("formato.validar.acceso"), {
             onSuccess: () => form.reset(),
             onFinish: () => form.reset(),
