@@ -123,7 +123,6 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Inicio de Estudios 2] : No ingresaste el inicio de estudios 2");
   }
-
   if (form.gradoInstruccionTres === 0) {
     errors.value = true;
     errorsList.value.push("[Grado de Instrucción 3] : No selecciono un grado de instrucción 3");
@@ -139,6 +138,10 @@ export function validateForm(form, errors, errorsList) {
   if (form.inicioEstudiosTres === "") {
     errors.value = true;
     errorsList.value.push("[Inicio de Estudios 3] : No ingresaste el inicio de estudios 3");
+  }
+  if (form.ciudadExamen === "") {
+    errors.value = true;
+    errorsList.value.push("[Ciudad de Exámen] : No ingresaste la ciudad donde se realiza el exámen");
   }
 
   return (errors, errorsList);

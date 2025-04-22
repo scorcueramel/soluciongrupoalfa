@@ -30,4 +30,10 @@ class Personas extends Model
         'email',
         'brevete',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+      'deleted_at',
+    ];
 }

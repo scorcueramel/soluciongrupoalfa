@@ -51,6 +51,11 @@ const nacionalidadesList = ref([]);
 const cargosLista = ref([]);
 const errors = ref(false);
 const errorsList = ref([]);
+const mesesListCalendatio = ref(["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",]);
+const numeroMesExamen = ref(0);
+const nombreMesExamen = ref("");
+const diaMesExamen = ref(0);
+const anioExamen = ref(0);
 
 const getDate = new Date();
 
@@ -180,6 +185,7 @@ const form = useForm({
   traficoArmas: false,
   castigadoConCarcel: false,
   explicacionCastigadoLey: "",
+  pandilleros:false,
   sicarios: false,
   asaltantes: false,
   traficantesDrogas: false,
@@ -198,6 +204,7 @@ const form = useForm({
   fechaExamenAnterior: "",
   motivoPasoAntesExamen: "",
   imagenFirma: "",
+  ciudadExamen:"",
 });
 
 onbeforeunload = (event) => {
@@ -297,6 +304,12 @@ onMounted(() => {
       code: e.id,
     })
   })
+
+
+  numeroMesExamen.value = getDate.toLocaleDateString().slice(2,-4).replaceAll('/','') - 1;
+  nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
+  diaMesExamen.value = getDate.toLocaleDateString().slice(0,2).replaceAll('/','');
+  anioExamen.value = getDate.toLocaleDateString().slice(5,9).replaceAll('/','');
 });
 
 const datosPiePagina = () => {
@@ -314,20 +327,7 @@ const changeToSpanish = () => {
     "Vie",
     "Sab",
   ];
-  primevue.config.locale.monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
+  primevue.config.locale.monthNames = mesesListCalendatio.value;
   primevue.config.locale.monthNamesShort = [
     "Ene",
     "Feb",
@@ -465,7 +465,7 @@ const getCoordinate = (event) => {
 }
 
 const registrarFormato = () => {
-  // validateForm(form, errors, errorsList);
+  validateForm(form, errors, errorsList);
 
   if(!errors.value){
     form.post(route('formato.store'),{
@@ -605,7 +605,7 @@ const registrarFormato = () => {
               <Step>DATOS PERSONALES</Step>
               <StepPanel v-slot="{ activateCallback }">
                 <div class="flex flex-col mt-4">
-                  <div class="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-3 sm:grid-cols-3">
+                  <div class="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-3 sm:grid-cols-3">
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="nombres">Nombres</label>
                       <InputText
@@ -697,6 +697,7 @@ const registrarFormato = () => {
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Fecha de nacimiento"
+                        :manualInput="false"
                       />
 
                     </div>
@@ -847,7 +848,7 @@ const registrarFormato = () => {
                     <p class="font-bold text-lg">Datos del Padre</p>
                   </div>
 
-                  <div class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 gap-2">
+                  <div class="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 gap-2">
                     <InputText
                       id="padre"
                       value="1"
@@ -894,7 +895,7 @@ const registrarFormato = () => {
                       <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -939,7 +940,7 @@ const registrarFormato = () => {
                     <p class="font-bold text-lg">Datos de la Madre</p>
                   </div>
 
-                  <div class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 gap-2">
+                  <div class="grid grid-cols-1 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 gap-2">
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 ">
                       <label for="nombresmadre">Nombres y Apellidos</label>
                       <InputText
@@ -979,7 +980,7 @@ const registrarFormato = () => {
                       <label for="mismoinmueblepadre">Vive en el mismo inmueble</label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -1144,7 +1145,7 @@ const registrarFormato = () => {
                         >
 
                         <ul
-                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                         >
                           <li class="w-full">
                             <div class="flex items-center">
@@ -1243,7 +1244,7 @@ const registrarFormato = () => {
                         >
 
                         <ul
-                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                         >
                           <li class="w-full">
                             <div class="flex items-center">
@@ -1740,18 +1741,19 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechaingresouno">Fecha Ingreso</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechaingresouno"
                         v-model="form.fechaIngresoUno"
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Fecha ingreso"
                       />
-
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechasalidauno">Fecha Salida</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechasalidauno"
                         v-model="form.fechaSalidaUno"
                         class="flex-auto"
@@ -2058,11 +2060,11 @@ const registrarFormato = () => {
               <Step>INFORMACIÓN FINANCIERA</Step>
               <StepPanel v-slot="{ activateCallback }">
                 <div class="flex flex-col mt-4">
-                  <div class="grid grid-cols-2 xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-3 gap-2">
+                  <div class="grid grid-cols-2 xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-3 gap-2">
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="tieneprestamosi">¿Tiene Prestamos?</label>
 
-                      <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2">
+                      <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex ">
                         <li class="w-full">
                           <div class="flex items-center">
                             <input
@@ -2429,7 +2431,7 @@ const registrarFormato = () => {
                       />
 
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-2 md:col-span-2">
+                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                       <label for="tratamientoalcholismosi"
                       >Ha recibido tratamiento por alcoholismo</label
                       >
@@ -2473,7 +2475,7 @@ const registrarFormato = () => {
                         </li>
                       </ul>
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-2 md:col-span-2">
+                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
                       <label for="trabajoebriosi">Ha Llegado a Trabajar Ebrio</label>
 
                       <ul
@@ -2515,7 +2517,7 @@ const registrarFormato = () => {
                         </li>
                       </ul>
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+                    <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="form.trabajoEbrio">
                       <label for="explicacionllegoebrio"
                       >En Caso De Respuesta Afirmativa, Explique</label
                       >
@@ -4114,9 +4116,9 @@ const registrarFormato = () => {
                     <div class="mt-2 flex flex-col gap-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <p>
                         Ciudad de,
-                        <InputText
-                          id="fechaActualExamen"
-                          v-model="form.fechaActualExamen"
+                        <input
+                          id="ciudadExamen"
+                          v-model="form.ciudadExamen"
                           class="flex-auto w-1/4"
                           autocomplete="off"
                           placeholder="Ciudad"
@@ -4124,28 +4126,31 @@ const registrarFormato = () => {
                         ,
                         <input type="text"
                                id="diaActualExamen"
-                               v-model="form.diaActualExamen"
+                               v-model="diaMesExamen"
                                class="flex-auto w-14"
                                autocomplete="off"
                                placeholder="Día"
                                maxlength="2"
+                               readonly
                         />
                         de
                         <input type="text"
                                id="mesActualExamen"
-                               v-model="form.mesActualExamen"
+                               v-model="nombreMesExamen"
                                class="flex-auto w-1/6"
                                autocomplete="off"
                                placeholder=" Mes"
                                maxlength="9"
+                               readonly
                         />
                         <input type="text"
                                id="anioActualExamen"
-                               v-model="form.anioActualExamen"
+                               v-model="anioExamen"
                                class="flex-auto w-20 ms-2"
                                autocomplete="off"
                                placeholder="Año"
                                maxlength="4"
+                               readonly
                         />
                       </p>
                     </div>
@@ -4236,7 +4241,7 @@ const registrarFormato = () => {
 </template>
 
 <style scoped lang="scss">
-#fechaActualExamen,
+#ciudadExamen,
 #diaActualExamen,
 #mesActualExamen,
 #anioActualExamen,
@@ -4247,6 +4252,29 @@ const registrarFormato = () => {
   border-bottom: 1px solid gray;
   border-radius: 0;
   background: transparent;
+}
+
+input[type="month"]{
+  border: 1px solid #CBD5E1;
+  border-radius: 5px;
+  transition: .3s;
+  outline-offset: 0;
+  outline: 0;
+  --tw-ring-color: #10B981;
+  &:focus{
+    outline: none;
+    border: 1px solid #10B981;
+  }
+  &:active{
+    outline: none;
+    border: 1px solid #10B981;
+    &:hover{
+      border: 1px solid #10B981;
+    }
+  }
+  &:hover{
+    border: 1px solid #919FB4;
+  }
 }
 </style>
 

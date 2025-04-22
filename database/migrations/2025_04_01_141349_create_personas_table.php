@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('genero_id')->constrained('generos');
             $table->foreignId('distrito_id')->constrained('distritos');
             $table->foreignId('tipo_vivienda_id')->constrained('tipos_viviendas');
-            $table->text('foto');
+            $table->text('foto')->nullable();
             $table->string('nombres',50);
             $table->string('apellido_paterno',100);
             $table->string('apellido_materno',100);
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('otro_tipo_vivienda',150)->nullable();
             $table->string('telefono',50);
             $table->string('email',100);
-            $table->string('brevete',20);
+            $table->string('brevete',20)->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
