@@ -465,7 +465,7 @@ const getCoordinate = (event) => {
 }
 
 const registrarFormato = () => {
-  validateForm(form, errors, errorsList);
+  // validateForm(form, errors, errorsList);
 
   if(!errors.value){
     form.post(route('formato.store'),{
@@ -1638,7 +1638,7 @@ const registrarFormato = () => {
                       >
                       <InputText
                         id="especialidadfacultadtres"
-                        v-model="form.especialidadesFacultadesTres"
+                        v-model="form.especialidadesFacultadTres"
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Especialidad/Facultad"

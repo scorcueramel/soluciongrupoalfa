@@ -91,117 +91,55 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Ocupación Madre] : No ingresaste la ocupación de tu madre");
   }
+  if (form.gradoInstruccionUno === 0) {
+    errors.value = true;
+    errorsList.value.push("[Grado de Instrucción 1] : No selecciono un grado de instrucción 1");
+  }
+  if (form.centroEstudioUno === "") {
+    errors.value = true;
+    errorsList.value.push("[Centro de Estudios 1] : No ingresaste tu centro de estudios 1");
+  }
+  if (form.especialidadesFacultadUno === "") {
+    errors.value = true;
+    errorsList.value.push("[Especialidad/Facultad 1] : No ingresaste Especialidad/Facultad 1");
+  }
+  if (form.inicioEstudiosUno === "") {
+    errors.value = true;
+    errorsList.value.push("[Inicio de Estudios 1] : No ingresaste el inicio de estudios 1");
+  }
+  if (form.gradoInstruccionDos === 0) {
+    errors.value = true;
+    errorsList.value.push("[Grado de Instrucción 2] : No selecciono un grado de instrucción 2");
+  }
+  if (form.centroEstudioDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Centro de Estudios 2] : No ingresaste tu centro de estudios 2");
+  }
+  if (form.especialidadesFacultadDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Especialidad/Facultad 2] : No ingresaste Especialidad/Facultad 2");
+  }
+  if (form.inicioEstudiosDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Inicio de Estudios 2] : No ingresaste el inicio de estudios 2");
+  }
 
+  if (form.gradoInstruccionTres === 0) {
+    errors.value = true;
+    errorsList.value.push("[Grado de Instrucción 3] : No selecciono un grado de instrucción 3");
+  }
+  if (form.centroEstudioTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Centro de Estudios 3] : No ingresaste tu centro de estudios 3");
+  }
+  if (form.especialidadesFacultadTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Especialidad/Facultad 3] : No ingresaste Especialidad/Facultad 3");
+  }
+  if (form.inicioEstudiosTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Inicio de Estudios 3] : No ingresaste el inicio de estudios 3");
+  }
 
-    "tipoParentescoConyuge" => 'required|numeric',
-    "nombresConyuge" => 'string|min:3|max:100',
-    "edadConyuge" => ['numeric'],
-    "nombreOcupacionConyuge" => 'string|min:3|max:150',
-    "mismoInmuebleConyuge" => 'required|boolean',
-    "tipoParentescoHijos" => ['numeric'],
-    "nombresHijos" => ['array'],
-    "edadesHijos" => ['array'],
-    "nombreOcupacionesHijos" => ['array'],
-    "mismoInmuebleHijos" => ['array'],
-    "tipoParentescoHermanos" => ['numeric'],
-    "nombresHermanos" => ['array'],
-    "edadesHermanos" => ['array'],
-    "nombreOcupacionesHermanos" => ['array'],
-    "mismoInmuebleHermanos" => ['array'],
-    "gradoInstruccionUno" => 'required|numeric',
-    "centroEstudioUno" => 'required|string|min:3|max:100',
-    "especialidadesFacultadUno" => 'required|string|min:3|max:150',
-    "inicioEstudiosUno" => 'required|date',
-    "terminoEstudiosUno" => ['date'],
-    "situacionUno" => 'required|boolean',
-    "gradoInstruccionDos" => 'required|numeric',
-    "centroEstudioDos" => 'required|string|min:3|max:100',
-    "especialidadesFacultadDos" => 'required|string|min:3|max:150',
-    "inicioEstudiosDos" => 'required|date',
-    "terminoEstudiosDos" => ['date'],
-    "situacionDos" => 'required|boolean',
-    "gradoInstruccionTres" => ['numeric'],
-    "centroEstudioTres" => 'string|min:3|max:100',
-    "especialidadesFacultadTres" => 'string|min:3|max:150',
-    "inicioEstudiosTres" => ['date'],
-    "terminoEstudiosTres" => ['date'],
-    "situacionTres" => 'required|boolean',
-    "empresaUno" => 'string|min:3|max:100',
-    "fechaIngresoUno" => ['string'],
-    "fechaSalidaUno" => ['string'],
-    "sueldoUno" => ['numeric'],
-    "cargoDesempenioUno" => 'string|min:3|max:150',
-    "motivoSalidaUno" => 'string|min:3|max:150',
-    "empresaDos" => 'string|min:3|max:150',
-    "fechaIngresoDos" => ['string'],
-    "fechaSalidaDos" => ['string'],
-    "sueldoDos" => ['numeric'],
-    "cargoDesempenioDos" => 'string|min:3|max:150',
-    "motivoSalidaDos" => 'string|min:3|max:150',
-    "empresaTres" => 'string|min:3|max:150',
-    "fechaIngresoTres" => ['string'],
-    "fechaSalidaTres" => ['string'],
-    "sueldoTres" => ['numeric'],
-    "cargoDesempenioTres" => 'string|min:3|max:150',
-    "motivoSalidaTres" => 'string|min:3|max:150',
-    "amonestacionesEmpleos" => 'required|boolean',
-    "solicitudRenuncia" => 'required|boolean',
-    "explicacion" => 'string|min:3|max:150',
-    "tienesPrestamos" => 'required|boolean',
-    "entidadBancaria" => ['numeric'],
-    "montoDeuda" => ['numeric'],
-    "otroIngreso" => 'required|boolean',
-    "preciseMonto" => ['numeric'],
-    "origenOtroIngreso" => ['string'],
-    "tienePropiedades" => 'required|boolean',
-    "detallePropiedades" => 'string|min:3|max:150',
-    "reportadoEnCentralesDeRiesgo" => 'required|boolean',
-    "preciseDeSerAfirmativo" => ['string'],
-    "entidadDeuda" => ['numeric'],
-    "motivoCentralDeRiesgo" => 'string|min:3|max:150',
-    "tiempoMora" => 'string|min:3|max:150',
-    "montoDeuraMora" => ['numeric'],
-    "fecuenciaConsumoBebidasAlcoholicas" => 'string|min:3|max:300',
-    "queBebidasConsume" => 'string|min:3|max:150',
-    "tratamientoAlcholismo" => 'required|boolean',
-    "trabajoEbrio" => 'required|boolean',
-    "expliqueLlegoEbrio" => 'string|min:3|max:300',
-    "marihuana" => 'required|boolean',
-    "pbc" => 'required|boolean',
-    "cocaina" => 'required|boolean',
-    "heroina" => 'required|boolean',
-    "lcd" => 'required|boolean',
-    "extasis" => 'required|boolean',
-    "tiempoUltimaVez" => ['string'],
-    "cantidadUltimoConsumo" => ['numeric'],
-    "familiaresEnDrogas" => 'required|boolean',
-    "roboHurtoFraude" => 'required|boolean',
-    "homicidioInvoluntario" => 'required|boolean',
-    "asalto" => 'required|boolean',
-    "planesDanioFisico" => 'required|boolean',
-    "secuestro" => 'required|boolean',
-    "violacion" => 'required|boolean',
-    "muerteLesionPersona" => 'required|boolean',
-    "traficoIlicitoDrogas" => 'required|boolean',
-    "traficoArmas" => 'required|boolean',
-    "castigadoConCarcel" => 'required|boolean',
-    "explicacionCastigadoLey" => 'string|min:3|max:300',
-    "sicarios" => 'required|boolean',
-    "asaltantes" => 'required|boolean',
-    "traficantesDrogas" => 'required|boolean',
-    "estafadores" => 'required|boolean',
-    "terroristas" => 'required|boolean',
-    "secuestradores" => 'required|boolean',
-    "extorsionadores" => 'required|boolean',
-    "otrasPersonasMargenLey" => 'required|boolean',
-    "familiaresSentenciadosPenales" => 'required|boolean',
-    "planeaCausarDanioPersonaEmpresa" => 'required|boolean',
-    "planeaObtenerBeneficioIlegal" => 'required|boolean',
-    "familiaresMismaEmpresa" => 'required|boolean',
-    "pasoAntesExamenPoligrafo" => 'required|boolean',
-    "explicacionExamenAnterior" => 'string|min:3|max:300',
-    "empresaPostuloAntes" => 'string|min:3|max:300',
-    "fechaExamenAnterior" => 'string|min:3|max:300',
-    "motivoPasoAntesE" => 'string|min:3|max:300',
   return (errors, errorsList);
 }
