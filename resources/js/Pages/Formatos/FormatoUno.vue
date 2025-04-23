@@ -1812,7 +1812,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechaingresodos">Fecha Ingreso</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechaingresodos"
                         v-model="form.fechaIngresoDos"
                         class="flex-auto"
@@ -1823,7 +1824,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechasalidados">Fecha Salida</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechasalidados"
                         v-model="form.fechaSalidaDos"
                         class="flex-auto"
@@ -1882,7 +1884,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechaingresotres">Fecha Ingreso</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechaingresotres"
                         v-model="form.fechaIngresoTres"
                         class="flex-auto"
@@ -1893,7 +1896,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechasalidatres">Fecha Salida</label>
-                      <DatePicker
+                      <input
+                        type="month"
                         id="fechasalidatres"
                         v-model="form.fechaSalidaTres"
                         class="flex-auto"
@@ -4257,23 +4261,18 @@ const registrarFormato = () => {
 input[type="month"]{
   border: 1px solid #CBD5E1;
   border-radius: 5px;
-  transition: .3s;
   outline-offset: 0;
   outline: 0;
-  --tw-ring-color: #10B981;
+  --tw-ring-color: transparent;
   &:focus{
     outline: none;
-    border: 1px solid #10B981;
+    border: 0;
+    --tw-ring-color: #10B981;
   }
   &:active{
     outline: none;
-    border: 1px solid #10B981;
-    &:hover{
-      border: 1px solid #10B981;
-    }
-  }
-  &:hover{
-    border: 1px solid #919FB4;
+    border: 0;
+    --tw-ring-color: #10B981;
   }
 }
 </style>

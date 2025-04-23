@@ -23,7 +23,7 @@ class FormatoUnoService
      * Consumo de Bebidas Alcoholicas
      * Personas Información Financiera
      * Personas Margen de la Ley
-      * Acerca del Poligrafo
+     * Acerca del Poligrafo
      * Formaciones Academicas Personas
      * Experiencias Laborales
      * Parentescos Personas
