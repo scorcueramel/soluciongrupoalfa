@@ -149,13 +149,13 @@ const form = useForm({
   tienesPrestamos: false,
   entidadBancaria: "",
   montoDeuda: 0,
+  cuotaMensual: 0,
   otroIngreso: false,
   preciseMonto: 0,
   origenOtroIngreso: "",
   tienePropiedades: false,
   detallePropiedades: "",
   reportadoEnCentralesDeRiesgo: false,
-  preciseDeSerAfirmativo: "",
   entidadDeuda: "",
   motivoCentralDeRiesgo: "",
   tiempoMora: "",
@@ -495,8 +495,8 @@ const registrarFormato = () => {
             <div class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4">
               <div class="border-none flex justify-center items-center">
                 <img
-                  src="/demo/images/logo.png"
-                  width="166"
+                  src="/demo/images/ESCUDO-RGB.png"
+                  width="130"
                   alt="logo"
                   class="p-8"
                 />
@@ -691,7 +691,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="fechaNacimiento"
                         v-model="form.fechaNacimiento"
                         class="flex-auto"
@@ -1216,7 +1217,7 @@ const registrarFormato = () => {
                       </div>
                       <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                         <label :for="'edadchijos' + item">Edad</label>
-                        <InputText
+                        <InputNumber
                           :id="'edadchijos' + item"
                           v-model="form.edadesHijos[item]"
                           class="flex-auto"
@@ -1315,7 +1316,7 @@ const registrarFormato = () => {
                       </div>
                       <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                         <label :for="'edadhermanos' + item">Edad</label>
-                        <InputText
+                        <InputNumber
                           :id="'edadhermanos' + item"
                           v-model="form.edadesHermanos[item]"
                           class="flex-auto"
@@ -1343,7 +1344,7 @@ const registrarFormato = () => {
                         >
 
                         <ul
-                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                          class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                         >
                           <li class="w-full">
                             <div class="flex items-center">
@@ -1444,7 +1445,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="inicioestudiouno">Inicio</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="inicioestudiouno"
                         v-model="form.inicioEstudiosUno"
                         class="flex-auto"
@@ -1455,7 +1457,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="terminoestudiouno">Término</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="terminoestudiouno"
                         v-model="form.terminoEstudiosUno"
                         class="flex-auto"
@@ -1545,7 +1548,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="inicioestudiodos">Inicio</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="inicioestudiodos"
                         v-model="form.inicioEstudiosDos"
                         class="flex-auto"
@@ -1556,7 +1560,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="terminoestudiodos">Término</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="terminoestudiodos"
                         v-model="form.terminoEstudiosDos"
                         class="flex-auto"
@@ -1648,7 +1653,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="inicioestudiotres">Inicio</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="inicioestudiotres"
                         v-model="form.inicioEstudiosTres"
                         class="flex-auto"
@@ -1659,7 +1665,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="terminoestudiotres">Término</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="terminoestudiotres"
                         v-model="form.terminoEstudiosTres"
                         class="flex-auto"
@@ -2148,7 +2155,7 @@ const registrarFormato = () => {
                       <label for="cuotamensual">Cuota Mensual S/.</label>
                       <InputNumber
                         id="cuotamensual"
-                        v-model="form.montoDeuda"
+                        v-model="form.cuotaMensual"
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Monto de cuota"
@@ -2159,7 +2166,7 @@ const registrarFormato = () => {
                       <label for="otroingreso">Actualmente recibe otro ingreso: </label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -2226,7 +2233,7 @@ const registrarFormato = () => {
                       <label for="tieneprestamosi">¿Tiene Propiedades?</label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -2278,12 +2285,10 @@ const registrarFormato = () => {
 
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
-                      <label for="reportadoencentralesderiesgosi"
-                      >Esta Reportado en Centrales de Riesgo</label
-                      >
+                      <label for="reportadoencentralesderiesgosi">Esta Reportado en Centrales de Riesgo</label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -2321,21 +2326,7 @@ const registrarFormato = () => {
                         </li>
                       </ul>
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2"
-                         v-if="form.reportadoEnCentralesDeRiesgo">
-                      <label for="precisedeserafirmativo"
-                      >Precise De Ser Afirmativo</label
-                      >
-                      <Textarea
-                        id="precisedeserafirmativo"
-                        v-model="form.preciseDeSerAfirmativo"
-                        class="flex-auto"
-                        autocomplete="off"
-                        placeholder="Precise"
-                        rows="1" cols="10"
-                      />
 
-                    </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                          v-if="form.reportadoEnCentralesDeRiesgo">
                       <label for="entidaddeuda">Entidad Deuda</label>
@@ -2441,7 +2432,7 @@ const registrarFormato = () => {
                       >
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -2483,7 +2474,7 @@ const registrarFormato = () => {
                       <label for="trabajoebriosi">Ha Llegado a Trabajar Ebrio</label>
 
                       <ul
-                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex mt-2"
+                        class="items-center w-full text-sm font-medium text-gray-900 bg-white sm:flex"
                       >
                         <li class="w-full">
                           <div class="flex items-center">
@@ -4068,7 +4059,8 @@ const registrarFormato = () => {
                     <div v-if="form.pasoAntesExamenPoligrafo"
                          class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="fechapasoexamenanterior">Fecha</label>
-                      <DatePicker
+                      <input
+                        type="date"
                         id="fechapasoexamenanterior"
                         v-model="form.fechaExamenAnterior"
                         class="flex-auto"
@@ -4085,7 +4077,7 @@ const registrarFormato = () => {
                         v-model="form.motivoPasoAntesExamen"
                         class="flex-auto"
                         autocomplete="off"
-                        placeholder="Empres"
+                        placeholder="Motivo"
                         rows="1" cols="10"
                       />
 
@@ -4189,7 +4181,8 @@ const registrarFormato = () => {
                   </div>
 
                   <div class="mt-2 flex flex-col gap-2">
-                    <div class="flex justify-center mt-16">
+                    <p class="text-center mt-16 text-lg">Firma</p>
+                    <div class="flex justify-center mt-4">
                       <vue-drawing-canvas
                         ref="VueCanvasDrawing"
                         @mousemove="getCoordinate($event)"
@@ -4210,13 +4203,12 @@ const registrarFormato = () => {
                               class="bg-red-500 p-2 rounded-lg text-white">Corregir Firma
                       </button>
                     </p>
-                    <p class="text-center mt-4 text-lg">Firma</p>
                   </div>
 
                 </div>
                 <div class="flex pt-4 mb-6 gap-2">
                   <Button label="Anterior" severity="secondary" @click="activateCallback('12')"/>
-                  <Button type="submit" label="Terminar"/>
+                  <Button type="submit" label="Terminar" @click="datosPiePagina"/>
                 </div>
               </StepPanel>
             </StepItem>
@@ -4258,7 +4250,7 @@ const registrarFormato = () => {
   background: transparent;
 }
 
-input[type="month"]{
+input[type="month"], input[type="date"]{
   border: 1px solid #CBD5E1;
   border-radius: 5px;
   outline-offset: 0;

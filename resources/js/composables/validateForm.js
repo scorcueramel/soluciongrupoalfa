@@ -123,26 +123,81 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Inicio de Estudios 2] : No ingresaste el inicio de estudios 2");
   }
-  if (form.gradoInstruccionTres === 0) {
+  if (form.empresaUno === "") {
     errors.value = true;
-    errorsList.value.push("[Grado de Instrucción 3] : No selecciono un grado de instrucción 3");
+    errorsList.value.push("[Empresa 1] : No ingresaste el nombre de la empresa 1");
   }
-  if (form.centroEstudioTres === "") {
+  if (form.fechaIngresoUno === "") {
     errors.value = true;
-    errorsList.value.push("[Centro de Estudios 3] : No ingresaste tu centro de estudios 3");
+    errorsList.value.push("[Fecha Ingreso 1] : No ingresaste tu fecha de ingreso a la empresa 1");
   }
-  if (form.especialidadesFacultadTres === "") {
+  if (form.fechaSalidaUno === "") {
     errors.value = true;
-    errorsList.value.push("[Especialidad/Facultad 3] : No ingresaste Especialidad/Facultad 3");
+    errorsList.value.push("[Fecha Salida 1] : No ingresaste tu fecha de salida a la empresa 1");
   }
-  if (form.inicioEstudiosTres === "") {
+  if (form.sueldoUno === "") {
     errors.value = true;
-    errorsList.value.push("[Inicio de Estudios 3] : No ingresaste el inicio de estudios 3");
+    errorsList.value.push("[Sueldo 1] : No ingresaste el percibido en la empresa 1");
+  }
+  if (form.cargoDesempenioUno === "") {
+    errors.value = true;
+    errorsList.value.push("[Cargo 1] : No ingresaste el cargo desempeñado en la empresa 1");
+  }
+  if (form.motivoSalidaUno === "") {
+    errors.value = true;
+    errorsList.value.push("[Motivo 1] : No ingresaste el motivo de salida de la empresa 1");
+  }
+  if (form.empresaDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Empresa 2] : No ingresaste el nombre de la empresa 2");
+  }
+  if (form.fechaIngresoDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Fecha Ingreso 2] : No ingresaste tu fecha de ingreso a la empresa 2");
+  }
+  if (form.fechaSalidaDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Fecha Salida 2] : No ingresaste tu fecha de salida a la empresa 2");
+  }
+  if (form.sueldoDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Sueldo 2] : No ingresaste el percibido en la empresa 2");
+  }
+  if (form.cargoDesempenioDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Cargo 2] : No ingresaste el cargo desempeñado en la empresa 2");
+  }
+  if (form.motivoSalidaDos === "") {
+    errors.value = true;
+    errorsList.value.push("[Motivo 2] : No ingresaste el motivo de salida de la empresa 2");
+  }
+  if (form.empresaTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Empresa 3] : No ingresaste el nombre de la empresa 3");
+  }
+  if (form.fechaIngresoTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Fecha Ingreso 3] : No ingresaste tu fecha de ingreso a la empresa 3");
+  }
+  if (form.fechaSalidaTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Fecha Salida 3] : No ingresaste tu fecha de salida a la empresa 3");
+  }
+  if (form.sueldoTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Sueldo 3] : No ingresaste el percibido en la empresa 3");
+  }
+  if (form.cargoDesempenioTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Cargo 3] : No ingresaste el cargo desempeñado en la empresa 3");
+  }
+  if (form.motivoSalidaTres === "") {
+    errors.value = true;
+    errorsList.value.push("[Motivo 3] : No ingresaste el motivo de salida de la empresa 3");
   }
   if (form.ciudadExamen === "") {
     errors.value = true;
     errorsList.value.push("[Ciudad de Exámen] : No ingresaste la ciudad donde se realiza el exámen");
   }
-
   return (errors, errorsList);
 }

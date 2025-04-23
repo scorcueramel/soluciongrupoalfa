@@ -50,8 +50,9 @@ const submit = () => {
                 >
                     <div class="flex justify-center mb-4">
                         <img
-                            src="/demo/images/logo.png"
+                            src="/demo/images/Logo-municipalidad.png"
                             alt="logo-grupo-alfa"
+                            width="200"
                         />
                     </div>
                     <div class="flex justify-center mb-5">
