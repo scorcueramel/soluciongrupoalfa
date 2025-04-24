@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('cargo_desempenado',100)->nullable();
             $table->string('motivo_salida',100)->nullable();
             $table->boolean('recibio_amonestaciones')->nullable();
+            $table->boolean('solicitud_renuncia')->nullable();
             $table->text('explicacion')->nullable();
             $table->timestamps();
         });

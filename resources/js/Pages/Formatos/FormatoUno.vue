@@ -51,7 +51,7 @@ const nacionalidadesList = ref([]);
 const cargosLista = ref([]);
 const errors = ref(false);
 const errorsList = ref([]);
-const mesesListCalendatio = ref(["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",]);
+const mesesListCalendatio = ref(["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",]);
 const numeroMesExamen = ref(0);
 const nombreMesExamen = ref("");
 const diaMesExamen = ref(0);
@@ -90,6 +90,9 @@ const form = useForm({
   nombresocupacionmadre: "",
   mismoInmuebleMadre: false,
   otroPatentesco: "",
+  tieneConyuge: datosConyuge.value,
+  tieneHijos: datosHijos.value,
+  tieneHermanos: datosHermanos.value,
   tipoParentescoConyuge: 0,
   nombresConyuge: "",
   edadConyuge: 0,
@@ -185,7 +188,7 @@ const form = useForm({
   traficoArmas: false,
   castigadoConCarcel: false,
   explicacionCastigadoLey: "",
-  pandilleros:false,
+  pandilleros: false,
   sicarios: false,
   asaltantes: false,
   traficantesDrogas: false,
@@ -204,7 +207,7 @@ const form = useForm({
   fechaExamenAnterior: "",
   motivoPasoAntesExamen: "",
   imagenFirma: "",
-  ciudadExamen:"",
+  ciudadExamen: "",
 });
 
 onbeforeunload = (event) => {
@@ -306,10 +309,10 @@ onMounted(() => {
   })
 
 
-  numeroMesExamen.value = getDate.toLocaleDateString().slice(2,-4).replaceAll('/','') - 1;
+  numeroMesExamen.value = getDate.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
-  diaMesExamen.value = getDate.toLocaleDateString().slice(0,2).replaceAll('/','');
-  anioExamen.value = getDate.toLocaleDateString().slice(5,9).replaceAll('/','');
+  diaMesExamen.value = getDate.toLocaleDateString().slice(0, 2).replaceAll('/', '');
+  anioExamen.value = getDate.toLocaleDateString().slice(5, 9).replaceAll('/', '');
 });
 
 const datosPiePagina = () => {
@@ -467,8 +470,8 @@ const getCoordinate = (event) => {
 const registrarFormato = () => {
   validateForm(form, errors, errorsList);
 
-  if(!errors.value){
-    form.post(route('formato.store'),{
+  if (!errors.value) {
+    form.post(route('formato.store'), {
       preserveScroll: true,
       onSuccess: () => {
         emit("close");
@@ -2512,7 +2515,8 @@ const registrarFormato = () => {
                         </li>
                       </ul>
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="form.trabajoEbrio">
+                    <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2"
+                         v-if="form.trabajoEbrio">
                       <label for="explicacionllegoebrio"
                       >En Caso De Respuesta Afirmativa, Explique</label
                       >
@@ -4250,18 +4254,20 @@ const registrarFormato = () => {
   background: transparent;
 }
 
-input[type="month"], input[type="date"]{
+input[type="month"], input[type="date"] {
   border: 1px solid #CBD5E1;
   border-radius: 5px;
   outline-offset: 0;
   outline: 0;
   --tw-ring-color: transparent;
-  &:focus{
+
+  &:focus {
     outline: none;
     border: 0;
     --tw-ring-color: #10B981;
   }
-  &:active{
+
+  &:active {
     outline: none;
     border: 0;
     --tw-ring-color: #10B981;

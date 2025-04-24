@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\AcercaPoligrafos;
 use App\Models\ConsumosBebidasAlcoholicas;
+use App\Models\DetalleExperenciaLaboral;
 use App\Models\ExperienciasLaborales;
 use App\Models\FormacionesAcademicasPersonas;
 use App\Models\MotivacionesPostulaciones;
+use App\Models\ParentescosPersonas;
 use App\Models\Personas;
 use App\Models\PersonasInformacionesFinancieras;
 use App\Models\PersonasMargenLeyes;
@@ -152,11 +154,101 @@ class FormatoUnoService
         'sueldo_percibido' => $d->sueldoUno,
         'cargo_desempenado' => $d->cargoDesempenioUno,
         'motivo_salida' => $d->motivoSalidaUno,
-        'recibio_amonestaciones' => $d->,
-        'explicacion' => $d->,
+      ]);
+      ExperienciasLaborales::create([
+        'persona_id' => $persona->id,
+        'empresa' => $d->empresaDos,
+        'fecha_ingreso' => $d->fechaIngresoDos,
+        'fecha_salida' => $d->fechaSalidaDos,
+        'sueldo_percibido' => $d->sueldoDos,
+        'cargo_desempenado' => $d->cargoDesempenioDos,
+        'motivo_salida' => $d->motivoSalidaDos,
+      ]);
+      ExperienciasLaborales::create([
+        'persona_id' => $persona->id,
+        'empresa' => $d->empresaTres,
+        'fecha_ingreso' => $d->fechaIngresoTres,
+        'fecha_salida' => $d->fechaSalidaTres,
+        'sueldo_percibido' => $d->sueldoTres,
+        'cargo_desempenado' => $d->cargoDesempenioTres,
+        'motivo_salida' => $d->motivoSalidaTres,
       ]);
       //end Experiencias labroales
 
+      //Detalle de experiencia labolar
+      //almacena las opciones de amonestaciones, solicitud de renuncia, explicacion
+      DetalleExperenciaLaboral::create([
+        'persona_id' => $persona->id,
+        'recibio_amonestaciones' => $d->amonestacionesEmpleos,
+        'solicitud_renuncia' => $d->solicitudRenuncia,
+        'explicacion' => $d->explicacion,
+      ]);
+      //end Detalle de experiencia labolar
+
+      //Parentescos personas
+      ParentescosPersonas::create([
+        'persona_id'=>$persona->id,
+        'tipo_parentesco_id'=>$d->tipoParentescoPadre,
+        'nombres_apellidos'=>$d->nombrespadre,
+        'edad'=>$d->edadpadre,
+        'ocupacion'=>$d->nombresocupacionpadre,
+        'mismo_inmueble'=>$d->mismoInmueblePadre,
+      ]);
+      ParentescosPersonas::create([
+        'persona_id'=>$persona->id,
+        'tipo_parentesco_id'=>$d->tipoParentescoMadre,
+        'nombres_apellidos'=>$d->nombresmadre,
+        'edad'=>$d->edadmadre,
+        'ocupacion'=>$d->nombresocupacionmadre,
+        'mismo_inmueble'=>$d->mismoInmuebleMadre,
+      ]);
+      ParentescosPersonas::create([
+        'persona_id'=>$persona->id,
+        'tipo_parentesco_id'=>$d->tipoParentescoPadre,
+        'nombres_apellidos'=>$d->nombrespadre,
+        'edad'=>$d->edadpadre,
+        'ocupacion'=>$d->nombresocupacionpadre,
+        'mismo_inmueble'=>$d->mismoInmueblePadre,
+      ]);
+
+      //VALIDAR SI LOS BOOLEANOS Y CANTIDADES ESTAN FUNCIONANDO PARA CONTINUAR CON EL REGISTRO DE PARENTESCOS
+      //tieneConyuge
+      //tieneHijos
+      //tieneHermanos
+      if($d->tieneConyuge){
+        ParentescosPersonas::create([
+          'persona_id'=>$persona->id,
+          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
+          'nombres_apellidos'=>$d->nombresConyuge,
+          'edad'=>$d->edadConyuge,
+          'ocupacion'=>$d->nombreOcupacionConyuge,
+          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
+        ]);
+      }
+
+      //cantidadHijos
+      //cantidadHermanos
+      if($d->tieneHijos){
+        ParentescosPersonas::create([
+          'persona_id'=>$persona->id,
+          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
+          'nombres_apellidos'=>$d->nombresConyuge,
+          'edad'=>$d->edadConyuge,
+          'ocupacion'=>$d->nombreOcupacionConyuge,
+          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
+        ]);
+      }
+      if($d->tieneHermanos){
+        ParentescosPersonas::create([
+          'persona_id'=>$persona->id,
+          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
+          'nombres_apellidos'=>$d->nombresConyuge,
+          'edad'=>$d->edadConyuge,
+          'ocupacion'=>$d->nombreOcupacionConyuge,
+          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
+        ]);
+      }
+      //end Parentescos personas
 
       dd($persona);
     }
@@ -171,7 +263,8 @@ class FormatoUnoService
      * Personas Información Financiera ->OK
      * Personas Margen de la Ley ->OK
      * Acerca del Poligrafo ->OK
-     * Experiencias Laborales
+     * Experiencias Laborales ->OK
+     * Detalle de experiencia labolar ->OK
      * Parentescos Personas
      * Consentimientos Examenes
      * Solicitudes Datos Personales
