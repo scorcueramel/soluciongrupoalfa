@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('violacion');
             $table->boolean('muerte_lesion_otra_persona');
             $table->boolean('trafico_ilicito_drogas');
+            $table->boolean('trafico_armas');
             $table->boolean('otros_delitos');
             $table->text('explique_otros')->nullable();
             $table->timestamps();

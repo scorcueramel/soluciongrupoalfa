@@ -12,8 +12,8 @@ class PersonasInformacionesFinancieras extends Model
 
     protected $fillable = [
         'persona_id',
-        'entidad_bancaria_id',
         'tiene_prestamo',
+        'entidad_bancaria_prestamo_id',
         'monto_prestamo',
         'cuota_mensual_prestamo',
         'otro_ingreso',
@@ -22,7 +22,7 @@ class PersonasInformacionesFinancieras extends Model
         'tiene_propiedades',
         'detalle_propiedades',
         'reportado_centrar_riesgos',
-        'entidad_reportado',
+        'entidad_bancaria_reporto_id',
         'motivo_reportado',
         'tiempo_mora',
         'monto_deuda',

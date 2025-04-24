@@ -135,7 +135,7 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Fecha Salida 1] : No ingresaste tu fecha de salida a la empresa 1");
   }
-  if (form.sueldoUno === "") {
+  if (form.sueldoUno === 0) {
     errors.value = true;
     errorsList.value.push("[Sueldo 1] : No ingresaste el percibido en la empresa 1");
   }
@@ -159,7 +159,7 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Fecha Salida 2] : No ingresaste tu fecha de salida a la empresa 2");
   }
-  if (form.sueldoDos === "") {
+  if (form.sueldoDos === 0) {
     errors.value = true;
     errorsList.value.push("[Sueldo 2] : No ingresaste el percibido en la empresa 2");
   }
@@ -183,7 +183,7 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Fecha Salida 3] : No ingresaste tu fecha de salida a la empresa 3");
   }
-  if (form.sueldoTres === "") {
+  if (form.sueldoTres === 0) {
     errors.value = true;
     errorsList.value.push("[Sueldo 3] : No ingresaste el percibido en la empresa 3");
   }

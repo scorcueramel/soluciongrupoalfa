@@ -3,24 +3,27 @@
 namespace App\Services;
 
 use App\Models\AcercaPoligrafos;
+use App\Models\ComisionesDelitos;
 use App\Models\ConsumosBebidasAlcoholicas;
 use App\Models\DetalleExperenciaLaboral;
 use App\Models\ExperienciasLaborales;
 use App\Models\FormacionesAcademicasPersonas;
+use App\Models\ImplicacionesDrogas;
 use App\Models\MotivacionesPostulaciones;
 use App\Models\ParentescosPersonas;
 use App\Models\Personas;
 use App\Models\PersonasInformacionesFinancieras;
 use App\Models\PersonasMargenLeyes;
+use App\Models\SolicitudesDatosPersonales;
 use Illuminate\Http\JsonResponse;
 
 class FormatoUnoService
 {
   public static function createRegisterFormatoUno(array $data): JsonResponse
   {
-    dd($data[0]);
+    //dd($data[0]);
     //Firma examinado Base64
-    $cryptExtension = explode("/9j/", $data[0]->imagenFirma)[1];
+    $firmaBase64 = explode("/9j/", $data[0]->imagenFirma)[1];
 
     foreach ($data as $d) {
       //Datos de las personas
@@ -101,8 +104,8 @@ class FormatoUnoService
       //Personas informacion financiera
       PersonasInformacionesFinancieras::create([
         'persona_id' => $persona->id,
-        'entidad_bancaria_id' => $d->entidadBancaria["code"],
         'tiene_prestamo' => $d->tienesPrestamos,
+        'entidad_bancaria_prestamo_id' =>$d->entidadBancaria === null ? null : $d->entidadBancaria["code"],
         'monto_prestamo' => $d->montoDeuda,
         'cuota_mensual_prestamo' => $d->cuotaMensual,
         'otro_ingreso' => $d->otroIngreso,
@@ -111,7 +114,7 @@ class FormatoUnoService
         'tiene_propiedades' => $d->tienePropiedades,
         'detalle_propiedades' => $d->detallePropiedades,
         'reportado_centrar_riesgos' => $d->reportadoEnCentralesDeRiesgo,
-        'entidad_reportado' => $d->entidadDeuda["code"],
+        'entidad_bancaria_reporto_id' => $d->entidadDeuda === null ? null : $d->entidadDeuda["code"],
         'motivo_reportado' => $d->motivoCentralDeRiesgo,
         'tiempo_mora' => $d->tiempoMora,
         'monto_deuda' => $d->montoDeuraMora,
@@ -187,72 +190,128 @@ class FormatoUnoService
 
       //Parentescos personas
       ParentescosPersonas::create([
-        'persona_id'=>$persona->id,
-        'tipo_parentesco_id'=>$d->tipoParentescoPadre,
-        'nombres_apellidos'=>$d->nombrespadre,
-        'edad'=>$d->edadpadre,
-        'ocupacion'=>$d->nombresocupacionpadre,
-        'mismo_inmueble'=>$d->mismoInmueblePadre,
+        'persona_id' => $persona->id,
+        'tipo_parentesco_id' => $d->tipoParentescoPadre,
+        'nombres_apellidos' => $d->nombrespadre,
+        'edad' => $d->edadpadre,
+        'ocupacion' => $d->nombresocupacionpadre,
+        'mismo_inmueble' => $d->mismoInmueblePadre,
       ]);
       ParentescosPersonas::create([
-        'persona_id'=>$persona->id,
-        'tipo_parentesco_id'=>$d->tipoParentescoMadre,
-        'nombres_apellidos'=>$d->nombresmadre,
-        'edad'=>$d->edadmadre,
-        'ocupacion'=>$d->nombresocupacionmadre,
-        'mismo_inmueble'=>$d->mismoInmuebleMadre,
+        'persona_id' => $persona->id,
+        'tipo_parentesco_id' => $d->tipoParentescoMadre,
+        'nombres_apellidos' => $d->nombresmadre,
+        'edad' => $d->edadmadre,
+        'ocupacion' => $d->nombresocupacionmadre,
+        'mismo_inmueble' => $d->mismoInmuebleMadre,
       ]);
       ParentescosPersonas::create([
-        'persona_id'=>$persona->id,
-        'tipo_parentesco_id'=>$d->tipoParentescoPadre,
-        'nombres_apellidos'=>$d->nombrespadre,
-        'edad'=>$d->edadpadre,
-        'ocupacion'=>$d->nombresocupacionpadre,
-        'mismo_inmueble'=>$d->mismoInmueblePadre,
+        'persona_id' => $persona->id,
+        'tipo_parentesco_id' => $d->tipoParentescoPadre,
+        'nombres_apellidos' => $d->nombrespadre,
+        'edad' => $d->edadpadre,
+        'ocupacion' => $d->nombresocupacionpadre,
+        'mismo_inmueble' => $d->mismoInmueblePadre,
       ]);
-
-      //VALIDAR SI LOS BOOLEANOS Y CANTIDADES ESTAN FUNCIONANDO PARA CONTINUAR CON EL REGISTRO DE PARENTESCOS
-      //tieneConyuge
-      //tieneHijos
-      //tieneHermanos
-      if($d->tieneConyuge){
+      if ($d->tieneConyuge) {
         ParentescosPersonas::create([
-          'persona_id'=>$persona->id,
-          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
-          'nombres_apellidos'=>$d->nombresConyuge,
-          'edad'=>$d->edadConyuge,
-          'ocupacion'=>$d->nombreOcupacionConyuge,
-          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
+          'persona_id' => $persona->id,
+          'tipo_parentesco_id' => $d->tipoParentescoConyuge,
+          'nombres_apellidos' => $d->nombresConyuge,
+          'edad' => $d->edadConyuge,
+          'ocupacion' => $d->nombreOcupacionConyuge,
+          'mismo_inmueble' => $d->mismoInmuebleConyuge,
         ]);
       }
+      if ($d->tieneHijos) {
+        $hijos = [];
 
-      //cantidadHijos
-      //cantidadHermanos
-      if($d->tieneHijos){
-        ParentescosPersonas::create([
-          'persona_id'=>$persona->id,
-          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
-          'nombres_apellidos'=>$d->nombresConyuge,
-          'edad'=>$d->edadConyuge,
-          'ocupacion'=>$d->nombreOcupacionConyuge,
-          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
-        ]);
+        for ($i = 1; $i <= (int)$d->cantidadHijos; $i++) {
+          $hijos[] = ["nombres" => $d->nombresHijos[$i],
+            "edad" => $d->edadesHijos[$i],
+            "ocupacion" => $d->nombreOcupacionesHijos[$i],
+            "misma_casa" => $d->mismoInmuebleHijos[$i]];
+        }
+
+        foreach ($hijos as $hijo) {
+          ParentescosPersonas::create([
+            'persona_id' => $persona->id,
+            'tipo_parentesco_id' => $d->tipoParentescoHijos,
+            'nombres_apellidos' => $hijo["nombres"],
+            'edad' => $hijo["edad"],
+            'ocupacion' => $hijo["ocupacion"],
+            'mismo_inmueble' => $hijo["misma_casa"],
+          ]);
+        }
       }
-      if($d->tieneHermanos){
-        ParentescosPersonas::create([
-          'persona_id'=>$persona->id,
-          'tipo_parentesco_id'=>$d->tipoParentescoConyuge,
-          'nombres_apellidos'=>$d->nombresConyuge,
-          'edad'=>$d->edadConyuge,
-          'ocupacion'=>$d->nombreOcupacionConyuge,
-          'mismo_inmueble'=>$d->mismoInmuebleConyuge,
-        ]);
+      if ($d->tieneHermanos) {
+        $hermanos = [];
+
+        for ($i = 1; $i <= (int)$d->cantidadHermanos; $i++) {
+          $hermanos[] = ["nombres" => $d->nombresHermanos[$i],
+            "edad" => $d->edadesHermanos[$i],
+            "ocupacion" => $d->nombreOcupacionesHermanos[$i],
+            "misma_casa" => $d->mismoInmuebleHermanos[$i]];
+        }
+
+        foreach ($hermanos as $hermano) {
+          ParentescosPersonas::create([
+            'persona_id' => $persona->id,
+            'tipo_parentesco_id' => $d->tipoParentescoHijos,
+            'nombres_apellidos' => $hermano["nombres"],
+            'edad' => $hermano["edad"],
+            'ocupacion' => $hermano["ocupacion"],
+            'mismo_inmueble' => $hermano["misma_casa"],
+          ]);
+        }
       }
       //end Parentescos personas
 
-      dd($persona);
+      //Solicitudes Datos Personales
+      SolicitudesDatosPersonales::create([
+        'persona_id'=>$persona->id,
+        'empresa_id'=>$d->empresa["code"],
+        'cargo_id'=>$d->cargo["code"],
+        'usuario_id'=>$d->usuarioId,
+        'fecha_solicitud'=>date("Y-m-d"),
+        'firma'=>$firmaBase64,
+      ]);
+      //end Solicitudes Datos Personales
+
+      //Comision de delitos
+      ComisionesDelitos::create([
+        'persona_id' => $persona->id,
+        'robo_hurto_fraude' => $d->roboHurtoFraude,
+        'homicidio_involuntario' => $d->homicidioInvoluntario,
+        'asalto' => $d->asalto,
+        'danio_fisico_individuo' => $d->planesDanioFisico,
+        'secuestro' => $d->secuestro,
+        'violacion' => $d->violacion,
+        'muerte_lesion_otra_persona' => $d->muerteLesionPersona,
+        'trafico_ilicito_drogas' => $d->traficoIlicitoDrogas,
+        'trafico_armas' => $d->traficoArmas,
+        'otros_delitos' => $d->castigadoConCarcel,
+        'explique_otros' => $d->explicacionCastigadoLey,
+      ]);
+      //end Comision de delitos
+
+      //Implicaciones en Drogas
+      ImplicacionesDrogas::create([
+        'persona_id' => $persona->id,
+        'marihuana' => $d->marihuana,
+        'pbc' => $d->pbc,
+        'cocaina' => $d->cocaina,
+        'heroina' => $d->heroina,
+        'lsd' => $d->lcd,
+        'extasis' => $d->extasis,
+        'ultimo_consumo' => (int)$d->cantidadUltimoConsumo,
+        'tiempo_transcurrido' => $d->tiempoUltimaVez === "" ? 0 : $d->tiempoUltimaVez,
+        'familiar_consumidor' => $d->familiaresEnDrogas,
+      ]);
+      //end Implicaciones en Drogas
     }
 
+    dd("Posiblemente almacenadao correctamente");
 
     /*
      * Models of tables from save format
@@ -265,11 +324,11 @@ class FormatoUnoService
      * Acerca del Poligrafo ->OK
      * Experiencias Laborales ->OK
      * Detalle de experiencia labolar ->OK
-     * Parentescos Personas
-     * Consentimientos Examenes
-     * Solicitudes Datos Personales
-     * Comision de Delitos
-     * Implicaciones Drogas
+     * Parentescos Personas ->OK
+     * Consentimientos Examenes -> Esto es la declaración jurada
+     * Solicitudes Datos Personales ->OK
+     * Comision de Delitos ->OK
+     * Implicaciones Drogas ->OK
      * */
   }
 }

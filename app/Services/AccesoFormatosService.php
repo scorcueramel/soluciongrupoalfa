@@ -34,6 +34,7 @@ class AccesoFormatosService
           'acceso_formato' => $d->acceder_formato,
           'codigo_poligrafista' => $userCode,
           'numero_evaluaciones' => $codeEnd,
+          'poligrafista_id' => \Auth::user(),
           'fecha_examen' => $evalDate,
         ]);
       }
@@ -93,7 +94,7 @@ class AccesoFormatosService
     DB::beginTransaction();
     try {
       DB::commit();
-      $getEvaluated = AccesoFormatos::findOrFail($id)->delete();
+      AccesoFormatos::findOrFail($id)->delete();
       return response()->json(['code' => 200, 'message' => 'Se elimino al evaluado de la lista.']);
     } catch (\Throwable $th) {
       DB::rollback();

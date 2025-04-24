@@ -34,7 +34,8 @@ const { onMenuToggle, toggleDarkMode, isDarkTheme } = useLayout();
                 </svg>
 
                 <span>SAKAI</span>-->
-                <img src="/demo/images/logo.png" width="80" alt="logo-grupo-alfa">
+<!--                <img src="/demo/images/logo.png" width="80" alt="logo-grupo-alfa">-->
+                <img src="/demo/images/ESCUDO-RGB.png" width="43" alt="logo-grupo-alfa">
             </nav-link>
         </div>
 

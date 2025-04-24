@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('consumos_bebidas_alcoholicas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->string('frecuencia_consumo');
+            $table->string('frecuencia_consumo')->nullable();
             $table->text('bebidas_consume')->nullable();
             $table->boolean('tratamiento_alcoholismo');
             $table->boolean('trabajo_ebrio');

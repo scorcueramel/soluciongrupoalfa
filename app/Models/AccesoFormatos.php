@@ -15,6 +15,7 @@ class AccesoFormatos extends Model
     'acceso_formato',
     'codigo_poligrafista',
     'numero_evaluaciones',
+    'poligrafista_id',
     'fecha_examen',
   ];
 }

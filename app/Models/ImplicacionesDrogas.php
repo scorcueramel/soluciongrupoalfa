@@ -17,8 +17,8 @@ class ImplicacionesDrogas extends Model
         'heroina',
         'lsd',
         'extasis',
-        'ultimo_consumo',
         'tiempo_transcurrido',
+        'ultimo_consumo',
         'familiar_consumidor',
     ];
 }

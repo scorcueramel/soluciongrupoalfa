@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('acceso_formato');
             $table->string('codigo_poligrafista',20);
             $table->string('numero_evaluaciones',20)->nullable();
+            $table->integer('poligrafista_id');
             $table->date('fecha_examen');
             $table->softDeletes();
             $table->timestamps();

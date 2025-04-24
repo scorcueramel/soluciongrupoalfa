@@ -18,6 +18,7 @@ use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
 
 use App\Services\FormatoUnoService;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class FormatosController extends Controller
@@ -58,6 +59,6 @@ class FormatosController extends Controller
 
   public function store(FormatoCreateRequest $request)
   {
-      $this->formatoUnoService->createRegisterFormatoUno($request->data);
+    $this->formatoUnoService->createRegisterFormatoUno($request->data);
   }
 }

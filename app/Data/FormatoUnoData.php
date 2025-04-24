@@ -37,7 +37,7 @@ class FormatoUnoData extends Data
     public string  $nombresocupacionmadre,
     public bool    $mismoInmuebleMadre,
     public bool    $tieneConyuge,
-    public ?int    $cantidadHijos,
+    public ?string $cantidadHijos,
     public ?int    $tipoParentescoConyuge,
     public ?string $nombresConyuge,
     public ?int    $edadConyuge,
@@ -50,7 +50,7 @@ class FormatoUnoData extends Data
     public ?array  $nombreOcupacionesHijos,
     public ?array  $mismoInmuebleHijos,
     public bool    $tieneHermanos,
-    public ?int    $cantidadHermanos,
+    public ?string $cantidadHermanos,
     public ?int    $tipoParentescoHermanos,
     public ?array  $nombresHermanos,
     public ?array  $edadesHermanos,
@@ -121,6 +121,7 @@ class FormatoUnoData extends Data
     public bool    $lcd,
     public bool    $extasis,
     public ?string $cantidadUltimoConsumo,
+    public ?string $tiempoUltimaVez,
     public bool    $familiaresEnDrogas,
     public bool    $roboHurtoFraude,
     public bool    $homicidioInvoluntario,
@@ -151,7 +152,8 @@ class FormatoUnoData extends Data
     public ?string $empresaPostuloAntes,
     public ?string $fechaExamenAnterior,
     public ?string $motivoPasoAntesE,
-    public string  $imagenFirma
+    public string  $imagenFirma,
+    public ?int $usuarioId,
   )
   {
   }

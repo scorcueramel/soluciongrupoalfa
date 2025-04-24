@@ -56,6 +56,7 @@ const numeroMesExamen = ref(0);
 const nombreMesExamen = ref("");
 const diaMesExamen = ref(0);
 const anioExamen = ref(0);
+const usuarioId = ref(props.datosevaluado.poligrafista_id);
 
 const getDate = new Date();
 
@@ -90,20 +91,20 @@ const form = useForm({
   nombresocupacionmadre: "",
   mismoInmuebleMadre: false,
   otroPatentesco: "",
-  tieneConyuge: datosConyuge.value,
-  tieneHijos: datosHijos.value,
-  tieneHermanos: datosHermanos.value,
+  tieneConyuge: false,
   tipoParentescoConyuge: 0,
   nombresConyuge: "",
   edadConyuge: 0,
   nombreOcupacionConyuge: "",
   mismoInmuebleConyuge: false,
+  tieneHijos: false,
   tipoParentescoHijos: 0,
   cantidadHijos: 0,
   nombresHijos: [],
   edadesHijos: [],
   nombreOcupacionesHijos: [],
   mismoInmuebleHijos: [],
+  tieneHermanos: false,
   tipoParentescoHermanos: 0,
   cantidadHermanos: 0,
   nombresHermanos: [],
@@ -208,6 +209,7 @@ const form = useForm({
   motivoPasoAntesExamen: "",
   imagenFirma: "",
   ciudadExamen: "",
+  usuarioId:0,
 });
 
 onbeforeunload = (event) => {
@@ -401,7 +403,6 @@ const agregarCantidadHijos = () => {
     datosHijos.value = true;
     cantidadDeHijosIndicada.value = parseInt(form.cantidadHijos);
     cantidadHijos.value = false;
-    form.cantidadHijos = 0;
   }
 };
 
@@ -409,7 +410,6 @@ const agregarCantidadHermanos = () => {
   datosHermanos.value = true;
   cantidadDeHermanosIndicada.value = parseInt(form.cantidadHermanos);
   cantidadHermanos.value = false;
-  form.cantidadHermanos = 0;
 };
 
 const removerDatosConyuge = () => {
@@ -446,6 +446,7 @@ const removerDatoHijo = (index) => {
   cantidadDeHijosIndicada.value === 0
     ? (datosHijos.value = false)
     : (datosHijos.value = true);
+  form.cantidadHijos -= 1;
 };
 
 const removerDatoHermano = (index) => {
@@ -453,6 +454,7 @@ const removerDatoHermano = (index) => {
   cantidadDeHermanosIndicada.value === 0
     ? (datosHermanos.value = false)
     : (datosHermanos.value = true);
+  form.cantidadHermanos -= 1;
 };
 
 watchEffect(() => {
@@ -468,6 +470,10 @@ const getCoordinate = (event) => {
 }
 
 const registrarFormato = () => {
+  form.tieneConyuge = datosConyuge.value;
+  form.tieneHijos = datosHijos.value;
+  form.tieneHermanos = datosHermanos.value;
+  form.usuarioId = usuarioId.value;
   validateForm(form, errors, errorsList);
 
   if (!errors.value) {
