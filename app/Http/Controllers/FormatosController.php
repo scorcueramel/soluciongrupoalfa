@@ -71,4 +71,18 @@ class FormatosController extends Controller
       return back()->with('error', $jsonDecode->message);
     }
   }
+
+  public function formatoDos(Request $request)
+  {
+    $datosEvaluado = [
+      "nombres" => $request->nombres . " " . $request->paterno . " " . $request->materno,
+      "documento" => $request->numeroDocumento,
+      "edad" => $request->fechaNacimiento,
+      "codigo_poligrafista" => $request->codigoPoligrafista,
+    ];
+
+    return Inertia::render('Formatos/FormatoDos', [
+      'datosEvaluados' => $datosEvaluado,
+    ]);
+  }
 }

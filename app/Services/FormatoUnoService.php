@@ -18,6 +18,7 @@ use App\Models\PersonasMargenLeyes;
 use App\Models\SolicitudesDatosPersonales;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class FormatoUnoService
 {
@@ -39,13 +40,13 @@ class FormatoUnoService
           'genero_id' => $d->genero,
           'distrito_id' => $d->distrito["code"],
           'tipo_vivienda_id' => $d->tipoVivienda,
-          'nombres' => $d->nombres,
-          'apellido_paterno' => $d->paterno,
-          'apellido_materno' => $d->materno,
+          'nombres' => Str::title($d->nombres),
+          'apellido_paterno' => Str::title($d->paterno),
+          'apellido_materno' => Str::title($d->materno),
           'numero_documento' => $d->numeroDocumento,
           'fecha_nacimiento' => $d->fechaNacimiento,
           'lugar_nacimiento' => $d->lugarNacimiento,
-          'dirección' => $d->direccion,
+          'dirección' => Str::title($d->direccion),
           'otro_tipo_vivienda' => $d->otroTipoVivienda,
           'telefono' => $d->telefono,
           'email' => $d->email,
@@ -320,10 +321,14 @@ class FormatoUnoService
       $accesoFormato->acceso_formato = false;
       $accesoFormato->save();
 
-      return response()->json(['code' => 200, 'message' => ' Actualizado Satisfactoriamente']);
+      return response()->json(['code' => 200, 'message' => 'Actualizado Satisfactoriamente']);
     } catch (\Throwable $th) {
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
     }
+  }
+
+  public static function createConsetimientoFormatoDos(array $data):JsonResponse{
+    dd($data);
   }
 }

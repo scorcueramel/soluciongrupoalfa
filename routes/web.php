@@ -60,5 +60,6 @@ Route::middleware('auth', 'verified')->group(function () {
 Route::get('/formato', [AccesoFormatosController::class, 'index'])->name('formato.index');
 Route::post('/formato', [FormatosController::class, 'index'])->name('formato.validar.acceso');
 Route::post('/formato/guardar', [FormatosController::class,'store'])->name('formato.store');
+Route::post('/formato/dos', [FormatosController::class, 'formatoDos'])->name('formato.dos');
 
 require __DIR__ . '/auth.php';

@@ -38,7 +38,6 @@ const data = reactive({
 
 const deleteData = () => {
   deleteDialog.value = false;
-  console.log(form)
 
   form.delete(route("formato.evaluado.destroy", data.evaluado?.id), {
     preserveScroll: true,
@@ -72,7 +71,7 @@ const restringirAcceso = (data) => {
     title: "¿Restringir acceso a formato?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#10B981",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si",
     cancelButtonText: "No",

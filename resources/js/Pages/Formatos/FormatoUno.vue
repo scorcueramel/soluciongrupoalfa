@@ -1,5 +1,5 @@
 <script setup>
-import {Head, useForm} from "@inertiajs/vue3";
+import {Head, router, useForm} from "@inertiajs/vue3";
 import {onMounted, ref, watchEffect} from "vue";
 import {usePrimeVue} from "primevue/config";
 import {loadToast} from '@/composables/loadToast';
@@ -57,7 +57,6 @@ const nombreMesExamen = ref("");
 const diaMesExamen = ref(0);
 const anioExamen = ref(0);
 const usuarioId = ref(props.datosevaluado.poligrafista_id);
-const consentimiento = ref(false);
 
 const getDate = new Date();
 
@@ -212,6 +211,7 @@ const form = useForm({
   ciudadExamen: "",
   usuarioId: 0,
   consentimiento: false,
+  codigoPoligrafista:"",
 });
 
 onbeforeunload = (event) => {
@@ -368,7 +368,7 @@ const agregarParentesco = (parentesco) => {
         text: "Ya gregaste los campos para el conyuge",
         icon: "info",
         draggable: true,
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#10B981",
         confirmButtonText: "Entendido",
       });
     }
@@ -398,7 +398,7 @@ const agregarCantidadHijos = () => {
       text: "Debe indicar la cantidad de hijos que tiene",
       icon: "info",
       draggable: true,
-      confirmButtonColor: "#3085d6",
+      confirmButtonColor: "#10B981",
       confirmButtonText: "Entendido",
     });
   } else {
@@ -420,7 +420,7 @@ const removerDatosConyuge = () => {
     text: "¿Quieres eliminar los datos del conyuge?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#10B981",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si",
     cancelButtonText: "No",
@@ -436,7 +436,7 @@ const removerDatosConyuge = () => {
         title: "Eliminado!",
         text: "Se retiraron los datos del conyuge",
         icon: "success",
-        confirmButtonColor: "#3085d6",
+        confirmButtonColor: "#10B981",
         confirmButtonText: "Entendido",
       });
     }
@@ -471,20 +471,15 @@ const getCoordinate = (event) => {
   this.y = coordinates.y;
 }
 
-const abrirFormato = () => {
-  alert("Abrir formato");
-}
-
 const registrarFormato = () => {
   form.tieneConyuge = datosConyuge.value;
   form.tieneHijos = datosHijos.value;
   form.tieneHermanos = datosHermanos.value;
   form.usuarioId = usuarioId.value;
-  // validateForm(form, errors, errorsList);
-
+  validateForm(form, errors, errorsList);
 
   Swal.fire({
-    title: "¿Terminarnaste?",
+    title: "¿Terminaste?",
     html: "Al presionar el botón <b>Continuar</b> se registrará la informarción ingresada",
     icon: "info",
     showCancelButton: true,
@@ -495,21 +490,37 @@ const registrarFormato = () => {
   }).then((result) => {
     if (result.isConfirmed) {
       if (!errors.value) {
+        Swal.fire({
+          icon: 'info',
+          html: "Espere un momento porfavor ...",
+          timerProgressBar: true,
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
         form.post(route('formato.store'), {
           preserveScroll: true,
           onSuccess: () => {
             emit("close");
-            form.reset();
+            // form.reset();
             Swal.fire({
               title: "Formato Registrado!",
               text: "Tu formato fue registrado correctamente!",
               icon: "success",
+              allowOutsideClick: false,
               confirmButtonColor: "#10B981",
               confirmButtonText: "Continuar",
             }).then((result) => {
               if (result.isConfirmed) {
+                form.codigoPoligrafista = props.datosevaluado.codigo_poligrafista + "" + props.datosevaluado.numero_evaluaciones
                 //redireccionar al siguiente formato enviando los datos necesarios para evitar el rellenado de datos erroneos
-
+                form.post(route('formato.dos'), {
+                  preventScroll: true,
+                  onSuccess: () => null,
+                  onError: () => null,
+                  onFinish: () => null,
+                });
               }
             });
           },
@@ -726,6 +737,7 @@ const registrarFormato = () => {
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Número de documento"
+                        @focus="datosPiePagina"
                         @click="datosPiePagina"
                       />
 
@@ -911,7 +923,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="edadpadre">Edad</label>
-                      <InputNumber
+                      <input
+                        type="number"
                         id="edadpadre"
                         v-model="form.edadpadre"
                         class="flex-auto"
@@ -996,7 +1009,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="edadmadre">Edad</label>
-                      <InputNumber
+                      <input
+                        type="number"
                         id="edadmadre"
                         v-model="form.edadmadre"
                         class="flex-auto"
@@ -1812,7 +1826,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="sueldouno">Sueldo</label>
-                      <InputNumber
+                      <input
+                        type="number"
                         id="sueldouno"
                         v-model="form.sueldoUno"
                         class="flex-auto"
@@ -1884,7 +1899,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="sueldodos">Sueldo</label>
-                      <InputNumber
+                      <input
+                        type="number"
                         id="sueldodos"
                         v-model="form.sueldoDos"
                         class="flex-auto"
@@ -1956,7 +1972,8 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="sueldotres">Sueldo</label>
-                      <InputNumber
+                      <input
+                        type="number"
                         id="sueldotres"
                         v-model="form.sueldoTres"
                         class="flex-auto"
@@ -4291,7 +4308,7 @@ const registrarFormato = () => {
   background: transparent;
 }
 
-input[type="month"], input[type="date"] {
+input[type="month"], input[type="date"], input[type="number"] {
   border: 1px solid #CBD5E1;
   border-radius: 5px;
   outline-offset: 0;
