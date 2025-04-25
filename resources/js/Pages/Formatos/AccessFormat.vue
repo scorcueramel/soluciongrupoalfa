@@ -1,13 +1,17 @@
 <script setup>
 import {useForm, Head, router} from "@inertiajs/vue3";
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import Alert from "@/Components/Alert.vue";
+import {loadToast} from "@/composables/loadToast.js";
+
+loadToast();
 
 let documentoVacio = ref("");
 
 const props = defineProps({
     openError: Boolean,
     errorMessage: String,
+    errores: String,
 });
 
 const form = useForm({
@@ -25,6 +29,10 @@ const submit = () => {
         });
     }
 };
+
+onMounted(()=>{
+  console.log(props.errores)
+})
 </script>
 
 <template>

@@ -23,6 +23,7 @@ use Inertia\Inertia;
 
 class FormatosController extends Controller
 {
+  //para incrustar en el documento word a exportar
   protected $codecrypt = "data:image/jpeg;base64,/9j/";
 
   public function __construct(
@@ -59,6 +60,15 @@ class FormatosController extends Controller
 
   public function store(FormatoCreateRequest $request)
   {
-    $this->formatoUnoService->createRegisterFormatoUno($request->data);
+    $response = $this->formatoUnoService->createRegisterFormatoUno($request->data);
+    $jsonDecode = json_decode($response->content());
+
+    if ($jsonDecode->code === 200) {
+      return back()->with('success', $jsonDecode->message);
+    }
+
+    if ($jsonDecode->code === 500) {
+      return back()->with('error', $jsonDecode->message);
+    }
   }
 }

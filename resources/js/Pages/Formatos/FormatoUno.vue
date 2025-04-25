@@ -210,8 +210,8 @@ const form = useForm({
   motivoPasoAntesExamen: "",
   imagenFirma: "",
   ciudadExamen: "",
-  usuarioId:0,
-  consentimiento:false,
+  usuarioId: 0,
+  consentimiento: false,
 });
 
 onbeforeunload = (event) => {
@@ -471,7 +471,7 @@ const getCoordinate = (event) => {
   this.y = coordinates.y;
 }
 
-const abrirFormato = () =>{
+const abrirFormato = () => {
   alert("Abrir formato");
 }
 
@@ -480,19 +480,40 @@ const registrarFormato = () => {
   form.tieneHijos = datosHijos.value;
   form.tieneHermanos = datosHermanos.value;
   form.usuarioId = usuarioId.value;
-  validateForm(form, errors, errorsList);
+  // validateForm(form, errors, errorsList);
 
-  if (!errors.value) {
-    form.post(route('formato.store'), {
-      preserveScroll: true,
-      onSuccess: () => {
-        emit("close");
-        form.reset();
-      },
-      onError: () => null,
-      onFinish: () => null,
-    })
-  }
+
+  Swal.fire({
+    title: "¿Terminarnaste?",
+    html: "Al presionar el botón <b>Continuar</b> se registrará la informarción ingresada",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#10B981",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Continuar",
+    cancelButtonText: "Revisar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      if (!errors.value) {
+        form.post(route('formato.store'), {
+          preserveScroll: true,
+          onSuccess: () => {
+            emit("close");
+            form.reset();
+            Swal.fire({
+              title: "Formato Registrado!",
+              text: "Tu formato fue registrado correctamente!",
+              icon: "success",
+              confirmButtonColor: "#10B981",
+              confirmButtonText: "Continuar",
+            });
+          },
+          onError: () => null,
+          onFinish: () => null,
+        })
+      }
+    }
+  });
 };
 
 </script>
@@ -4234,7 +4255,7 @@ const registrarFormato = () => {
     </form>
   </div>
 
-  <Dialog v-model:visible="errors" :style="{ width: '650px' }" :modal="true" :closable="false">
+  <Dialog v-model:visible="errors" :style="{ width: '650px' }" :modal="true">
     <template #header>
       <h3 class="text-xl font-black text-red-500">Ooops! verifica los siguientes campos</h3>
     </template>
