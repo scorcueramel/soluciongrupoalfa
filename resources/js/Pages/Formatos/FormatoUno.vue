@@ -506,6 +506,11 @@ const registrarFormato = () => {
               icon: "success",
               confirmButtonColor: "#10B981",
               confirmButtonText: "Continuar",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                //redireccionar al siguiente formato enviando los datos necesarios para evitar el rellenado de datos erroneos
+
+              }
             });
           },
           onError: () => null,
