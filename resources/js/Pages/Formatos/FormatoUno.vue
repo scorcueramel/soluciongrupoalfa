@@ -57,6 +57,7 @@ const nombreMesExamen = ref("");
 const diaMesExamen = ref(0);
 const anioExamen = ref(0);
 const usuarioId = ref(props.datosevaluado.poligrafista_id);
+const consentimiento = ref(false);
 
 const getDate = new Date();
 
@@ -210,6 +211,7 @@ const form = useForm({
   imagenFirma: "",
   ciudadExamen: "",
   usuarioId:0,
+  consentimiento:false,
 });
 
 onbeforeunload = (event) => {
@@ -467,6 +469,10 @@ const getCoordinate = (event) => {
   let coordinates = this.$refs.VueDrawingCanvas.getCoordinates(event);
   this.x = coordinates.x;
   this.y = coordinates.y;
+}
+
+const abrirFormato = () =>{
+  alert("Abrir formato");
 }
 
 const registrarFormato = () => {
@@ -4243,7 +4249,6 @@ const registrarFormato = () => {
       <Button label="Entendido" icon="pi pi-check" text @click="errors = false; errorsList = []"/>
     </template>
   </Dialog>
-
 </template>
 
 <style scoped lang="scss">
