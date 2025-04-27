@@ -11,6 +11,7 @@ import {router} from "@inertiajs/vue3";
 const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
 import Card from "primevue/card";
+import DataTable from 'primevue/datatable';
 
 const props = defineProps({
   filters: Object,
@@ -29,7 +30,7 @@ const data = reactive({
     search: props.filters.search,
     field: props.filters.field,
     order: props.filters.order,
-    perPage: props.perPage,
+    // perPage: props.perPage,
     allowFormatOpen: false,
     editOpen: false,
   },
@@ -143,6 +144,7 @@ const permitirAcceso = (data) => {
         :evaluado="data.evaluado"
       />
       <DataTable
+        lazy
         :value="evaluados.data"
         paginator
         :rows="evaluados.per_page"

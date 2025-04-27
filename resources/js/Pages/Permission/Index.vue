@@ -37,7 +37,7 @@ const data = reactive({
 
 const deleteData = () => {
     deleteDialog.value = false;
-    
+
     form.delete(route("permission.destroy", data.permission?.id), {
         preserveScroll: true,
         onSuccess: () => {
@@ -68,8 +68,8 @@ watch(
 </script>
 
 <template>
-    <app-layout>             
-        <div class="card">            
+    <app-layout>
+        <div class="card">
             <Create
                 :show="data.createOpen"
                 @close="data.createOpen = false"
@@ -82,7 +82,15 @@ watch(
                 :title="props.title"
             />
             <Button v-show="can(['create permission'])" label="Create" @click="data.createOpen = true" icon="pi pi-plus" />
-            <DataTable lazy :value="permissions.data" paginator  :rows="permissions.per_page" :totalRecords="permissions.total" :first="(permissions.current_page - 1) * permissions.per_page"   @page="onPageChange"  tableStyle="min-width: 50rem">
+            <DataTable
+              lazy
+              :value="permissions.data"
+              paginator
+              :rows="permissions.per_page"
+              :totalRecords="permissions.total"
+              :first="(permissions.current_page - 1) * permissions.per_page"
+              @page="onPageChange"
+              tableStyle="min-width: 50rem">
                 <template #header>
                     <div class="flex justify-end">
                         <IconField>

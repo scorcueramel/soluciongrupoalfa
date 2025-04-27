@@ -61,5 +61,6 @@ Route::get('/formato', [AccesoFormatosController::class, 'index'])->name('format
 Route::post('/formato', [FormatosController::class, 'index'])->name('formato.validar.acceso');
 Route::post('/formato/guardar', [FormatosController::class,'store'])->name('formato.store');
 Route::post('/formato/dos', [FormatosController::class, 'formatoDos'])->name('formato.dos');
+Route::post('/formato/dos/guardar', [FormatosController::class, 'formatoDosStore'])->name('formato.dos.store');
 
 require __DIR__ . '/auth.php';

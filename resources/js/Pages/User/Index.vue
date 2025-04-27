@@ -118,6 +118,7 @@ watch(
       />
 
       <DataTable
+        lazy
         :value="users.data"
         paginator
         :rows="users.per_page"

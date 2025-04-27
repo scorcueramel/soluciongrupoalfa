@@ -8,6 +8,7 @@ use App\Http\Requests\AccesoFormatosUpdateRequest;
 use App\Models\AccesoFormatos;
 
 use App\Services\AccesoFormatosService;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AccesoFormatosController extends Controller
@@ -45,8 +46,8 @@ class AccesoFormatosController extends Controller
     }
 
     return Inertia::render('Formatos/AccesoEvaluados',[
-      'evaluados'=>$evaluados->paginate(10),
       'filters' => $request->all(['search', 'field', 'order']),
+      'evaluados' => $evaluados->paginate(10),
     ]);
   }
 

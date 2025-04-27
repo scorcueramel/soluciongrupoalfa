@@ -13,6 +13,7 @@ use App\Models\EstadosCiviles;
 use App\Models\Generos;
 use App\Models\GradosInstrucciones;
 use App\Models\Nacionalidades;
+use App\Models\Personas;
 use App\Models\TiposDocumentos;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
@@ -84,5 +85,14 @@ class FormatosController extends Controller
     return Inertia::render('Formatos/FormatoDos', [
       'datosEvaluados' => $datosEvaluado,
     ]);
+  }
+
+  public function formatoDosStore(Request $request)
+  {
+    $this->validate($request,[
+      'imagenFirma' => 'required'
+    ]);
+
+    return Inertia::render('Formatos/AccessFormat');
   }
 }

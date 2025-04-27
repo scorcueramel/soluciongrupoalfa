@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AccesoFormatos;
 use App\Models\AcercaPoligrafos;
 use App\Models\ComisionesDelitos;
+use App\Models\ConsentimientosExamenes;
 use App\Models\ConsumosBebidasAlcoholicas;
 use App\Models\DetalleExperenciaLaboral;
 use App\Models\ExperienciasLaborales;
@@ -28,10 +29,9 @@ class FormatoUnoService
     try {
       DB::commit();
       //dd($data[0]);
-      //Firma examinado Base64
-      $firmaBase64 = explode("/9j/", $data[0]->imagenFirma)[1];
-
       foreach ($data as $d) {
+        //Firma examinado Base64
+        $firmaBase64 = explode("/9j/", $d->imagenFirma)[1];
         //Datos de las personas
         $persona = Personas::create([
           'nacionalidad_id' => $d->nacionalidad["code"],
@@ -315,6 +315,12 @@ class FormatoUnoService
           'familiar_consumidor' => $d->familiaresEnDrogas,
         ]);
         //end Implicaciones en Drogas
+
+        ConsentimientosExamenes::create([
+          'persona_id' => $persona->id,
+          'fecha_formato' => date("Y-m-d"),
+          'firma' => $firmaBase64,
+        ]);
       }
 
       $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->get()[0];

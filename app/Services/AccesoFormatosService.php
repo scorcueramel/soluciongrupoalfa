@@ -34,7 +34,7 @@ class AccesoFormatosService
           'acceso_formato' => $d->acceder_formato,
           'codigo_poligrafista' => $userCode,
           'numero_evaluaciones' => $codeEnd,
-          'poligrafista_id' => \Auth::user(),
+          'poligrafista_id' => \Auth::id(),
           'fecha_examen' => $evalDate,
         ]);
       }
