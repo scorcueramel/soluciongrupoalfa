@@ -130,7 +130,7 @@ const limpiarBuscador = () => {
                 <i class="pi pi-user !text-2xl"/>Datos Personales
               </AccordionHeader>
               <AccordionContent>
-                <Card class="card">
+                <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
                       <table class="w-full text-md text-left">
@@ -191,7 +191,7 @@ const limpiarBuscador = () => {
               </AccordionContent>
             </AccordionPanel>
             <AccordionPanel value="1">
-              <AccordionHeader>Header II</AccordionHeader>
+              <AccordionHeader><i class="pi pi-building !text-2xl"/>Empresa y Cargo que Postula</AccordionHeader>
               <AccordionContent>
                 <p class="m-0">
                   Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
