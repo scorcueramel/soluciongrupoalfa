@@ -21,7 +21,7 @@ const form = useForm({
 })
 
 onMounted(() => {
-  console.log(props.datosEvaluados)
+  console.log(props.datosEvaluados )
 
   form.numeroDocumento = props.datosEvaluados.documento;
 
