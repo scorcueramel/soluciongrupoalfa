@@ -4,7 +4,7 @@ import AppLayout from "@/sakai/layout/AppLayout.vue";
 
 import {Head, router} from '@inertiajs/vue3';
 
-import { reactive, watch } from "vue";
+import {reactive, ref, watch} from "vue";
 import pkg from "lodash";
 const { _, debounce, pickBy } = pkg;
 import { loadToast } from '@/composables/loadToast';
@@ -18,7 +18,7 @@ const props = defineProps({
 
 loadToast();
 
-// const permissionDialog = ref(false);
+const detailDialog = ref(false);
 
 const data = reactive({
   params: {
@@ -107,19 +107,23 @@ const limpiarBuscador = () => {
         </Column>
       </DataTable>
 
-      <!--
-            <Dialog v-model:visible="permissionDialog" modal :header="'Permission ' + data.role?.name" :style="{ width: '50rem' }">
-              <div class="grid grid-cols-2 sm:grid-cols-3">
-                <div
-                  v-for="(permission, index) in data.role?.permissions"
-                  :key="index"
-                  class="flex justify-between w-full px-4 py-2"
-                >
-                  {{ ++index + ". " + permission.name }}
-                </div>
-              </div>
-            </Dialog>
-          -->
+      <Dialog v-model:visible="detailDialog" :style="{ width: '450px' }"
+              :header="data.user?.name+' '+data.user?.apellido_paterno+' '+data.user?.apellido_materno" :modal="true">
+        <div class="flex items-center gap-4">
+          <i class="pi pi-user !text-3xl"/>
+          <div class="grig grid-cols-1">
+            <!--<div class="col-span-2">
+              <span v-if="data.user">Nombres y Apellidos: <b class="ms-2">{{
+                  data.user.name
+                }} {{ data.user.apellido_paterno }} {{ data.user.apellido_materno }}</b></span>
+            </div>-->
+            <p>data de evaluado</p>
+          </div>
+        </div>
+        <template #footer>
+          <Button label="Cerrar" text @click="detailDialog = false"/>
+        </template>
+      </Dialog>
     </div>
   </app-layout>
 </template>
