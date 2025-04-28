@@ -3,13 +3,14 @@
 import AppLayout from "@/sakai/layout/AppLayout.vue";
 import Create from "@/Pages/Permission/Create.vue";
 import Edit from "@/Pages/Permission/Edit.vue";
-import { usePage, useForm } from '@inertiajs/vue3';
+import {usePage, useForm, Head} from '@inertiajs/vue3';
 
 import { onMounted, reactive, ref, watch, computed } from "vue";
 import pkg from "lodash";
 import { router } from "@inertiajs/vue3";
 const { _, debounce, pickBy } = pkg;
 import { loadToast } from '@/composables/loadToast';
+import Card from "primevue/card";
 
 const props = defineProps({
     title: String,
@@ -64,11 +65,24 @@ watch(
         });
     }, 150)
 );
-
+const limpiarBuscador = () => {
+  data.params.search = "";
+}
 </script>
 
 <template>
     <app-layout>
+      <Head title="Roles"/>
+
+      <Card class="mb-8">
+        <template #content>
+          <div class="flex flex-wrap justify-between items-center">
+            <h2 class="text-2xl font-bold">GESTIÓN DE PERMISOS</h2>
+            <Button v-show="can(['create permission'])" label="Nuevo permiso" @click="data.createOpen = true" icon="pi pi-plus" />
+          </div>
+        </template>
+      </Card>
+
         <div class="card">
             <Create
                 :show="data.createOpen"
@@ -81,7 +95,7 @@ watch(
                 :permission="data.permission"
                 :title="props.title"
             />
-            <Button v-show="can(['create permission'])" label="Create" @click="data.createOpen = true" icon="pi pi-plus" />
+
             <DataTable
               lazy
               :value="permissions.data"
@@ -92,14 +106,19 @@ watch(
               @page="onPageChange"
               tableStyle="min-width: 50rem">
                 <template #header>
-                    <div class="flex justify-end">
-                        <IconField>
-                            <InputIcon>
-                                <i class="pi pi-search" />
-                            </InputIcon>
-                            <InputText v-model="data.params.search" placeholder="Keyword Search" />
-                        </IconField>
+                  <div class="flex justify-end">
+                    <div class="flex w-1/3 h-10">
+                      <InputGroup>
+                        <InputGroupAddon>
+                          <i class="pi pi-search"/>
+                        </InputGroupAddon>
+                        <InputText v-model="data.params.search" placeholder="Buscar Permiso..."/>
+                        <InputGroupAddon>
+                          <Button icon="pi pi-times" severity="secondary" class="h-8" @click="limpiarBuscador"/>
+                        </InputGroupAddon>
+                      </InputGroup>
                     </div>
+                  </div>
                 </template>
                 <template #empty> No data found. </template>
                 <template #loading> Loading data. Please wait. </template>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Distritos extends Model
 {
@@ -13,4 +14,8 @@ class Distritos extends Model
         'distrito',
         'codigo',
     ];
+
+    public function personas():HasMany{
+      return $this->hasMany(Personas::class);
+    }
 }

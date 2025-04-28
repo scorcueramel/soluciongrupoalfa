@@ -333,8 +333,4 @@ class FormatoUnoService
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
     }
   }
-
-  public static function createConsetimientoFormatoDos(array $data):JsonResponse{
-    dd($data);
-  }
 }

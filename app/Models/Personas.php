@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Personas extends Model
@@ -36,4 +37,28 @@ class Personas extends Model
       'updated_at',
       'deleted_at',
     ];
+
+    public function nacionalidad():BelongsTo{
+      return $this->belongsTo(Nacionalidades::class);
+    }
+
+    public function tipoDocumento():BelongsTo{
+      return $this->belongsTo(TiposDocumentos::class);
+    }
+
+    public function estadoCivil():BelongsTo{
+      return $this->belongsTo(EstadosCiviles::class);
+    }
+
+    public function genero():BelongsTo{
+      return $this->belongsTo(Generos::class);
+    }
+
+    public function distrito():BelongsTo{
+      return $this->belongsTo(Distritos::class);
+    }
+
+    public function tipoVivienda():BelongsTo{
+      return $this->belongsTo(TiposViviendas::class);
+    }
 }

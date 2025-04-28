@@ -39,7 +39,7 @@ class FormatosController extends Controller
 
     if (!is_null($accesoFormato)) {
       if ($accesoFormato->acceso_formato) {
-        return Inertia::render('Formatos/FormatoUno', [
+        return Inertia::render('Formato/FormatoUno', [
           'cargos' => Cargos::all(),
           'distritos' => Distritos::all(),
           'entidadesbancarias' => EntidadesBancarias::all(),
@@ -56,7 +56,7 @@ class FormatosController extends Controller
       }
     }
 
-    return Inertia::render('Formatos/AccessFormat', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
+    return Inertia::render('Formato/AccessFormat', ['openError' => true, 'errorMessage' => 'Verifica el documento ingresado, de lo contratio comunicate con un asesor', '']);
   }
 
   public function store(FormatoCreateRequest $request)
@@ -82,7 +82,7 @@ class FormatosController extends Controller
       "codigo_poligrafista" => $request->codigoPoligrafista,
     ];
 
-    return Inertia::render('Formatos/FormatoDos', [
+    return Inertia::render('Formato/FormatoDos', [
       'datosEvaluados' => $datosEvaluado,
     ]);
   }
@@ -93,6 +93,6 @@ class FormatosController extends Controller
       'imagenFirma' => 'required'
     ]);
 
-    return Inertia::render('Formatos/AccessFormat');
+    return Inertia::render('Formato/AccessFormat');
   }
 }

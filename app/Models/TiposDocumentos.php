@@ -19,4 +19,8 @@ class TiposDocumentos extends Model
     public function usuarios():HasMany{
       return $this->hasMany(User::class, 'tipodocumento_id');
     }
+
+    public function personas():HasMany{
+      return $this->hasMany(Personas::class);
+    }
 }

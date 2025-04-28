@@ -17,7 +17,7 @@ const model = ref([
         label: 'Accesos', icon: 'pi pi-fw pi-key',
         items: [
           //cambiar "can : read user" por read habilitar formatos
-          {label: 'Habilitar Formatos', icon: 'pi pi-fw pi-file-edit', to: '/formatos', can: 'read user'},
+          {label: 'Habilitar Formato', icon: 'pi pi-fw pi-file-edit', to: '/formatos', can: 'read user'},
           {label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can: 'read user'},
           {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can: 'read role'},
           {
@@ -33,7 +33,7 @@ const model = ref([
   },
   {
     items: [
-      {label: 'Evaluados', icon: 'pi pi-fw pi-users', to: '/dashboard'}
+      {label: 'Evaluados', icon: 'pi pi-fw pi-users', to: '/evaluados'}
     ]
   },
   {
@@ -41,11 +41,11 @@ const model = ref([
     class: 'active-menuitem',
     items: [
       {
-        label: 'Formatos', icon: 'pi pi-fw pi-folder-open',
+        label: 'Formato', icon: 'pi pi-fw pi-folder-open',
         items: [
           //cambiar "can : read user" por read habilitar formatos
-          {label: 'Formatos 01', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
-          {label: 'Formatos 02', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
+          {label: 'Formato 01', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
+          {label: 'Formato 02', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
           {label: 'Informes Finales', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
         ]
       }

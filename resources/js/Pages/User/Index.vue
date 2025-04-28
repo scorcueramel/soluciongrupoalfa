@@ -84,7 +84,9 @@ watch(
     });
   }, 150)
 );
-
+const limpiarBuscador = () => {
+  data.params.search = "";
+}
 </script>
 
 <template>
@@ -130,12 +132,17 @@ watch(
       >
         <template #header>
           <div class="flex justify-end">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search"/>
-              </InputIcon>
-              <InputText v-model="data.params.search" placeholder="Buscar Usuario..."/>
-            </IconField>
+            <div class="flex w-1/3 h-10">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-search"/>
+                </InputGroupAddon>
+                <InputText v-model="data.params.search" placeholder="Buscar Usuario..."/>
+                <InputGroupAddon>
+                  <Button icon="pi pi-times" severity="secondary" class="h-8" @click="limpiarBuscador"/>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
           </div>
         </template>
         <template #empty> No data found.</template>

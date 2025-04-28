@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/sakai/layout/AppLayout.vue";
-import Create from "@/Pages/Formatos/HabilitarFormato.vue";
-import Edit from "@/Pages/Formatos/EditAccessFormat.vue";
+import Create from "@/Pages/Formato/HabilitarFormato.vue";
+import Edit from "@/Pages/Formato/EditAccessFormat.vue";
 import {usePage, useForm, Head} from '@inertiajs/vue3';
 
 import {reactive, ref, watch, computed} from "vue";
@@ -115,6 +115,9 @@ const permitirAcceso = (data) => {
   });
 }
 
+const limpiarBuscador = () => {
+  data.params.search = "";
+}
 </script>
 
 <template>
@@ -126,9 +129,9 @@ const permitirAcceso = (data) => {
         <div class="flex flex-wrap justify-between items-center">
           <h2 class="text-2xl font-bold">GESTIÓN DE ACCESO A FORMATOS</h2>
           <!--Cambiar los permisos correspondientes a create allow format-->
-          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true"
-                  icon="pi pi-plus"/>
+          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true" icon="pi pi-plus"/>
         </div>
+        <p class="text-red-500">Al eliminar el registro se debe restar en 1 a el número de evaluaciones del poligrafista</p>
       </template>
     </Card>
 
@@ -156,12 +159,17 @@ const permitirAcceso = (data) => {
       >
         <template #header>
           <div class="flex justify-end">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search"/>
-              </InputIcon>
-              <InputText v-model="data.params.search" placeholder="Buscar Evaluado..."/>
-            </IconField>
+            <div class="flex w-1/3 h-10">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-search"/>
+                </InputGroupAddon>
+                <InputText v-model="data.params.search" placeholder="Buscar Evaluado..."/>
+                <InputGroupAddon>
+                  <Button icon="pi pi-times" severity="secondary" class="h-8" @click="limpiarBuscador"/>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
           </div>
         </template>
         <template #empty> Sin datos para mostrar.</template>
