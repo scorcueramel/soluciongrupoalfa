@@ -8,6 +8,7 @@ use App\Http\Requests\AccesoFormatosUpdateRequest;
 use App\Models\AccesoFormatos;
 
 use App\Services\AccesoFormatosService;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class AccesoFormatosController extends Controller
@@ -20,7 +21,7 @@ class AccesoFormatosController extends Controller
 
   public function index()
   {
-    return Inertia::render('Formatos/AccessFormat');
+    return Inertia::render('Formato/AccessFormat');
   }
 
   public function allowAccessToFormat(AccesoFormatosIndexRequest $request)
@@ -44,9 +45,9 @@ class AccesoFormatosController extends Controller
       $evaluados->orderBy($request->field, $request->order);
     }
 
-    return Inertia::render('Formatos/AccesoEvaluados',[
-      'evaluados'=>$evaluados->paginate(10),
+    return Inertia::render('Formato/AccesoEvaluados',[
       'filters' => $request->all(['search', 'field', 'order']),
+      'evaluados' => $evaluados->paginate(10),
     ]);
   }
 

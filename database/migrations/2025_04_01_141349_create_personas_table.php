@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('numero_documento',20);
             $table->date('fecha_nacimiento');
             $table->string('lugar_nacimiento',100);
-            $table->string('dirección',150);
+            $table->string('direccion',150);
             $table->string('otro_tipo_vivienda',150)->nullable();
             $table->string('telefono',50);
             $table->string('email',100);

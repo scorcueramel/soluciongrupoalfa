@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/sakai/layout/AppLayout.vue";
-import Create from "@/Pages/Formatos/HabilitarFormato.vue";
-import Edit from "@/Pages/Formatos/EditAccessFormat.vue";
+import Create from "@/Pages/Formato/HabilitarFormato.vue";
+import Edit from "@/Pages/Formato/EditAccessFormat.vue";
 import {usePage, useForm, Head} from '@inertiajs/vue3';
 
 import {reactive, ref, watch, computed} from "vue";
@@ -11,6 +11,7 @@ import {router} from "@inertiajs/vue3";
 const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
 import Card from "primevue/card";
+import DataTable from 'primevue/datatable';
 
 const props = defineProps({
   filters: Object,
@@ -29,7 +30,7 @@ const data = reactive({
     search: props.filters.search,
     field: props.filters.field,
     order: props.filters.order,
-    perPage: props.perPage,
+    // perPage: props.perPage,
     allowFormatOpen: false,
     editOpen: false,
   },
@@ -94,7 +95,7 @@ const permitirAcceso = (data) => {
     title: "¿Permitir acceso a formato?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "#3085d6",
+    confirmButtonColor: "#10B981",
     cancelButtonColor: "#d33",
     confirmButtonText: "Si",
     cancelButtonText: "No",
@@ -114,6 +115,9 @@ const permitirAcceso = (data) => {
   });
 }
 
+const limpiarBuscador = () => {
+  data.params.search = "";
+}
 </script>
 
 <template>
@@ -125,8 +129,7 @@ const permitirAcceso = (data) => {
         <div class="flex flex-wrap justify-between items-center">
           <h2 class="text-2xl font-bold">GESTIÓN DE ACCESO A FORMATOS</h2>
           <!--Cambiar los permisos correspondientes a create allow format-->
-          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true"
-                  icon="pi pi-plus"/>
+          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true" icon="pi pi-plus"/>
         </div>
       </template>
     </Card>
@@ -143,6 +146,7 @@ const permitirAcceso = (data) => {
         :evaluado="data.evaluado"
       />
       <DataTable
+        lazy
         :value="evaluados.data"
         paginator
         :rows="evaluados.per_page"
@@ -154,12 +158,17 @@ const permitirAcceso = (data) => {
       >
         <template #header>
           <div class="flex justify-end">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search"/>
-              </InputIcon>
-              <InputText v-model="data.params.search" placeholder="Buscar Evaluado..."/>
-            </IconField>
+            <div class="flex w-1/3 h-10">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-search"/>
+                </InputGroupAddon>
+                <InputText v-model="data.params.search" placeholder="Buscar Evaluado..."/>
+                <InputGroupAddon>
+                  <Button icon="pi pi-times" severity="secondary" class="h-8" @click="limpiarBuscador"/>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
           </div>
         </template>
         <template #empty> Sin datos para mostrar.</template>

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\AccesoFormatos;
 use App\Models\AcercaPoligrafos;
 use App\Models\ComisionesDelitos;
+use App\Models\ConsentimientosExamenes;
 use App\Models\ConsumosBebidasAlcoholicas;
 use App\Models\DetalleExperenciaLaboral;
 use App\Models\ExperienciasLaborales;
@@ -28,10 +29,9 @@ class FormatoUnoService
     try {
       DB::commit();
       //dd($data[0]);
-      //Firma examinado Base64
-      $firmaBase64 = explode("/9j/", $data[0]->imagenFirma)[1];
-
       foreach ($data as $d) {
+        //Firma examinado Base64
+        $firmaBase64 = explode("/9j/", $d->imagenFirma)[1];
         //Datos de las personas
         $persona = Personas::create([
           'nacionalidad_id' => $d->nacionalidad["code"],
@@ -46,7 +46,7 @@ class FormatoUnoService
           'numero_documento' => $d->numeroDocumento,
           'fecha_nacimiento' => $d->fechaNacimiento,
           'lugar_nacimiento' => $d->lugarNacimiento,
-          'dirección' => Str::title($d->direccion),
+          'direccion' => Str::title($d->direccion),
           'otro_tipo_vivienda' => $d->otroTipoVivienda,
           'telefono' => $d->telefono,
           'email' => $d->email,
@@ -211,14 +211,6 @@ class FormatoUnoService
           'ocupacion' => $d->nombresocupacionmadre,
           'mismo_inmueble' => $d->mismoInmuebleMadre,
         ]);
-        ParentescosPersonas::create([
-          'persona_id' => $persona->id,
-          'tipo_parentesco_id' => $d->tipoParentescoPadre,
-          'nombres_apellidos' => $d->nombrespadre,
-          'edad' => $d->edadpadre,
-          'ocupacion' => $d->nombresocupacionpadre,
-          'mismo_inmueble' => $d->mismoInmueblePadre,
-        ]);
         if ($d->tieneConyuge) {
           ParentescosPersonas::create([
             'persona_id' => $persona->id,
@@ -263,7 +255,7 @@ class FormatoUnoService
           foreach ($hermanos as $hermano) {
             ParentescosPersonas::create([
               'persona_id' => $persona->id,
-              'tipo_parentesco_id' => $d->tipoParentescoHijos,
+              'tipo_parentesco_id' => $d->tipoParentescoHermanos,
               'nombres_apellidos' => $hermano["nombres"],
               'edad' => $hermano["edad"],
               'ocupacion' => $hermano["ocupacion"],
@@ -315,6 +307,12 @@ class FormatoUnoService
           'familiar_consumidor' => $d->familiaresEnDrogas,
         ]);
         //end Implicaciones en Drogas
+
+        ConsentimientosExamenes::create([
+          'persona_id' => $persona->id,
+          'fecha_formato' => date("Y-m-d"),
+          'firma' => $firmaBase64,
+        ]);
       }
 
       $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->get()[0];
@@ -326,9 +324,5 @@ class FormatoUnoService
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
     }
-  }
-
-  public static function createConsetimientoFormatoDos(array $data):JsonResponse{
-    dd($data);
   }
 }

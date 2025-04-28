@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Personas extends Model
@@ -24,7 +26,7 @@ class Personas extends Model
         'numero_documento',
         'fecha_nacimiento',
         'lugar_nacimiento',
-        'dirección',
+        'direccion',
         'otro_tipo_vivienda',
         'telefono',
         'email',

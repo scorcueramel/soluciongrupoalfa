@@ -506,11 +506,11 @@ const registrarFormato = () => {
             // form.reset();
             Swal.fire({
               title: "Formato Registrado!",
-              text: "Tu formato fue registrado correctamente!",
+              text: "Tu formato 1 fue registrado correctamente!",
               icon: "success",
               allowOutsideClick: false,
               confirmButtonColor: "#10B981",
-              confirmButtonText: "Continuar",
+              confirmButtonText: "Siguiente Formato",
             }).then((result) => {
               if (result.isConfirmed) {
                 form.codigoPoligrafista = props.datosevaluado.codigo_poligrafista + "" + props.datosevaluado.numero_evaluaciones

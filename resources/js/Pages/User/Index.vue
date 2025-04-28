@@ -84,7 +84,9 @@ watch(
     });
   }, 150)
 );
-
+const limpiarBuscador = () => {
+  data.params.search = "";
+}
 </script>
 
 <template>
@@ -95,7 +97,8 @@ watch(
       <template #content>
         <div class="flex flex-wrap justify-between items-center">
           <h2 class="text-2xl font-bold">GESTIÓN DE USUARIOS</h2>
-          <Button v-show="can(['create user'])" label="Nuevo usuario" @click="data.createOpen = true" icon="pi pi-plus"/>
+          <Button v-show="can(['create user'])" label="Nuevo usuario" @click="data.createOpen = true"
+                  icon="pi pi-plus"/>
         </div>
       </template>
     </Card>
@@ -118,6 +121,7 @@ watch(
       />
 
       <DataTable
+        lazy
         :value="users.data"
         paginator
         :rows="users.per_page"
@@ -129,12 +133,17 @@ watch(
       >
         <template #header>
           <div class="flex justify-end">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search"/>
-              </InputIcon>
-              <InputText v-model="data.params.search" placeholder="Buscar Usuario..."/>
-            </IconField>
+            <div class="flex w-1/3 h-10">
+              <InputGroup>
+                <InputGroupAddon>
+                  <i class="pi pi-search"/>
+                </InputGroupAddon>
+                <InputText v-model="data.params.search" placeholder="Buscar Usuario..."/>
+                <InputGroupAddon>
+                  <Button icon="pi pi-times" severity="secondary" class="h-8" @click="limpiarBuscador"/>
+                </InputGroupAddon>
+              </InputGroup>
+            </div>
           </div>
         </template>
         <template #empty> No data found.</template>
@@ -155,8 +164,7 @@ watch(
             {{ slotProps.data.roles[0].name }}
           </template>
         </Column>
-        <Column field="created_at" header="Fec. Registro"></Column>
-        <Column field="updated_at" header="Fec. Actualización"></Column>
+        <Column field="conteo_evaluaciones" header="Total Evaluaciones"></Column>
         <Column :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
             <Button v-show="can(['update user'])" icon="pi pi-pencil" outlined rounded class="mr-2" @click="

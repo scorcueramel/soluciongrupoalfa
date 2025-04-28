@@ -17,14 +17,9 @@ const edadEvaluado = ref(0);
 
 const form = useForm({
   imagenFirma: "",
-  numeroDocumento: ""
 })
 
 onMounted(() => {
-  console.log(props.datosEvaluados )
-
-  form.numeroDocumento = props.datosEvaluados.documento;
-
   numeroMesExamen.value = getDate.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
   diaMesExamen.value = getDate.toLocaleDateString().slice(0, 2).replaceAll('/', '');
@@ -43,6 +38,55 @@ const getCoordinate = (event) => {
   let coordinates = this.$refs.VueDrawingCanvas.getCoordinates(event);
   this.x = coordinates.x;
   this.y = coordinates.y;
+}
+
+const registrarFormato = () => {
+  Swal.fire({
+    title: "¿Terminaste?",
+    html: "Al presionar el botón <b>Continuar</b> se registrará tu consentimiento",
+    icon: "info",
+    showCancelButton: true,
+    confirmButtonColor: "#10B981",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Continuar",
+    cancelButtonText: "Revisar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        icon: 'info',
+        html: "Espere un momento porfavor ...",
+        timerProgressBar: true,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      form.post(route('formato.dos.store'), {
+        preserveScroll: true,
+        onSuccess: () => {
+          Swal.fire({
+            title: "Formato Registrado!",
+            text: "Tu formato 2 fue registrado correctamente!",
+            icon: "success",
+            allowOutsideClick: false,
+            confirmButtonColor: "#10B981",
+            confirmButtonText: "Terminar",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              form.get(route('formato.index'), {
+                preventScroll: true,
+                onSuccess: () => null,
+                onError: () => null,
+                onFinish: () => null,
+              });
+            }
+          });
+        },
+        onError: () => null,
+        onFinish: () => null,
+      });
+    }
+  });
 }
 
 </script>
@@ -97,7 +141,7 @@ const getCoordinate = (event) => {
       </Card>
       <Card class="my-6">
         <template #content>
-          <form>
+          <form @submit.prevent="registrarFormato">
             <div class="flex justify-center items-center px-10 py-4 xl:py-10 lg:py-10">
               <div class="container grid grid-cols-1 w-full ">
                 <div class="px-0 xl:px-10 lg:px-10 md:px-0 mb-6">
@@ -163,7 +207,7 @@ const getCoordinate = (event) => {
                         class="flex-auto w-auto ms-4"
                         autocomplete="off"
                         placeholder="Número de documento"
-                        v-model="form.numeroDocumento"
+                        v-model="props.datosEvaluados.documento"
                         :disabled="true"
                         id="numeroDocumentoPie"
                       />
@@ -211,6 +255,11 @@ const getCoordinate = (event) => {
                     firmo.
                   </p>
                 </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 mb-4">
+              <div class="flex justify-center">
+                <Button type="submit" label="Terminar" severity="success"/>
               </div>
             </div>
           </form>
