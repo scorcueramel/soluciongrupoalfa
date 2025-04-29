@@ -18,4 +18,9 @@ class AcercaPoligrafos extends Model
         'fecha',
         'motivo',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

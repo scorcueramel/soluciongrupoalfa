@@ -15,4 +15,9 @@ class MotivacionesPostulaciones extends Model
         'beneficio_ilegal',
         'familiares_en_empresa',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

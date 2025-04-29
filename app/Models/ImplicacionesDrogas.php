@@ -21,4 +21,9 @@ class ImplicacionesDrogas extends Model
         'ultimo_consumo',
         'familiar_consumidor',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

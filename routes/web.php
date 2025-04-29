@@ -57,7 +57,7 @@ Route::middleware('auth', 'verified')->group(function () {
   Route::resource('/permission', PermissionController::class)->except('create', 'show', 'edit');
   //Evaluados
   Route::get('/evaluados',[EvaluadosController::class,'index'])->name('evaluados.index');
-  Route::get('/evaluados/{personaid}/parentescos',[EvaluadosController::class,'getRelationships'])->name('evaluados.parentescos');
+  Route::get('/evaluados/{personaid}/parentescos',[EvaluadosController::class,'getDetailsPerson'])->name('evaluados.detalle');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

@@ -17,4 +17,9 @@ class ConsumosBebidasAlcoholicas extends Model
         'trabajo_ebrio',
         'explicacion',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

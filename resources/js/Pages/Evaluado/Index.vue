@@ -25,8 +25,6 @@ const props = defineProps({
 loadToast();
 
 const detailDialog = ref(false);
-const parentescos = ref({})
-
 const data = reactive({
   params: {
     search: props.filters.search,
@@ -35,6 +33,25 @@ const data = reactive({
   },
   evaluado: null,
 });
+const dataResponse = reactive({
+  objects: {
+    acercaPoligrafo: Object,
+    comisionDelitos: Object,
+    consumoBebidasAlcoholicas: Object,
+    detallesExperienciasLaborales: Object,
+    experienciasLaborales: Object,
+    formacionesAcademicas: Object,
+    implicaonesDrogas: Object,
+    informacionesFinancieras: Object,
+    motivacionesPostulacion: Object,
+    parentescos: Object,
+    personas: Object,
+    personasMargenLeyes: Object,
+    entidadesBancarias: Object,
+  }
+});
+const bancoPrestamo = ref("");
+const bancoReportado = ref("");
 
 const onPageChange = (event) => {
   router.get(route('evaluados.index'), {page: event.page + 1}, {preserveState: true});
@@ -56,23 +73,57 @@ const limpiarBuscador = () => {
   data.params.search = "";
 }
 
-const obtenerParentescos = () => {
-  router.get(route("evaluados.parentescos", data.evaluado?.personaId), {
-    preserveScroll: true,
-    onSuccess: (data) => {
-      detailDialog.value = true;
-      console.log(data)
-    },
-    onError: () => null,
-    onFinish: () => null,
-  })
+const obtenerDetallePersona = () => {
+  axios.get(route("evaluados.detalle", data.evaluado?.personaId))
+    .then((response) => {
+      dataResponse.objects.personas = response.data.personas;
+      dataResponse.objects.parentescos = response.data.parentescos;
+      dataResponse.objects.formacionesAcademicas = response.data.formacionesAcademicas;
+      dataResponse.objects.experienciasLaborales = response.data.experienciasLaborales;
+      dataResponse.objects.detallesExperienciasLaborales = response.data.detallesExperienciasLaborales;
+      dataResponse.objects.informacionesFinancieras = response.data.informacionesFinancieras;
+      dataResponse.objects.consumoBebidasAlcoholicas = response.data.consumoBebidasAlcoholicas;
+      dataResponse.objects.implicaonesDrogas = response.data.implicaonesDrogas;
+      dataResponse.objects.comisionDelitos = response.data.comisionDelitos;
+      dataResponse.objects.personasMargenLeyes = response.data.personasMargenLeyes;
+      dataResponse.objects.motivacionesPostulacion = response.data.motivacionesPostulacion;
+      dataResponse.objects.acercaPoligrafo = response.data.acercaPoligrafo;
+      dataResponse.objects.entidadesBancarias = response.data.entidadesBancarias;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+    .finally(() => {
+      // console.log(dataResponse.objects.implicaonesDrogas)
+
+      dataResponse.objects.entidadesBancarias.map((e) => {
+        if (dataResponse.objects.informacionesFinancieras[0].tiene_prestamo) {
+          if (dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_prestamo_id === e.id) {
+            bancoPrestamo.value = e.nombre_entidad;
+          }
+        } else {
+          bancoPrestamo.value = 'No registra';
+        }
+      });
+
+      dataResponse.objects.entidadesBancarias.map((e) => {
+        if (dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos) {
+          if (dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_reporto_id === e.id) {
+            bancoReportado.value = e.nombre_entidad;
+          }
+        } else {
+          bancoReportado.value = 'No registra';
+        }
+      });
+
+      detailDialog.value = true
+    });
 }
 </script>
 
 <template>
   <app-layout>
     <Head title="Evaluados"/>
-
     <Card class="mb-8">
       <template #content>
         <div class="flex flex-wrap justify-between items-center">
@@ -80,6 +131,7 @@ const obtenerParentescos = () => {
         </div>
       </template>
     </Card>
+
     <div class="card">
       <DataTable
         lazy :value="evaluados.data"
@@ -113,7 +165,7 @@ const obtenerParentescos = () => {
             {{ slotProps.index + 1 }}
           </template>
         </Column>
-        <Column field="tipo_documento" header="Tipo Documento."></Column>
+        <Column field="tipo_documento" header="Tipo Documento"></Column>
         <Column field="numero_documento" header="N° Documento"></Column>
         <Column header="Nombres y Apellidos">
           <template #body="slotProps">
@@ -123,7 +175,7 @@ const obtenerParentescos = () => {
         <Column :exportable="false" header="Detalles" style="min-width: 12rem">
           <template #body="slotProps">
             <Button icon="pi pi-eye" outlined rounded severity="info" class="ml-2"
-                    @click="detailDialog = true; data.evaluado = slotProps.data"/>
+                    @click="data.evaluado = slotProps.data; obtenerDetallePersona()"/>
           </template>
         </Column>
       </DataTable>
@@ -138,7 +190,9 @@ const obtenerParentescos = () => {
           <Accordion value="0">
             <AccordionPanel value="0">
               <AccordionHeader>
-                <i class="pi pi-user !text-2xl"/>Datos Personales
+                <div>
+                  <i class="pi pi-id-card !text-2xl pe-4"/> Datos personales
+                </div>
               </AccordionHeader>
               <AccordionContent>
                 <Card>
@@ -146,28 +200,46 @@ const obtenerParentescos = () => {
                     <div class="relative overflow-x-auto mb-4">
                       <table class="w-full text-md text-left">
                         <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                          <tr>
-                            <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
-                            <th scope="col" class="px-6 py-3">Nacioinalidad</th>
-                            <th scope="col" class="px-6 py-3">Tipo Documento</th>
-                            <th scope="col" class="px-6 py-3">N° Documento</th>
-                            <th scope="col" class="px-6 py-3">Fecha de Nacimiento</th>
-                            <th scope="col" class="px-6 py-3">Estado Civil</th>
-                            <th scope="col" class="px-6 py-3">Genero</th>
-                            <th scope="col" class="px-6 py-3">Distrito</th>
-                          </tr>
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
+                          <th scope="col" class="px-6 py-3">Nacioinalidad</th>
+                          <th scope="col" class="px-6 py-3">Tipo Documento</th>
+                          <th scope="col" class="px-6 py-3">N° Documento</th>
+                          <th scope="col" class="px-6 py-3">Fecha de Nacimiento</th>
+                          <th scope="col" class="px-6 py-3">Estado Civil</th>
+                          <th scope="col" class="px-6 py-3">Genero</th>
+                          <th scope="col" class="px-6 py-3">Distrito</th>
+                        </tr>
                         </thead>
                         <tbody>
-                          <tr class="border-b">
-                            <td class="px-6 py-4">{{ data.evaluado.nombres }} {{ data.evaluado.apellido_paterno }} {{ data.evaluado.apellido_materno }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.nacionalidad }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.tipo_documento }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.numero_documento }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.fecha_nacimiento }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.estado_civil }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.genero }}</td>
-                            <td class="px-6 py-4">{{ data.evaluado.distrito }}</td>
-                          </tr>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].nombres }}
+                            {{ dataResponse.objects.personas[0].apellido_paterno }}
+                            {{ dataResponse.objects.personas[0].apellido_materno }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].nacionalidad }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].tipo_documento }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].numero_documento }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].fecha_nacimiento }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].estado_civil }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].genero }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].distrito }}
+                          </td>
+                        </tr>
                         </tbody>
                       </table>
                     </div>
@@ -186,13 +258,27 @@ const obtenerParentescos = () => {
                         </thead>
                         <tbody>
                         <tr class="border-b">
-                          <td class="px-6 py-4">{{ data.evaluado.direccion }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.lugar_nacimiento }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.telefono }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.email }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.brevete ?? 'No registra' }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.tipo_vivienda }}</td>
-                          <td class="px-6 py-4">{{ data.evaluado.otro_tipo_vivienda ?? 'No registra' }}</td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].direccion }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].lugar_nacimiento }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].telefono }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].email }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].brevete ?? 'No registra' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].tipo_vivienda }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].otro_tipo_vivienda ?? 'No registra' }}
+                          </td>
                         </tr>
                         </tbody>
                       </table>
@@ -201,50 +287,512 @@ const obtenerParentescos = () => {
                 </Card>
               </AccordionContent>
             </AccordionPanel>
-            <AccordionPanel value="1" @click="obtenerParentescos">
+            <AccordionPanel value="1">
               <AccordionHeader>
-                <i class="pi pi-building !text-2xl"/>Parentescos
+                <div>
+                  <i class="pi pi-building !text-2xl pe-4"/> Empresa y Cargo que postula
+                </div>
               </AccordionHeader>
               <AccordionContent>
-                <div class="relative overflow-x-auto" >
-                  <table class="w-full text-md text-left">
-                    <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                    <tr>
-                      <th scope="col" class="px-6 py-3">Dirección Vivienda</th>
-                      <th scope="col" class="px-6 py-3">Lugar de Nacimiento</th>
-                      <th scope="col" class="px-6 py-3">Teléfono</th>
-                      <th scope="col" class="px-6 py-3">Email</th>
-                      <th scope="col" class="px-6 py-3">Brevete</th>
-                      <th scope="col" class="px-6 py-3">Tipo Vivienda</th>
-                      <th scope="col" class="px-6 py-3">Otro Tipo Vivienda</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="border-b">
-                      <td class="px-6 py-4">{{ data.evaluado.direccion }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.lugar_nacimiento }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.telefono }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.email }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.brevete ?? 'No registra' }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.tipo_vivienda }}</td>
-                      <td class="px-6 py-4">{{ data.evaluado.otro_tipo_vivienda ?? 'No registra' }}</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Empresa</th>
+                          <th scope="col" class="px-6 py-3">Cargo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].nombre_comercial }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].cargo }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
               </AccordionContent>
             </AccordionPanel>
             <AccordionPanel value="2">
-              <AccordionHeader>Header III</AccordionHeader>
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-users !text-2xl pe-4"/> Datos Familiares
+                </div>
+              </AccordionHeader>
               <AccordionContent>
-                <p class="m-0">
-                  At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                  deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
-                  provident, similique sunt in culpa
-                  qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis
-                  est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil
-                  impedit quo minus.
-                </p>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tipo Parentesco</th>
+                          <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
+                          <th scope="col" class="px-6 py-3">Edad</th>
+                          <th scope="col" class="px-6 py-3">Ocupación</th>
+                          <th scope="col" class="px-6 py-3">Mismo Inmueble</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b" v-for="parentesco in dataResponse.objects.parentescos">
+                          <td class="px-6 py-4">
+                            {{ parentesco.tipo_parentesco }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ parentesco.nombres_apellidos }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ parentesco.edad }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ parentesco.ocupacion }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ parentesco.mismo_inmueble === true ? 'SI' : 'NO' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="3">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-bookmark !text-2xl pe-4"/> Formación Académica
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Grado de Instrucción</th>
+                          <th scope="col" class="px-6 py-3">Centro de Estudios</th>
+                          <th scope="col" class="px-6 py-3">Fecha Inicio</th>
+                          <th scope="col" class="px-6 py-3">Fecha Termino</th>
+                          <th scope="col" class="px-6 py-3">Especialidad</th>
+                          <th scope="col" class="px-6 py-3">Situación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b" v-for="formacionAcademica in dataResponse.objects.formacionesAcademicas">
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.grado_instruccion }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.centro_estudios }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.fecha_inicio }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.fecha_termino }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.especialidad_facultad }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ formacionAcademica.situacion === true ? 'Completo' : 'Incompleto' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="4">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-briefcase !text-2xl pe-4"/> Experiencias Laborales
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Empresa</th>
+                          <th scope="col" class="px-6 py-3">Fecha Ingreso</th>
+                          <th scope="col" class="px-6 py-3">Fecha Salida</th>
+                          <th scope="col" class="px-6 py-3">Sueldo</th>
+                          <th scope="col" class="px-6 py-3">Cargo Desempeñado</th>
+                          <th scope="col" class="px-6 py-3">Motivo de su Salida</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b" v-for="experienciaLaboral in dataResponse.objects.experienciasLaborales">
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.empresa }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.fecha_ingreso }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.fecha_salida }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.sueldo_percibido }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.cargo_desempenado }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ experienciaLaboral.motivo_salida }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Amonestaciones</th>
+                          <th scope="col" class="px-6 py-3">Solicitud Renuncia</th>
+                          <th scope="col" class="px-6 py-3">Explicación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{
+                              dataResponse.objects.detallesExperienciasLaborales[0].recibio_amonestaciones === true ? 'SI' : 'NO'
+                            }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{
+                              dataResponse.objects.detallesExperienciasLaborales[0].solicitud_renuncia === true ? 'SI' : 'NO'
+                            }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.detallesExperienciasLaborales[0].explicacion ?? 'No registra' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="5">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-wallet !text-2xl pe-4"/> Información Financiera
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
+                          <th scope="col" class="px-6 py-3">Monto Prestamo</th>
+                          <th scope="col" class="px-6 py-3">Entidad Prestamo</th>
+                          <th scope="col" class="px-6 py-3">Cuota Mensual</th>
+                          <th scope="col" class="px-6 py-3">Otro Ingreso</th>
+                          <th scope="col" class="px-6 py-3">Monto Ingreso</th>
+                          <th scope="col" class="px-6 py-3">Origen</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_prestamo === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_prestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ bancoPrestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].cuota_mensual_prestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].otro_ingreso === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_ingreso }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].origen_ingreso ?? 'No registra' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tiene Propiedades</th>
+                          <th scope="col" class="px-6 py-3">Detalle Propiedades</th>
+                          <th scope="col" class="px-6 py-3">Reportado Central de Riesgo</th>
+                          <th scope="col" class="px-6 py-3">Entidad Deuda</th>
+                          <th scope="col" class="px-6 py-3">Motivo</th>
+                          <th scope="col" class="px-6 py-3">Tiempo Mora</th>
+                          <th scope="col" class="px-6 py-3">Monto Deuda</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{
+                              dataResponse.objects.informacionesFinancieras[0].tiene_propiedades === true ? 'SI' : 'NO'
+                            }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].detalle_propiedades ?? 'No registra' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{
+                              dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos === true ? 'SI' : 'NO'
+                            }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ bancoReportado }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_deuda }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="6">
+              <AccordionHeader>
+                <div class="flex">
+                  <i class="pi pi-megaphone !text-2xl pe-7 -rotate-90" style="margin-left: -8px; margin-top: -10px"/> <p style="margin-top: 7px">Consumo de Bebidas Alcoholicas</p>
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
+                          <th scope="col" class="px-6 py-3">Monto Prestamo</th>
+                          <th scope="col" class="px-6 py-3">Entidad Prestamo</th>
+                          <th scope="col" class="px-6 py-3">Cuota Mensual</th>
+                          <th scope="col" class="px-6 py-3">Otro Ingreso</th>
+                          <th scope="col" class="px-6 py-3">Monto Ingreso</th>
+                          <th scope="col" class="px-6 py-3">Origen</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_prestamo === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_prestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ bancoPrestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].cuota_mensual_prestamo }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].otro_ingreso === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_ingreso }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].origen_ingreso ?? 'No registra' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tiene Propiedades</th>
+                          <th scope="col" class="px-6 py-3">Detalle Propiedades</th>
+                          <th scope="col" class="px-6 py-3">Reportado Central de Riesgo</th>
+                          <th scope="col" class="px-6 py-3">Entidad Deuda</th>
+                          <th scope="col" class="px-6 py-3">Motivo</th>
+                          <th scope="col" class="px-6 py-3">Tiempo Mora</th>
+                          <th scope="col" class="px-6 py-3">Monto Deuda</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_propiedades === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].detalle_propiedades ?? 'No registra' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ bancoReportado }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado ?? 'No registra'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.informacionesFinancieras[0].monto_deuda }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="7">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-exclamation-triangle !text-2xl pe-4"/> Impliación en Drogas Ilegales
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Marihuana</th>
+                          <th scope="col" class="px-6 py-3">PBC</th>
+                          <th scope="col" class="px-6 py-3">Cocaína</th>
+                          <th scope="col" class="px-6 py-3">Heroína</th>
+                          <th scope="col" class="px-6 py-3">LCD</th>
+                          <th scope="col" class="px-6 py-3">Éxtasis</th>
+                          <th scope="col" class="px-6 py-3">Ultimo Consumo de Droga Ilegal</th>
+                          <th scope="col" class="px-6 py-3">Cantidad</th>
+                          <th scope="col" class="px-6 py-3">Familiares Implicados en Drogas</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].marihuana === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].pbc === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].cocaina === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].heroina === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].lsd === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].extasis === true ? 'SI' : 'NO' }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].tiempo_transcurrido }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].ultimo_consumo === "0" ? 'No registra' : dataResponse.objects.implicaonesDrogas[0].ultimo_consumo}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.implicaonesDrogas[0].familiar_consumidor === true ? 'SI' : 'NO' }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="8">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-exclamation-circle !text-2xl pe-4"/> Comisión de Delitos
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Robo - Hurto - Fraude</th>
+                          <th scope="col" class="px-6 py-3">Homicidio involuntario</th>
+                          <th scope="col" class="px-6 py-3">Asalto</th>
+                          <th scope="col" class="px-6 py-3">Planes para causar daño físico a unindividuo</th>
+                          <th scope="col" class="px-6 py-3">Secuestro</th>
+                          <th scope="col" class="px-6 py-3">Violación</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tráfico ilícito de drogas</th>
+                          <th scope="col" class="px-6 py-3">Tráfico de armas</th>
+                          <th scope="col" class="px-6 py-3">Cualquier acto. conspiración o solicitud en los cuales usted puede ser castigado con cárcel</th>
+                          <th scope="col" class="px-6 py-3">Cualquier delito que causara muerte o lesión a otra persona</th>
+                          <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
               </AccordionContent>
             </AccordionPanel>
           </Accordion>

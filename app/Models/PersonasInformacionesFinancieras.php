@@ -27,4 +27,9 @@ class PersonasInformacionesFinancieras extends Model
         'tiempo_mora',
         'monto_deuda',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

@@ -18,4 +18,9 @@ class ParentescosPersonas extends Model
         'ocupacion',
         'mismo_inmueble',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

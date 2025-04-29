@@ -19,4 +19,9 @@ class FormacionesAcademicasPersonas extends Model
         'fecha_termino',
         'situacion',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

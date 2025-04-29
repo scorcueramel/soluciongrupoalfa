@@ -22,4 +22,9 @@ class PersonasMargenLeyes extends Model
         'otros',
         'familiares_sentenciados',
     ];
+
+    protected $hidden = [
+      'created_at',
+      'updated_at',
+    ];
 }

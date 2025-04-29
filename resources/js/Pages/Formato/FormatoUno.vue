@@ -1791,7 +1791,7 @@ const registrarFormato = () => {
                   <p class="mt-5 text-lg font-bold">Empleo 1</p>
                   <div class="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-5 md:grid-cols-3 gap-2">
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
-                      <label for="experencialaboraluno">Experiencia Laboral</label>
+                      <label for="experencialaboraluno">Empresa</label>
                       <InputText
                         id="experencialaboraluno"
                         v-model="form.empresaUno"
@@ -1863,7 +1863,7 @@ const registrarFormato = () => {
                   <p class="mt-5 text-lg font-bold">Empleo 2</p>
                   <div class="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-5 md:grid-cols-3 gap-2">
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
-                      <label for="experencialaboraldos">Experiencia Laboral</label>
+                      <label for="experencialaboraldos">Empresa</label>
                       <InputText
                         id="experencialaboraldos"
                         v-model="form.empresaDos"
@@ -1936,7 +1936,7 @@ const registrarFormato = () => {
                   <p class="mt-5 text-lg font-bold">Empleo 3</p>
                   <div class="grid grid-cols-2 xl:grid-cols-8 lg:grid-cols-5 md:grid-cols-3 gap-2">
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
-                      <label for="experencialaboraltres">Experiencia Laboral</label>
+                      <label for="experencialaboraltres">Empresa</label>
                       <InputText
                         id="experencialaboraltres"
                         v-model="form.empresaTres"

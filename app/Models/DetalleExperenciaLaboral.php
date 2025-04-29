@@ -15,4 +15,9 @@ class DetalleExperenciaLaboral extends Model
     'solicitud_renuncia',
     'explicacion',
   ];
+
+  protected $hidden = [
+    'created_at',
+    'updated_at',
+  ];
 }
