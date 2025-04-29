@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EvaluadosIndexRequest;
 use App\Models\Personas;
 use App\Models\SolicitudesDatosPersonales;
-use App\Models\TiposParentescos;
-use Illuminate\Http\Request;
+use App\Services\EvaluadosService;
 use Inertia\Inertia;
 
 class EvaluadosController extends Controller
 {
-    public function index(EvaluadosIndexRequest $request){
+  public function __construct(
+    private EvaluadosService $evaluadosService,
+  )
+  {
+  }
+
+  public function index(EvaluadosIndexRequest $request){
 
       $role = auth()->user()->roles->pluck('name')[0];
 
@@ -43,5 +48,18 @@ class EvaluadosController extends Controller
         'filters' => $request->all(['search', 'field', 'order']),
         'evaluados' => $valuados->paginate(10),
       ]);
+    }
+
+    public function getRelationships(string $personaid){
+      $response = $this->evaluadosService->obtenerParentescos($personaid);
+      $jsonDecode = json_decode($response->content());
+
+      if ($jsonDecode->code === 200) {
+        return back()->with('parentescos', $jsonDecode->parentescos);
+      }
+
+      if ($jsonDecode->code === 500) {
+        return back()->with('error', $jsonDecode->message);
+      }
     }
 }

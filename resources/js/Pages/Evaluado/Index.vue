@@ -25,14 +25,13 @@ const props = defineProps({
 loadToast();
 
 const detailDialog = ref(false);
+const parentescos = ref({})
 
 const data = reactive({
   params: {
     search: props.filters.search,
     field: props.filters.field,
     order: props.filters.order,
-    createOpen: false,
-    editOpen: false,
   },
   evaluado: null,
 });
@@ -55,6 +54,18 @@ watch(
 
 const limpiarBuscador = () => {
   data.params.search = "";
+}
+
+const obtenerParentescos = () => {
+  router.get(route("evaluados.parentescos", data.evaluado?.personaId), {
+    preserveScroll: true,
+    onSuccess: (data) => {
+      detailDialog.value = true;
+      console.log(data)
+    },
+    onError: () => null,
+    onFinish: () => null,
+  })
 }
 </script>
 
@@ -190,17 +201,37 @@ const limpiarBuscador = () => {
                 </Card>
               </AccordionContent>
             </AccordionPanel>
-            <AccordionPanel value="1">
-              <AccordionHeader><i class="pi pi-building !text-2xl"/>Empresa y Cargo que Postula</AccordionHeader>
+            <AccordionPanel value="1" @click="obtenerParentescos">
+              <AccordionHeader>
+                <i class="pi pi-building !text-2xl"/>Parentescos
+              </AccordionHeader>
               <AccordionContent>
-                <p class="m-0">
-                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-                  totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
-                  dicta sunt explicabo. Nemo enim
-                  ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-                  dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed quia non numquam
-                  eius modi.
-                </p>
+                <div class="relative overflow-x-auto" >
+                  <table class="w-full text-md text-left">
+                    <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                    <tr>
+                      <th scope="col" class="px-6 py-3">Dirección Vivienda</th>
+                      <th scope="col" class="px-6 py-3">Lugar de Nacimiento</th>
+                      <th scope="col" class="px-6 py-3">Teléfono</th>
+                      <th scope="col" class="px-6 py-3">Email</th>
+                      <th scope="col" class="px-6 py-3">Brevete</th>
+                      <th scope="col" class="px-6 py-3">Tipo Vivienda</th>
+                      <th scope="col" class="px-6 py-3">Otro Tipo Vivienda</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="border-b">
+                      <td class="px-6 py-4">{{ data.evaluado.direccion }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.lugar_nacimiento }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.telefono }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.email }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.brevete ?? 'No registra' }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.tipo_vivienda }}</td>
+                      <td class="px-6 py-4">{{ data.evaluado.otro_tipo_vivienda ?? 'No registra' }}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </AccordionContent>
             </AccordionPanel>
             <AccordionPanel value="2">
