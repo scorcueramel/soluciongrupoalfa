@@ -1,7 +1,7 @@
 <script setup>
 import AppLayout from "@/sakai/layout/AppLayout.vue";
 
-import {Head, router} from '@inertiajs/vue3';
+import {Head} from '@inertiajs/vue3';
 
 import {reactive, ref, watch} from "vue";
 import pkg from "lodash";
@@ -119,11 +119,13 @@ const obtenerDetallePersona = () => {
 }
 
 const generarFormato = () =>{
-  router.get(route("evaluados.descargar.formatouno"), {
-    replace: true,
-    preserveState: true,
-    preserveScroll: true,
-  });
+  console.log(data.evaluado?.personaId);
+  axios.get(route("evaluados.formatouno.descargar", data.evaluado?.personaId))
+    .then((response)=>{
+      console.log(response);
+    })
+    .catch((error)=>{console.log(error)})
+    .finally(() => {});
 }
 </script>
 
@@ -179,7 +181,7 @@ const generarFormato = () =>{
                   <i class="pi pi-eye me-1"></i> Detalles
                 </div>
               </button>
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="generarFormato">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarFormato()">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Formato Uno
                 </div>
