@@ -154,6 +154,7 @@ class FormatoUnoData extends Data
     public ?string $motivoPasoAntesE,
     public string  $imagenFirma,
     public ?int $usuarioId,
+    public string $ciudad,
   )
   {
   }

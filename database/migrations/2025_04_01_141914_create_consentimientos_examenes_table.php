@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas');
             $table->string('firma',15000);
             $table->date('fecha_formato');
+            $table->string('ciudad');
             $table->timestamps();
         });
     }

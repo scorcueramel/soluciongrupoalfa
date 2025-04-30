@@ -312,6 +312,7 @@ class FormatoUnoService
           'persona_id' => $persona->id,
           'fecha_formato' => date("Y-m-d"),
           'firma' => $firmaBase64,
+          'ciudad' => $d->ciudad,
         ]);
       }
 

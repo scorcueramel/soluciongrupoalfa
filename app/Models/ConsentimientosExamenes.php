@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class ConsentimientosExamenes extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'persona_id',
-        'fecha_formato',
-        'firma',
-    ];
+  protected $fillable = [
+    'persona_id',
+    'fecha_formato',
+    'firma',
+    'ciudad'
+  ];
 }

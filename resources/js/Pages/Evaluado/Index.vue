@@ -119,12 +119,11 @@ const obtenerDetallePersona = () => {
 }
 
 const generarFormato = () =>{
-  router.get(route('evaluados.descargar.formatouno',{
-    preventSubmit: true,
-    onSuccess: () => null,
-    onError: () => null,
-    onFinish: () => null,
-  }));
+  router.get(route("evaluados.descargar.formatouno"), {
+    replace: true,
+    preserveState: true,
+    preserveScroll: true,
+  });
 }
 </script>
 

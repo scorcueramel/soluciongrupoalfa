@@ -171,6 +171,7 @@ class FormatoCreateRequest extends FormRequest
       "motivoPasoAntesE" => 'nullable|string|max:300',
       "imagenFirma" => 'nullable|string',
       "usuarioId" => 'nullable|integer',
+      "ciudadExamen" => 'nullable|string',
     ];
   }
 
@@ -323,7 +324,8 @@ class FormatoCreateRequest extends FormRequest
       'fechaExamenAnterior' => $this->fechaExamenAnterior,
       'motivoPasoAntesE' => $this->motivoPasoAntesE,
       'imagenFirma' => $this->imagenFirma,
-      "usuarioId" => $this->usuarioId,
+      'usuarioId' => $this->usuarioId,
+      'ciudad' => $this->ciudadExamen,
     ]);
   }
 }
