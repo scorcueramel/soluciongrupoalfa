@@ -94,8 +94,6 @@ const obtenerDetallePersona = () => {
       console.log(error);
     })
     .finally(() => {
-      // console.log(dataResponse.objects.implicaonesDrogas)
-
       dataResponse.objects.entidadesBancarias.map((e) => {
         if (dataResponse.objects.informacionesFinancieras[0].tiene_prestamo) {
           if (dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_prestamo_id === e.id) {
@@ -172,10 +170,31 @@ const obtenerDetallePersona = () => {
             {{ slotProps.data.nombres }} {{ slotProps.data.apellido_paterno }} {{ slotProps.data.apellido_materno }}
           </template>
         </Column>
-        <Column :exportable="false" header="Detalles" style="min-width: 12rem">
+        <Column :exportable="false" header="Acciones" style="min-width: 12rem">
           <template #body="slotProps">
-            <Button icon="pi pi-eye" outlined rounded severity="info" class="ml-2"
-                    @click="data.evaluado = slotProps.data; obtenerDetallePersona()"/>
+            <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
+              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+              </svg>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="dropdownDotsHorizontal" class="z-10 hidden bg-gray-50 divide-y divide-gray-100 rounded-lg shadow-lg w-44">
+              <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton">
+                <li>
+                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Detalles</button>
+                </li>
+                <li>
+                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Formato 1</button>
+                </li>
+                <li>
+                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Consentimiento</button>
+                </li>
+                <li>
+                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Informe Final</button>
+                </li>
+              </ul>
+            </div>
           </template>
         </Column>
       </DataTable>
@@ -189,6 +208,39 @@ const obtenerDetallePersona = () => {
         <div class="w-full">
           <Accordion value="0">
             <AccordionPanel value="0">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-building !text-2xl pe-4"/> Empresa y Cargo que postula
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Empresa</th>
+                          <th scope="col" class="px-6 py-3">Cargo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].nombre_comercial }}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{ dataResponse.objects.personas[0].cargo }}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="1">
               <AccordionHeader>
                 <div>
                   <i class="pi pi-id-card !text-2xl pe-4"/> Datos personales
@@ -278,39 +330,6 @@ const obtenerDetallePersona = () => {
                           </td>
                           <td class="px-6 py-4">
                             {{ dataResponse.objects.personas[0].otro_tipo_vivienda ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="1">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-building !text-2xl pe-4"/> Empresa y Cargo que postula
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Empresa</th>
-                          <th scope="col" class="px-6 py-3">Cargo</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].nombre_comercial }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].cargo }}
                           </td>
                         </tr>
                         </tbody>
@@ -758,7 +777,7 @@ const obtenerDetallePersona = () => {
                           <th scope="col" class="px-6 py-3">Robo - Hurto - Fraude</th>
                           <th scope="col" class="px-6 py-3">Homicidio involuntario</th>
                           <th scope="col" class="px-6 py-3">Asalto</th>
-                          <th scope="col" class="px-6 py-3">Planes para causar daño físico a unindividuo</th>
+                          <th scope="col" class="px-6 py-3">Planes para causar daño físico a un individuo</th>
                           <th scope="col" class="px-6 py-3">Secuestro</th>
                           <th scope="col" class="px-6 py-3">Violación</th>
                         </tr>
@@ -766,6 +785,22 @@ const obtenerDetallePersona = () => {
                         <tbody>
                         <tr class="border-b">
                           <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].robo_hurto_fraude === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].homicidio_involuntario === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].asalto === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].danio_fisico_individuo === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].secuestro === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].violacion === true ? 'SI' : 'NO'}}
                           </td>
                         </tr>
                         </tbody>
@@ -785,7 +820,178 @@ const obtenerDetallePersona = () => {
                         <tbody>
                         <tr class="border-b">
                           <td class="px-6 py-4">
-
+                            {{dataResponse.objects.comisionDelitos[0].trafico_ilicito_drogas === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].trafico_armas === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].otros_delitos === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].muerte_lesion_otra_persona === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].explique_otros ?? 'No registra'}}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="9">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-user-minus !text-2xl pe-4"/> Conoce Alguna Persona al Margen de la Ley
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto mb-4">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Pandilleros</th>
+                          <th scope="col" class="px-6 py-3">Sicarios</th>
+                          <th scope="col" class="px-6 py-3">Asaltantes</th>
+                          <th scope="col" class="px-6 py-3">Traficante de drogas</th>
+                          <th scope="col" class="px-6 py-3">Estafadores</th>
+                          <th scope="col" class="px-6 py-3">Terroristas</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].pandilleros === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].sicarios === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].asaltantes === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].traficantes_drogas === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].estafadores === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].terroristas === true ? 'SI' : 'NO'}}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Secuestradores</th>
+                          <th scope="col" class="px-6 py-3">Extorsionadores</th>
+                          <th scope="col" class="px-6 py-3">Otros</th>
+                          <th scope="col" class="px-6 py-3">Tiene familiares sentenciados en penales:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].secuestradores === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].extorsionadores === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].otros === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].familiares_sentenciados === true ? 'SI' : 'NO'}}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="10">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-bolt !text-2xl pe-4"/> Motivaciones por que Postula a la Empresa
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para causar algún daño a personas o la empresa</th>
+                          <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para obtener algún beneficio ilegal</th>
+                          <th scope="col" class="px-6 py-3">Tiene familiares o amigos que trabajan o trabajaron en la empresa que postula</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].causar_danio === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].beneficio_ilegal === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.comisionDelitos[0].familiares_en_empresa === true ? 'SI' : 'NO'}}
+                          </td>
+                        </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </template>
+                </Card>
+              </AccordionContent>
+            </AccordionPanel>
+            <AccordionPanel value="11">
+              <AccordionHeader>
+                <div>
+                  <i class="pi pi-chart-bar !text-2xl pe-4"/> Acerca del Poligrafo
+                </div>
+              </AccordionHeader>
+              <AccordionContent>
+                <Card>
+                  <template #content>
+                    <div class="relative overflow-x-auto">
+                      <table class="w-full text-md text-left">
+                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                        <tr>
+                          <th scope="col" class="px-6 py-3">Alguna vez ha pasado exámen de polígrafo</th>
+                          <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa, explique</th>
+                          <th scope="col" class="px-6 py-3">Empresa</th>
+                          <th scope="col" class="px-6 py-3">Fecha</th>
+                          <th scope="col" class="px-6 py-3">Motivo</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-b">
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.acercaPoligrafo[0].paso_antes_examen === true ? 'SI' : 'NO'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.acercaPoligrafo[0].explique_paso_antes ?? 'No registra'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.acercaPoligrafo[0].empresa ?? 'No registra'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.acercaPoligrafo[0].fecha ?? 'No registra'}}
+                          </td>
+                          <td class="px-6 py-4">
+                            {{dataResponse.objects.acercaPoligrafo[0].motivo ?? 'No registra'}}
                           </td>
                         </tr>
                         </tbody>

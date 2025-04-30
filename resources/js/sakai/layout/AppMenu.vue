@@ -6,49 +6,17 @@ import AppMenuItem from './AppMenuItem.vue';
 const model = ref([
   {
     items: [
-      {label: 'Panel', icon: 'pi pi-fw pi-home', to: '/dashboard'}
-    ]
-  },
-  {
-    label: 'Gestión de accesos',
-    class: 'active-menuitem',
-    items: [
-      {
-        label: 'Accesos', icon: 'pi pi-fw pi-key',
-        items: [
-          //cambiar "can : read user" por read habilitar formatos
-          {label: 'Habilitar Formato', icon: 'pi pi-fw pi-file-edit', to: '/formatos', can: 'read user'},
-          {label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can: 'read user'},
-          {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can: 'read role'},
-          {
-            label: 'Permisos',
-            icon: 'pi pi-fw pi-mobile',
-            to: '/permission',
-            class: 'rotated-icon',
-            can: 'read permission'
-          },
-        ]
-      }
+      {label: 'Panel', icon: 'pi pi-fw pi-home', to: '/dashboard'},
+      //cambiar "can : read user" por read habilitar formatos
+      {label: 'Habilitar Formato', icon: 'pi pi-fw pi-file-edit', to: '/formatos', can: 'read user'},
     ]
   },
   {
     items: [
-      {label: 'Evaluados', icon: 'pi pi-fw pi-users', to: '/evaluados'}
-    ]
-  },
-  {
-    label: 'Gestión de formatos',
-    class: 'active-menuitem',
-    items: [
-      {
-        label: 'Formato', icon: 'pi pi-fw pi-folder-open',
-        items: [
-          //cambiar "can : read user" por read habilitar formatos
-          {label: 'Formato 01', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
-          {label: 'Formato 02', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
-          {label: 'Informes Finales', icon: 'pi pi-fw pi-file', to: '/formatos', can: 'read user'},
-        ]
-      }
+      {label: 'Evaluados', icon: 'pi pi-fw pi-users', to: '/evaluados'},
+      {label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can: 'read user'},
+      {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can: 'read role'},
+      {label: 'Permisos', icon: 'pi pi-fw pi-mobile', to: '/permission', can: 'read permission'},
     ]
   },
 ]);
