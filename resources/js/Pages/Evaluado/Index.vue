@@ -117,6 +117,7 @@ const obtenerDetallePersona = () => {
       detailDialog.value = true
     });
 }
+
 </script>
 
 <template>
@@ -131,14 +132,7 @@ const obtenerDetallePersona = () => {
     </Card>
 
     <div class="card">
-      <DataTable
-        lazy :value="evaluados.data"
-        paginator
-        :rows="evaluados.per_page"
-        :totalRecords="evaluados.total"
-        :first="(evaluados.current_page - 1) * evaluados.per_page"
-        @page="onPageChange"
-        tableStyle="min-width: 50rem">
+      <DataTable lazy :value="evaluados.data" paginator :rows="evaluados.per_page" :totalRecords="evaluados.total" :first="(evaluados.current_page - 1) * evaluados.per_page" @page="onPageChange" tableStyle="min-width: 50rem">
         <template #header>
           <div class="flex justify-end mb-4">
             <div class="flex w-full xl:w-1/4 lg:w-1/3 md:w-1/3 h-10">
@@ -172,29 +166,34 @@ const obtenerDetallePersona = () => {
         </Column>
         <Column :exportable="false" header="Acciones" style="min-width: 12rem">
           <template #body="slotProps">
-            <button id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal" class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50" type="button">
-              <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
-                <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
-              </svg>
-            </button>
-
-            <!-- Dropdown menu -->
-            <div id="dropdownDotsHorizontal" class="z-10 hidden bg-gray-50 divide-y divide-gray-100 rounded-lg shadow-lg w-44">
-              <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconHorizontalButton">
-                <li>
-                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Detalles</button>
-                </li>
-                <li>
-                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Formato 1</button>
-                </li>
-                <li>
-                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Consentimiento</button>
-                </li>
-                <li>
-                  <button type="button" class="block px-4 py-2 hover:bg-gray-100 w-full" @click="data.evaluado = slotProps.data; obtenerDetallePersona()"> Informe Final</button>
-                </li>
-              </ul>
+            <div class="inline-flex rounded-md shadow-xs" role="group">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; obtenerDetallePersona()">
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-eye me-1"></i> Detalles
+                </div>
+              </button>
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]">
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-file me-1"></i> Formato Uno
+                </div>
+              </button>
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b  border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]">
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-file me-1"></i> Consentimiento
+                </div>
+              </button>
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-if="slotProps.data.informe_final">
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-file me-1"></i> Informe Final
+                </div>
+              </button>
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-else>
+                <div class="flex items-center justify-center">
+                  <i class="pi pi-file-edit me-1"></i> Generar Informe Final
+                </div>
+              </button>
             </div>
+
           </template>
         </Column>
       </DataTable>
@@ -1012,4 +1011,15 @@ const obtenerDetallePersona = () => {
 </template>
 
 <style scoped lang="scss">
+#button-pill{
+  background-color: transparent;
+  border-color: transparent;
+  color: #334155 !important;
+}
+
+#button-pill:hover{
+  background-color: #F1F5F9;
+  border-color: #F1F5F9;
+  color: #334155 !important;
+}
 </style>

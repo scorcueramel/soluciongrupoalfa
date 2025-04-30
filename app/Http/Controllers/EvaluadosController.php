@@ -22,7 +22,7 @@ class EvaluadosController extends Controller
 
     $valuados = Personas::leftJoin('nacionalidades', 'nacionalidades.id', '=', 'personas.nacionalidad_id')
                 ->leftJoin('tipos_documentos', 'tipos_documentos.id', '=', 'personas.tipo_documento_id')
-                ->select('personas.id as personaId','personas.nombres','personas.apellido_paterno','personas.apellido_materno','personas.numero_documento', 'tipos_documentos.tipo_documento');
+                ->select('personas.id as personaId','personas.nombres','personas.apellido_paterno','personas.apellido_materno','personas.numero_documento', 'personas.informe_final','tipos_documentos.tipo_documento');
 
     if ($role != 'superadmin') {
       $solDatPer = SolicitudesDatosPersonales::where('usuario_id', \Auth::id())->get();
