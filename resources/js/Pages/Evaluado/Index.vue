@@ -52,7 +52,7 @@ const dataResponse = reactive({
 });
 const bancoPrestamo = ref("");
 const bancoReportado = ref("");
-
+const isDisabled = ref(false);
 const onPageChange = (event) => {
   router.get(route('evaluados.index'), {page: event.page + 1}, {preserveState: true});
 };
@@ -119,11 +119,18 @@ const obtenerDetallePersona = () => {
 }
 
 const generarFormato = () =>{
-  router.get(route("evaluados.descargar.formatouno"), {
-    replace: true,
-    preserveState: true,
-    preserveScroll: true,
-  });
+  isDisabled.value = true;
+  axios.get(route("evaluados.formatouno.descargar", data.evaluado?.personaId,{responseType: 'Blob' }))
+    .then((response)=>{
+      const fileLink = document.createElement('a');
+      fileLink.href = response.config.url;
+      document.body.appendChild(fileLink);
+      fileLink.click();
+    })
+    .catch((error)=>{console.log(error)})
+    .finally(() => {
+      isDisabled.value = false;
+    });
 }
 </script>
 
@@ -179,16 +186,19 @@ const generarFormato = () =>{
                   <i class="pi pi-eye me-1"></i> Detalles
                 </div>
               </button>
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="generarFormato">
+
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarFormato()" :disabled='isDisabled'>
                 <div class="flex items-center justify-center">
-                  <i class="pi pi-file me-1"></i> Formato Uno
+                  <i class="pi pi-file me-1" v-if="!isDisabled"></i> <i class="pi pi-spin pi-spinner me-2" style="font-size: 1rem" v-else></i> Formato Uno
                 </div>
               </button>
+
               <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b  border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Consentimiento
                 </div>
               </button>
+
               <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-if="slotProps.data.informe_final">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Informe Final
@@ -200,7 +210,6 @@ const generarFormato = () =>{
                 </div>
               </button>
             </div>
-
           </template>
         </Column>
       </DataTable>
