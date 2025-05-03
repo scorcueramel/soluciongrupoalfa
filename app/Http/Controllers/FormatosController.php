@@ -35,7 +35,7 @@ class FormatosController extends Controller
 
   public function index(ValidarAccesoFormatosRequest $request)
   {
-    $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->first();
+    $accesoFormato = AccesoFormatos::where('documento_persona', $request->documento)->where('acceso_formato',true)->first();
 
     if (!is_null($accesoFormato)) {
       if ($accesoFormato->acceso_formato) {

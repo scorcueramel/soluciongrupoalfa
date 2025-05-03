@@ -57,6 +57,7 @@ const nombreMesExamen = ref("");
 const diaMesExamen = ref(0);
 const anioExamen = ref(0);
 const usuarioId = ref(props.datosevaluado.poligrafista_id);
+const nroEvals = ref(props.datosevaluado.numero_evaluaciones);
 
 const getDate = new Date();
 
@@ -212,6 +213,7 @@ const form = useForm({
   usuarioId: 0,
   consentimiento: false,
   codigoPoligrafista:"",
+  numeroEvaluaciones: "",
 });
 
 onbeforeunload = (event) => {
@@ -476,6 +478,7 @@ const registrarFormato = () => {
   form.tieneHijos = datosHijos.value;
   form.tieneHermanos = datosHermanos.value;
   form.usuarioId = usuarioId.value;
+  form.numeroEvaluaciones = nroEvals.value;
   validateForm(form, errors, errorsList);
 
   Swal.fire({

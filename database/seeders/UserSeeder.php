@@ -46,7 +46,7 @@ class UserSeeder extends Seeder
       'name' => 'Operator',
       'apellido_paterno' => 'operdaor',
       'apellido_materno' => 'operdaor',
-      'codigo_poligrafista' => 'OP-',
+      'codigo_poligrafista' => 'OPE-',
       'numero_documento' => '12345678',
       'telefono' => '987654321',
       'email' => 'operator@operator.com',
