@@ -9,6 +9,7 @@ use App\Models\Distritos;
 use App\Models\EstadosCiviles;
 use App\Models\Generos;
 use App\Models\Nacionalidades;
+use App\Models\ParentescosPersonas;
 use App\Models\Personas;
 use App\Models\SolicitudesDatosPersonales;
 use App\Models\TiposViviendas;
@@ -69,15 +70,13 @@ class EvaluadosController extends Controller
   {
     try {
       $persona = Personas::find($id)->first();
-
       $codigoYConteo = SolicitudesDatosPersonales::leftJoin('users', 'users.id', '=', 'solicitudes_datos_personales.usuario_id')->select('users.id as userid','users.codigo_poligrafista','solicitudes_datos_personales.fecha_solicitud','solicitudes_datos_personales.cantidad_evaluaciones')->get();
-
       $codigoPoli = $codigoYConteo[0]->codigo_poligrafista."".$codigoYConteo[0]->cantidad_evaluaciones;
-
       $solDatPers = SolicitudesDatosPersonales::leftJoin('empresas','empresas.id','=','solicitudes_datos_personales.empresa_id')->leftJoin('cargos','cargos.id','=','solicitudes_datos_personales.cargo_id')->where('persona_id',$id)->get();
       $nacionalidad = Nacionalidades::find($persona->nacionalidad_id)->first();
       $genero = Generos::find($persona->genero_id)->first();
       $distrito = Distritos::find($persona->distrito_id)->first();
+      $parentescos = ParentescosPersonas::leftJoin('tipos_parentescos','tipos_parentescos.id','=','parentescos_personas.tipo_parentesco_id')->leftJoin('personas','personas.id','=','parentescos_personas.persona_id')->where('persona_id',$persona->id)->select('tipos_parentescos.tipo_parentesco','parentescos_personas.nombres_apellidos','parentescos_personas.edad','parentescos_personas.ocupacion','parentescos_personas.mismo_inmueble')->get();
 
       $template = new \PhpOffice\PhpWord\TemplateProcessor('storage/formatos/formatouno.docx');
       $template->setValue('codpoli',$codigoPoli);
@@ -88,50 +87,50 @@ class EvaluadosController extends Controller
       $template->setValue('nacionalidad', $nacionalidad->nacionalidad);
       if($persona->tipo_documento_id === 1){
         $template->setValue('d', '[X]');
-        $template->setValue('p', '[ ]');
-        $template->setValue('c', '[ ]');
-        $template->setValue('pt', '[ ]');
-        $template->setValue('ce', '[ ]');
-        $template->setValue('cr', '[ ]');
+        $template->setValue('p', '◻');
+        $template->setValue('c', '◻');
+        $template->setValue('pt', '◻');
+        $template->setValue('ce', '◻');
+        $template->setValue('cr', '◻');
       }
       if($persona->tipo_documento_id === 2){
-        $template->setValue('d', '[ ]');
+        $template->setValue('d', '◻');
         $template->setValue('p', '[X]');
-        $template->setValue('c', '[ ]');
-        $template->setValue('pt', '[ ]');
-        $template->setValue('ce', '[ ]');
-        $template->setValue('cr', '[ ]');
+        $template->setValue('c', '◻');
+        $template->setValue('pt', '◻');
+        $template->setValue('ce', '◻');
+        $template->setValue('cr', '◻');
       }
       if($persona->tipo_documento_id === 3){
-        $template->setValue('d', '[ ]');
-        $template->setValue('p', '[ ]');
+        $template->setValue('d', '◻');
+        $template->setValue('p', '◻');
         $template->setValue('c', '[X]');
-        $template->setValue('pt', '[ ]');
-        $template->setValue('ce', '[ ]');
-        $template->setValue('cr', '[ ]');
+        $template->setValue('pt', '◻');
+        $template->setValue('ce', '◻');
+        $template->setValue('cr', '◻');
       }
       if($persona->tipo_documento_id === 4){
-        $template->setValue('d', '[ ]');
-        $template->setValue('p', '[ ]');
-        $template->setValue('c', '[ ]');
+        $template->setValue('d', '◻');
+        $template->setValue('p', '◻');
+        $template->setValue('c', '◻');
         $template->setValue('pt', '[X]');
-        $template->setValue('ce', '[ ]');
-        $template->setValue('cr', '[ ]');
+        $template->setValue('ce', '◻');
+        $template->setValue('cr', '◻');
       }
       if($persona->tipo_documento_id === 5){
-        $template->setValue('d', '[ ]');
-        $template->setValue('p', '[ ]');
-        $template->setValue('c', '[ ]');
-        $template->setValue('pt', '[ ]');
+        $template->setValue('d', '◻');
+        $template->setValue('p', '◻');
+        $template->setValue('c', '◻');
+        $template->setValue('pt', '◻');
         $template->setValue('ce', '[X]');
-        $template->setValue('cr', '[ ]');
+        $template->setValue('cr', '◻');
       }
       if($persona->tipo_documento_id === 6){
-        $template->setValue('d', '[ ]');
-        $template->setValue('p', '[ ]');
-        $template->setValue('c', '[ ]');
-        $template->setValue('pt', '[ ]');
-        $template->setValue('ce', '[ ]');
+        $template->setValue('d', '◻');
+        $template->setValue('p', '◻');
+        $template->setValue('c', '◻');
+        $template->setValue('pt', '◻');
+        $template->setValue('ce', '◻');
         $template->setValue('cr', '[X]');
       }
       $template->setValue('documento', $persona->numero_documento);
@@ -139,37 +138,37 @@ class EvaluadosController extends Controller
       $template->setValue('lugar_nacimiento', $persona->lugar_nacimiento);
       if($persona->estado_civil_id === 1){
         $template->setValue('so', '[X]');
-        $template->setValue('ca', '[ ]');
-        $template->setValue('vi', '[ ]');
-        $template->setValue('di', '[ ]');
-        $template->setValue('co', '[ ]');
+        $template->setValue('ca', '◻');
+        $template->setValue('vi', '◻');
+        $template->setValue('di', '◻');
+        $template->setValue('co', '◻');
       }
       if($persona->estado_civil_id === 2){
-        $template->setValue('so', '[ ]');
+        $template->setValue('so', '◻');
         $template->setValue('ca', '[X]');
-        $template->setValue('vi', '[ ]');
-        $template->setValue('di', '[ ]');
-        $template->setValue('co', '[ ]');
+        $template->setValue('vi', '◻');
+        $template->setValue('di', '◻');
+        $template->setValue('co', '◻');
       }
       if($persona->estado_civil_id === 3){
-        $template->setValue('so', '[ ]');
-        $template->setValue('ca', '[ ]');
+        $template->setValue('so', '◻');
+        $template->setValue('ca', '◻');
         $template->setValue('vi', '[X]');
-        $template->setValue('di', '[ ]');
-        $template->setValue('co', '[ ]');
+        $template->setValue('di', '◻');
+        $template->setValue('co', '◻');
       }
       if($persona->estado_civil_id === 4){
-        $template->setValue('so', '[ ]');
-        $template->setValue('ca', '[ ]');
-        $template->setValue('vi', '[ ]');
+        $template->setValue('so', '◻');
+        $template->setValue('ca', '◻');
+        $template->setValue('vi', '◻');
         $template->setValue('di', '[X]');
-        $template->setValue('co', '[ ]');
+        $template->setValue('co', '◻');
       }
       if($persona->estado_civil_id === 5){
-        $template->setValue('so', '[ ]');
-        $template->setValue('ca', '[ ]');
-        $template->setValue('vi', '[ ]');
-        $template->setValue('di', '[ ]');
+        $template->setValue('so', '◻');
+        $template->setValue('ca', '◻');
+        $template->setValue('vi', '◻');
+        $template->setValue('di', '◻');
         $template->setValue('co', '[X]');
       }
       $template->setValue('genero', $genero->genero);
@@ -177,42 +176,72 @@ class EvaluadosController extends Controller
       $template->setValue('distrito', $distrito->distrito);
       if($persona->tipo_vivienda_id === 1){
         $template->setValue('pr', '[X]');
-        $template->setValue('al', '[ ]');
-        $template->setValue('pa', '[ ]');
-        $template->setValue('fa', '[ ]');
+        $template->setValue('al', '◻');
+        $template->setValue('pa', '◻');
+        $template->setValue('fa', '◻');
         $template->setValue('ot', 'No registra');
       }
       if($persona->tipo_vivienda_id === 2){
-        $template->setValue('pr', '[ ]');
+        $template->setValue('pr', '◻');
         $template->setValue('al', '[X]');
-        $template->setValue('pa', '[ ]');
-        $template->setValue('fa', '[ ]');
+        $template->setValue('pa', '◻');
+        $template->setValue('fa', '◻');
         $template->setValue('ot', 'No registra');
       }
       if($persona->tipo_vivienda_id === 3){
-        $template->setValue('pr', '[ ]');
-        $template->setValue('al', '[ ]');
+        $template->setValue('pr', '◻');
+        $template->setValue('al', '◻');
         $template->setValue('pa', '[X]');
-        $template->setValue('fa', '[ ]');
+        $template->setValue('fa', '◻');
         $template->setValue('ot', 'No registra');
       }
       if($persona->tipo_vivienda_id === 4){
-        $template->setValue('pr', '[ ]');
-        $template->setValue('al', '[ ]');
-        $template->setValue('pa', '[ ]');
+        $template->setValue('pr', '◻');
+        $template->setValue('al', '◻');
+        $template->setValue('pa', '◻');
         $template->setValue('fa', '[X]');
         $template->setValue('ot', 'No registra');
       }
       if($persona->tipo_vivienda_id === 5){
-        $template->setValue('pr', '[ ]');
-        $template->setValue('al', '[ ]');
-        $template->setValue('pa', '[ ]');
-        $template->setValue('fa', '[ ]');
+        $template->setValue('pr', '◻');
+        $template->setValue('al', '◻');
+        $template->setValue('pa', '◻');
+        $template->setValue('fa', '◻');
         $template->setValue('ot', $persona->otro_tipo_vivienda);
       }
       $template->setValue('telefono', $persona->telefono);
       $template->setValue('email', $persona->email);
       $template->setValue('brevete', $persona->brevete ?? 'No registra');
+
+      foreach ($parentescos as $parentesco){
+        if($parentesco->tipo_parentesco === "Padre"){
+          $template->setValue('padre', $parentesco->tipo_parentesco);
+          $template->setValue('nombres_pa', $parentesco->nombres_apellidos);
+          $template->setValue('edad_pa', $parentesco->edad);
+          $template->setValue('ocupacion_pa', $parentesco->ocupacion);
+          if($parentesco->mismo_inmueble === false){
+            $template->setValue('sp', '[X]');
+            $template->setValue('np', '◻');
+          }else{
+            $template->setValue('sp', '◻');
+            $template->setValue('np', '[X]');
+          }
+        }
+        if($parentesco->tipo_parentesco === "Madre"){
+          $template->setValue('madre', $parentesco->tipo_parentesco);
+          $template->setValue('nombres_ma', $parentesco->nombres_apellidos);
+          $template->setValue('edad_ma', $parentesco->edad);
+          $template->setValue('ocupacion_ma', $parentesco->ocupacion);
+          if($parentesco->mismo_inmueble === false){
+            $template->setValue('sm', '[X]');
+            $template->setValue('nm', '◻');
+          }else{
+            $template->setValue('sm', '◻');
+            $template->setValue('nm', '[X]');
+          }
+        }
+      }
+
 
       $fileName = "Formato Uno - $persona->nombres.docx";
 
