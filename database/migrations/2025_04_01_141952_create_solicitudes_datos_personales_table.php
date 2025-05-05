@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('empresa_id')->constrained('empresas');
             $table->foreignId('cargo_id')->constrained('cargos');
             $table->foreignId('usuario_id')->constrained('users');
-            $table->string('fecha_solicitud');
+            $table->string('fecha_solicitud',50);
+            $table->string('cantidad_evaluaciones',20);
             $table->text('firma');
             $table->timestamps();
         });
