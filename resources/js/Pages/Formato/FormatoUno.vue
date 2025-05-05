@@ -2906,7 +2906,7 @@ const registrarFormato = () => {
                             <input
                               id="anios"
                               type="radio"
-                              value="años"
+                              value="anios"
                               name="tiempoUltimaVez"
                               v-model="form.tiempoUltimaVez"
                               class="w-4 h-4 text-[#B00202] bg-gray-100 border-gray-300 focus:ring-[#B00202] focus:ring-2"
