@@ -273,6 +273,7 @@ class FormatoUnoService
           'usuario_id' => $d->usuarioId,
           'fecha_solicitud' => date("Y-m-d"),
           'firma' => $firmaBase64,
+          'cantidad_evaluaciones' => $d->numeroEvaluaciones,
         ]);
         //end Solicitudes Datos Personales
 

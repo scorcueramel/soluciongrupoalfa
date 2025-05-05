@@ -317,8 +317,8 @@ onMounted(() => {
 
   numeroMesExamen.value = getDate.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
-  diaMesExamen.value = getDate.toLocaleDateString().slice(0, 2).replaceAll('/', '');
-  anioExamen.value = getDate.toLocaleDateString().slice(5, 9).replaceAll('/', '');
+  diaMesExamen.value = (getDate.getMonth() + 1).toString().padStart(2, "0");
+  anioExamen.value = getDate.getFullYear();
 });
 
 const datosPiePagina = () => {
