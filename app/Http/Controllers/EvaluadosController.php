@@ -56,25 +56,4 @@ class EvaluadosController extends Controller
       return response()->json(['error' => $jsonDecode->message]);
     }
   }
-
-  public function exportFormatOne(string $id){
-    try {
-      $template = new \PhpOffice\PhpWord\TemplateProcessor('formatouno.docx');
-      $persona = Personas::find($id)->first();
-      $template->setValue('nombres', "$persona->nombres $persona->apellido_paterno $persona->apellido_materno");
-      $fileName = "Formato Uno - $persona->nombres.docx";
-
-      $tempFile = tempnam(sys_get_temp_dir(), 'PHPWord');
-      $template->saveAs($tempFile);
-
-      $headers = [
-        'Content-Type' => 'application/octet-stream',
-      ];
-
-      return response()->download($tempFile, $fileName, $headers)->deleteFileAfterSend(true);
-
-    }catch (\PhpOffice\PhpWord\Exception\Exception $e){
-      return back()->with('error', $e->getCode());
-    }
-  }
 }
