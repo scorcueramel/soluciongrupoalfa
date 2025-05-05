@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EvaluadosIndexRequest;
 use App\Models\AcercaPoligrafos;
 use App\Models\ComisionesDelitos;
+use App\Models\ConsentimientosExamenes;
 use App\Models\ConsumosBebidasAlcoholicas;
 use App\Models\DetalleExperenciaLaboral;
 use App\Models\Distritos;
@@ -96,6 +97,7 @@ class EvaluadosController extends Controller
       $personasMargenLeyes = PersonasMargenLeyes::where('persona_id', $id)->get()[0];
       $motivacionesPostulaciones = MotivacionesPostulaciones::where('persona_id', $id)->get()[0];
       $acercaPoligrafo = AcercaPoligrafos::where('persona_id', $id)->get()[0];
+      $consentimientos = ConsentimientosExamenes::where('persona_id',$id)->get()[0];
 
       $template = new \PhpOffice\PhpWord\TemplateProcessor('storage/formatos/formatouno.docx');
       $template->setValue('codpoli', $codigoPoli);
@@ -500,9 +502,12 @@ class EvaluadosController extends Controller
       $template->setValue("paso_antes_empresa", $acercaPoligrafo->empresa ?? 'No registra');
       $template->setValue("acerca_fec", $acercaPoligrafo->fecha ?? 'No registra');
       $template->setValue("acerca_motivo", $acercaPoligrafo->motivo ?? 'No registra');
-
       $template->setValue('nombres_persona_evaluada', "$persona->nombres $persona->apellido_paterno $persona->apellido_materno");
       $template->setValue('dni_persona_evaluada', $persona->numero_documento);
+      $template->setValue('ciudad_eva', $consentimientos->ciudad);
+      $template->setValue('dia_eva', Carbon::parse($consentimientos->fecha_formato)->format('d'));
+      $template->setValue('mes_eva', Carbon::parse($consentimientos->fecha_formato)->format('m'));
+      $template->setValue('anio_eva', Carbon::parse($consentimientos->fecha_formato)->format('Y'));
 
       $fileName = "Formato Uno - $persona->nombres.docx";
 
