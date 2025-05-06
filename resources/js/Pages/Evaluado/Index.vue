@@ -232,6 +232,600 @@ const generarConsentimiento = () =>{
         position="top"
         :modal="true">
         <div class="w-full">
+          <div class="mx-10">
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="2" class="px-6 py-3 text-lg text-center">EMPRESA A LA QUE POSTULA</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Empresa</th>
+                <th scope="col" class="px-6 py-3">Cargo</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].nombre_comercial }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].cargo }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="8" class="px-6 py-3 text-lg text-center">DATOS PERSONALES</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
+                <th scope="col" class="px-6 py-3">Nacioinalidad</th>
+                <th scope="col" class="px-6 py-3">Tipo Documento</th>
+                <th scope="col" class="px-6 py-3">N° Documento</th>
+                <th scope="col" class="px-6 py-3">Fecha de Nacimiento</th>
+                <th scope="col" class="px-6 py-3">Estado Civil</th>
+                <th scope="col" class="px-6 py-3">Genero</th>
+                <th scope="col" class="px-6 py-3">Distrito</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].nombres }}
+                  {{ dataResponse.objects.personas[0].apellido_paterno }}
+                  {{ dataResponse.objects.personas[0].apellido_materno }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].nacionalidad }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].tipo_documento }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].numero_documento }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].fecha_nacimiento }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].estado_civil }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].genero }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].distrito }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th scope="col" class="px-6 py-3">Dirección Vivienda</th>
+                <th scope="col" class="px-6 py-3">Lugar de Nacimiento</th>
+                <th scope="col" class="px-6 py-3">Teléfono</th>
+                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">Brevete</th>
+                <th scope="col" class="px-6 py-3">Tipo Vivienda</th>
+                <th scope="col" class="px-6 py-3">Otro Tipo Vivienda</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].direccion }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].lugar_nacimiento }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].telefono }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].email }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].brevete ?? 'No registra' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].tipo_vivienda }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.personas[0].otro_tipo_vivienda ?? 'No registra' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="8" class="px-6 py-3 text-lg text-center">DATOS FAMILIARES</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Tipo Parentesco</th>
+                <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
+                <th scope="col" class="px-6 py-3">Edad</th>
+                <th scope="col" class="px-6 py-3">Ocupación</th>
+                <th scope="col" class="px-6 py-3">Mismo Inmueble</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b" v-for="parentesco in dataResponse.objects.parentescos">
+                <td class="px-6 py-4">
+                  {{ parentesco.tipo_parentesco }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ parentesco.nombres_apellidos }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ parentesco.edad }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ parentesco.ocupacion }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ parentesco.mismo_inmueble === true ? 'SI' : 'NO' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="8" class="px-6 py-3 text-lg text-center">FORMACIÓN ACADÉMICA</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Grado de Instrucción</th>
+                <th scope="col" class="px-6 py-3">Centro de Estudios</th>
+                <th scope="col" class="px-6 py-3">Fecha Inicio</th>
+                <th scope="col" class="px-6 py-3">Fecha Termino</th>
+                <th scope="col" class="px-6 py-3">Especialidad</th>
+                <th scope="col" class="px-6 py-3">Situación</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b" v-for="formacionAcademica in dataResponse.objects.formacionesAcademicas">
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.grado_instruccion }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.centro_estudios }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.fecha_inicio }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.fecha_termino }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.especialidad_facultad }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ formacionAcademica.situacion === true ? 'Completo' : 'Incompleto' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="8" class="px-6 py-3 text-lg text-center">EXPERIENCIA LABORAL</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Empresa</th>
+                <th scope="col" class="px-6 py-3">Fecha Ingreso</th>
+                <th scope="col" class="px-6 py-3">Fecha Salida</th>
+                <th scope="col" class="px-6 py-3">Sueldo</th>
+                <th scope="col" class="px-6 py-3">Cargo Desempeñado</th>
+                <th scope="col" class="px-6 py-3">Motivo de su Salida</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b" v-for="experienciaLaboral in dataResponse.objects.experienciasLaborales">
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.empresa }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.fecha_ingreso }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.fecha_salida }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.sueldo_percibido }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.cargo_desempenado }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ experienciaLaboral.motivo_salida }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th scope="col" class="px-6 py-3">Amonestaciones</th>
+                <th scope="col" class="px-6 py-3">Solicitud Renuncia</th>
+                <th scope="col" class="px-6 py-3">Explicación</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{
+                    dataResponse.objects.detallesExperienciasLaborales[0].recibio_amonestaciones === true ? 'SI' : 'NO'
+                  }}
+                </td>
+                <td class="px-6 py-4">
+                  {{
+                    dataResponse.objects.detallesExperienciasLaborales[0].solicitud_renuncia === true ? 'SI' : 'NO'
+                  }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.detallesExperienciasLaborales[0].explicacion ?? 'No registra' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="7" class="px-6 py-3 text-lg text-center">INFORMACIÓN FINANCIERA</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
+                <th scope="col" class="px-6 py-3">Monto Prestamo</th>
+                <th scope="col" class="px-6 py-3">Entidad Prestamo</th>
+                <th scope="col" class="px-6 py-3">Cuota Mensual</th>
+                <th scope="col" class="px-6 py-3">Otro Ingreso</th>
+                <th scope="col" class="px-6 py-3">Monto Ingreso</th>
+                <th scope="col" class="px-6 py-3">Origen</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].tiene_prestamo === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].monto_prestamo }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ bancoPrestamo }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].cuota_mensual_prestamo }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].otro_ingreso === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].monto_ingreso }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].origen_ingreso ?? 'No registra' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th scope="col" class="px-6 py-3">Tiene Propiedades</th>
+                <th scope="col" class="px-6 py-3">Detalle Propiedades</th>
+                <th scope="col" class="px-6 py-3">Reportado Central de Riesgo</th>
+                <th scope="col" class="px-6 py-3">Entidad Deuda</th>
+                <th scope="col" class="px-6 py-3">Motivo</th>
+                <th scope="col" class="px-6 py-3">Tiempo Mora</th>
+                <th scope="col" class="px-6 py-3">Monto Deuda</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{
+                    dataResponse.objects.informacionesFinancieras[0].tiene_propiedades === true ? 'SI' : 'NO'
+                  }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].detalle_propiedades ?? 'No registra' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{
+                    dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos === true ? 'SI' : 'NO'
+                  }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ bancoReportado }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.informacionesFinancieras[0].monto_deuda }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="5" class="px-6 py-3 text-lg text-center">CONSUMO DE BEBIDAS ALCOHOLICAS</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Con Qué Frecuencia Consume Bebidas Alcohólicas</th>
+                <th scope="col" class="px-6 py-3">Que Bebidas Consume</th>
+                <th scope="col" class="px-6 py-3">Ha recibido tratamiento por alcoholismo</th>
+                <th scope="col" class="px-6 py-3">Ha Llegado a Trabajar Ebrio</th>
+                <th scope="col" class="px-6 py-3">En Caso De Respuesta Afirmativa, Explique</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.consumoBebidasAlcoholicas[0].frecuencia_consumo ?? 'No registra' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.consumoBebidasAlcoholicas[0].bebidas_consume ?? 'No registra' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.consumoBebidasAlcoholicas[0].tratamiento_alcoholismo === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.consumoBebidasAlcoholicas[0].trabajo_ebrio === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.consumoBebidasAlcoholicas[0].explicacion ?? 'No registra' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="9" class="px-6 py-3 text-lg text-center">IMPLICACIÓN EN DROGAS ILEGALES</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Marihuana</th>
+                <th scope="col" class="px-6 py-3">PBC</th>
+                <th scope="col" class="px-6 py-3">Cocaína</th>
+                <th scope="col" class="px-6 py-3">Heroína</th>
+                <th scope="col" class="px-6 py-3">LCD</th>
+                <th scope="col" class="px-6 py-3">Éxtasis</th>
+                <th scope="col" class="px-6 py-3">Ultimo Consumo de Droga Ilegal</th>
+                <th scope="col" class="px-6 py-3">Cantidad</th>
+                <th scope="col" class="px-6 py-3">Familiares Implicados en Drogas</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].marihuana === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].pbc === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].cocaina === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].heroina === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].lsd === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].extasis === true ? 'SI' : 'NO' }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].tiempo_transcurrido }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].ultimo_consumo === "0" ? 'No registra' : dataResponse.objects.implicaonesDrogas[0].ultimo_consumo}}
+                </td>
+                <td class="px-6 py-4">
+                  {{ dataResponse.objects.implicaonesDrogas[0].familiar_consumidor === true ? 'SI' : 'NO' }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="6" class="px-6 py-3 text-lg text-center">COMISIÓN DE DELITOS</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Robo - Hurto - Fraude</th>
+                <th scope="col" class="px-6 py-3">Homicidio involuntario</th>
+                <th scope="col" class="px-6 py-3">Asalto</th>
+                <th scope="col" class="px-6 py-3">Planes para causar daño físico a un individuo</th>
+                <th scope="col" class="px-6 py-3">Secuestro</th>
+                <th scope="col" class="px-6 py-3">Violación</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].robo_hurto_fraude === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].homicidio_involuntario === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].asalto === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].danio_fisico_individuo === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].secuestro === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].violacion === true ? 'SI' : 'NO'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th scope="col" class="px-6 py-3">Tráfico ilícito de drogas</th>
+                <th scope="col" class="px-6 py-3">Tráfico de armas</th>
+                <th scope="col" class="px-6 py-3">Cualquier acto. conspiración o solicitud en los cuales usted puede ser castigado con cárcel</th>
+                <th scope="col" class="px-6 py-3">Cualquier delito que causara muerte o lesión a otra persona</th>
+                <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].trafico_ilicito_drogas === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].trafico_armas === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].otros_delitos === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].muerte_lesion_otra_persona === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].explique_otros ?? 'No registra'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="6" class="px-6 py-3 text-lg text-center">CONOCE ALGUNA PERSONA AL MARGEN DE LA LEY</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Pandilleros</th>
+                <th scope="col" class="px-6 py-3">Sicarios</th>
+                <th scope="col" class="px-6 py-3">Asaltantes</th>
+                <th scope="col" class="px-6 py-3">Traficante de drogas</th>
+                <th scope="col" class="px-6 py-3">Estafadores</th>
+                <th scope="col" class="px-6 py-3">Terroristas</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].pandilleros === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].sicarios === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].asaltantes === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].traficantes_drogas === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].estafadores === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].terroristas === true ? 'SI' : 'NO'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th scope="col" class="px-6 py-3">Secuestradores</th>
+                <th scope="col" class="px-6 py-3">Extorsionadores</th>
+                <th scope="col" class="px-6 py-3">Otros</th>
+                <th scope="col" class="px-6 py-3">Tiene familiares sentenciados en penales:</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].secuestradores === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].extorsionadores === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].otros === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].familiares_sentenciados === true ? 'SI' : 'NO'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="3" class="px-6 py-3 text-lg text-center">MOTIVACIONES POR QUE POSTULA A LA EMPRESA</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para causar algún daño a personas o la empresa</th>
+                <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para obtener algún beneficio ilegal</th>
+                <th scope="col" class="px-6 py-3">Tiene familiares o amigos que trabajan o trabajaron en la empresa que postula</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].causar_danio === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].beneficio_ilegal === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.comisionDelitos[0].familiares_en_empresa === true ? 'SI' : 'NO'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <table class="w-full text-md text-left">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+              <tr>
+                <th colspan="5" class="px-6 py-3 text-lg text-center">ACERCA DEL POLIGRAFO</th>
+              </tr>
+              <tr>
+                <th scope="col" class="px-6 py-3">Alguna vez ha pasado exámen de polígrafo</th>
+                <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa, explique</th>
+                <th scope="col" class="px-6 py-3">Empresa</th>
+                <th scope="col" class="px-6 py-3">Fecha</th>
+                <th scope="col" class="px-6 py-3">Motivo</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b">
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.acercaPoligrafo[0].paso_antes_examen === true ? 'SI' : 'NO'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.acercaPoligrafo[0].explique_paso_antes ?? 'No registra'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.acercaPoligrafo[0].empresa ?? 'No registra'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.acercaPoligrafo[0].fecha ?? 'No registra'}}
+                </td>
+                <td class="px-6 py-4">
+                  {{dataResponse.objects.acercaPoligrafo[0].motivo ?? 'No registra'}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
           <Accordion value="0">
             <AccordionPanel value="0">
               <AccordionHeader>
@@ -243,24 +837,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Empresa</th>
-                          <th scope="col" class="px-6 py-3">Cargo</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].nombre_comercial }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].cargo }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -276,90 +853,8 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
-                          <th scope="col" class="px-6 py-3">Nacioinalidad</th>
-                          <th scope="col" class="px-6 py-3">Tipo Documento</th>
-                          <th scope="col" class="px-6 py-3">N° Documento</th>
-                          <th scope="col" class="px-6 py-3">Fecha de Nacimiento</th>
-                          <th scope="col" class="px-6 py-3">Estado Civil</th>
-                          <th scope="col" class="px-6 py-3">Genero</th>
-                          <th scope="col" class="px-6 py-3">Distrito</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].nombres }}
-                            {{ dataResponse.objects.personas[0].apellido_paterno }}
-                            {{ dataResponse.objects.personas[0].apellido_materno }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].nacionalidad }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].tipo_documento }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].numero_documento }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].fecha_nacimiento }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].estado_civil }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].genero }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].distrito }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
                     </div>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Dirección Vivienda</th>
-                          <th scope="col" class="px-6 py-3">Lugar de Nacimiento</th>
-                          <th scope="col" class="px-6 py-3">Teléfono</th>
-                          <th scope="col" class="px-6 py-3">Email</th>
-                          <th scope="col" class="px-6 py-3">Brevete</th>
-                          <th scope="col" class="px-6 py-3">Tipo Vivienda</th>
-                          <th scope="col" class="px-6 py-3">Otro Tipo Vivienda</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].direccion }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].lugar_nacimiento }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].telefono }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].email }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].brevete ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].tipo_vivienda }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.personas[0].otro_tipo_vivienda ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </template>
                 </Card>
@@ -375,36 +870,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tipo Parentesco</th>
-                          <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
-                          <th scope="col" class="px-6 py-3">Edad</th>
-                          <th scope="col" class="px-6 py-3">Ocupación</th>
-                          <th scope="col" class="px-6 py-3">Mismo Inmueble</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b" v-for="parentesco in dataResponse.objects.parentescos">
-                          <td class="px-6 py-4">
-                            {{ parentesco.tipo_parentesco }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ parentesco.nombres_apellidos }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ parentesco.edad }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ parentesco.ocupacion }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ parentesco.mismo_inmueble === true ? 'SI' : 'NO' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -420,40 +886,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Grado de Instrucción</th>
-                          <th scope="col" class="px-6 py-3">Centro de Estudios</th>
-                          <th scope="col" class="px-6 py-3">Fecha Inicio</th>
-                          <th scope="col" class="px-6 py-3">Fecha Termino</th>
-                          <th scope="col" class="px-6 py-3">Especialidad</th>
-                          <th scope="col" class="px-6 py-3">Situación</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b" v-for="formacionAcademica in dataResponse.objects.formacionesAcademicas">
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.grado_instruccion }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.centro_estudios }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.fecha_inicio }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.fecha_termino }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.especialidad_facultad }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ formacionAcademica.situacion === true ? 'Completo' : 'Incompleto' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -469,68 +902,10 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Empresa</th>
-                          <th scope="col" class="px-6 py-3">Fecha Ingreso</th>
-                          <th scope="col" class="px-6 py-3">Fecha Salida</th>
-                          <th scope="col" class="px-6 py-3">Sueldo</th>
-                          <th scope="col" class="px-6 py-3">Cargo Desempeñado</th>
-                          <th scope="col" class="px-6 py-3">Motivo de su Salida</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b" v-for="experienciaLaboral in dataResponse.objects.experienciasLaborales">
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.empresa }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.fecha_ingreso }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.fecha_salida }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.sueldo_percibido }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.cargo_desempenado }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ experienciaLaboral.motivo_salida }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Amonestaciones</th>
-                          <th scope="col" class="px-6 py-3">Solicitud Renuncia</th>
-                          <th scope="col" class="px-6 py-3">Explicación</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{
-                              dataResponse.objects.detallesExperienciasLaborales[0].recibio_amonestaciones === true ? 'SI' : 'NO'
-                            }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{
-                              dataResponse.objects.detallesExperienciasLaborales[0].solicitud_renuncia === true ? 'SI' : 'NO'
-                            }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.detallesExperienciasLaborales[0].explicacion ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -546,88 +921,10 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
-                          <th scope="col" class="px-6 py-3">Monto Prestamo</th>
-                          <th scope="col" class="px-6 py-3">Entidad Prestamo</th>
-                          <th scope="col" class="px-6 py-3">Cuota Mensual</th>
-                          <th scope="col" class="px-6 py-3">Otro Ingreso</th>
-                          <th scope="col" class="px-6 py-3">Monto Ingreso</th>
-                          <th scope="col" class="px-6 py-3">Origen</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_prestamo === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_prestamo }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ bancoPrestamo }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].cuota_mensual_prestamo }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].otro_ingreso === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_ingreso }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].origen_ingreso ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tiene Propiedades</th>
-                          <th scope="col" class="px-6 py-3">Detalle Propiedades</th>
-                          <th scope="col" class="px-6 py-3">Reportado Central de Riesgo</th>
-                          <th scope="col" class="px-6 py-3">Entidad Deuda</th>
-                          <th scope="col" class="px-6 py-3">Motivo</th>
-                          <th scope="col" class="px-6 py-3">Tiempo Mora</th>
-                          <th scope="col" class="px-6 py-3">Monto Deuda</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{
-                              dataResponse.objects.informacionesFinancieras[0].tiene_propiedades === true ? 'SI' : 'NO'
-                            }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].detalle_propiedades ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{
-                              dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos === true ? 'SI' : 'NO'
-                            }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ bancoReportado }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_deuda }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -643,36 +940,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Con Qué Frecuencia Consume Bebidas Alcohólicas</th>
-                          <th scope="col" class="px-6 py-3">Que Bebidas Consume</th>
-                          <th scope="col" class="px-6 py-3">Ha recibido tratamiento por alcoholismo</th>
-                          <th scope="col" class="px-6 py-3">Ha Llegado a Trabajar Ebrio</th>
-                          <th scope="col" class="px-6 py-3">En Caso De Respuesta Afirmativa, Explique</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].frecuencia_consumo ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].bebidas_consume ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].tratamiento_alcoholismo === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].trabajo_ebrio === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].explicacion ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -688,52 +956,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Marihuana</th>
-                          <th scope="col" class="px-6 py-3">PBC</th>
-                          <th scope="col" class="px-6 py-3">Cocaína</th>
-                          <th scope="col" class="px-6 py-3">Heroína</th>
-                          <th scope="col" class="px-6 py-3">LCD</th>
-                          <th scope="col" class="px-6 py-3">Éxtasis</th>
-                          <th scope="col" class="px-6 py-3">Ultimo Consumo de Droga Ilegal</th>
-                          <th scope="col" class="px-6 py-3">Cantidad</th>
-                          <th scope="col" class="px-6 py-3">Familiares Implicados en Drogas</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].marihuana === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].pbc === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].cocaina === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].heroina === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].lsd === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].extasis === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].tiempo_transcurrido }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].ultimo_consumo === "0" ? 'No registra' : dataResponse.objects.implicaonesDrogas[0].ultimo_consumo}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.implicaonesDrogas[0].familiar_consumidor === true ? 'SI' : 'NO' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -749,72 +972,10 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Robo - Hurto - Fraude</th>
-                          <th scope="col" class="px-6 py-3">Homicidio involuntario</th>
-                          <th scope="col" class="px-6 py-3">Asalto</th>
-                          <th scope="col" class="px-6 py-3">Planes para causar daño físico a un individuo</th>
-                          <th scope="col" class="px-6 py-3">Secuestro</th>
-                          <th scope="col" class="px-6 py-3">Violación</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].robo_hurto_fraude === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].homicidio_involuntario === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].asalto === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].danio_fisico_individuo === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].secuestro === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].violacion === true ? 'SI' : 'NO'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tráfico ilícito de drogas</th>
-                          <th scope="col" class="px-6 py-3">Tráfico de armas</th>
-                          <th scope="col" class="px-6 py-3">Cualquier acto. conspiración o solicitud en los cuales usted puede ser castigado con cárcel</th>
-                          <th scope="col" class="px-6 py-3">Cualquier delito que causara muerte o lesión a otra persona</th>
-                          <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].trafico_ilicito_drogas === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].trafico_armas === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].otros_delitos === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].muerte_lesion_otra_persona === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].explique_otros ?? 'No registra'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -830,68 +991,10 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto mb-4">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Pandilleros</th>
-                          <th scope="col" class="px-6 py-3">Sicarios</th>
-                          <th scope="col" class="px-6 py-3">Asaltantes</th>
-                          <th scope="col" class="px-6 py-3">Traficante de drogas</th>
-                          <th scope="col" class="px-6 py-3">Estafadores</th>
-                          <th scope="col" class="px-6 py-3">Terroristas</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].pandilleros === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].sicarios === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].asaltantes === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].traficantes_drogas === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].estafadores === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].terroristas === true ? 'SI' : 'NO'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Secuestradores</th>
-                          <th scope="col" class="px-6 py-3">Extorsionadores</th>
-                          <th scope="col" class="px-6 py-3">Otros</th>
-                          <th scope="col" class="px-6 py-3">Tiene familiares sentenciados en penales:</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].secuestradores === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].extorsionadores === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].otros === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].familiares_sentenciados === true ? 'SI' : 'NO'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -907,28 +1010,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para causar algún daño a personas o la empresa</th>
-                          <th scope="col" class="px-6 py-3">Tiene planeado ingresar a la empresa que postula, para obtener algún beneficio ilegal</th>
-                          <th scope="col" class="px-6 py-3">Tiene familiares o amigos que trabajan o trabajaron en la empresa que postula</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].causar_danio === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].beneficio_ilegal === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.comisionDelitos[0].familiares_en_empresa === true ? 'SI' : 'NO'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>
@@ -944,36 +1026,7 @@ const generarConsentimiento = () =>{
                 <Card>
                   <template #content>
                     <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Alguna vez ha pasado exámen de polígrafo</th>
-                          <th scope="col" class="px-6 py-3">En caso de respuesta afirmativa, explique</th>
-                          <th scope="col" class="px-6 py-3">Empresa</th>
-                          <th scope="col" class="px-6 py-3">Fecha</th>
-                          <th scope="col" class="px-6 py-3">Motivo</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.acercaPoligrafo[0].paso_antes_examen === true ? 'SI' : 'NO'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.acercaPoligrafo[0].explique_paso_antes ?? 'No registra'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.acercaPoligrafo[0].empresa ?? 'No registra'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.acercaPoligrafo[0].fecha ?? 'No registra'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{dataResponse.objects.acercaPoligrafo[0].motivo ?? 'No registra'}}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
+
                     </div>
                   </template>
                 </Card>

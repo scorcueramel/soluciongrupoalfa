@@ -59,9 +59,16 @@ Route::middleware('auth', 'verified')->group(function () {
   //Evaluados
   Route::get('/evaluados',[EvaluadosController::class,'index'])->name('evaluados.index');
   Route::get('/evaluados/{personaid}/parentescos',[EvaluadosController::class,'getDetailsPerson'])->name('evaluados.detalle');
-
   Route::get('/evaluados/{personaid}/formato-descargar', [EvaluadosController::class, 'exportFormatOne'])->name('evaluados.formatouno.descargar');
   Route::get('/evaluados/{personaid}/consentimiento-descargar', [EvaluadosController::class, 'exportFormatConcent'])->name('evaluados.consentimiento.descargar');
+  //Empresas
+  Route::get('/empresas',function(){
+    return 'Vista de empresas';
+  })->name('empresas.index');
+  //Cargos
+  Route::get('/cargos',function(){
+    return 'Vista de cargos';
+  })->name('cargos.index');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/
