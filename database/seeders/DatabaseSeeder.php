@@ -31,14 +31,5 @@ class DatabaseSeeder extends Seeder
       UserSeeder::class,
       TipoViviendaSeeder::class,
     ]);
-
-    AccesoFormatos::create([
-      'documento_persona' => '48398529',
-      'acceso_formato' => true,
-      'codigo_poligrafista' => 'SPA-',
-      'numero_evaluaciones' => '001',
-      'poligrafista_id' => 1,
-      'fecha_examen' => date('Y-m-d'),
-    ]);
   }
 }

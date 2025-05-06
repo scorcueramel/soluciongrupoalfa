@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('consentimientos_examenes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->string('firma',15000);
+            $table->text('firma');
             $table->date('fecha_formato');
             $table->string('ciudad');
             $table->timestamps();

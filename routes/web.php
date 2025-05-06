@@ -61,6 +61,7 @@ Route::middleware('auth', 'verified')->group(function () {
   Route::get('/evaluados/{personaid}/parentescos',[EvaluadosController::class,'getDetailsPerson'])->name('evaluados.detalle');
 
   Route::get('/evaluados/{personaid}/formato-descargar', [EvaluadosController::class, 'exportFormatOne'])->name('evaluados.formatouno.descargar');
+  Route::get('/evaluados/{personaid}/consentimiento-descargar', [EvaluadosController::class, 'exportFormatConcent'])->name('evaluados.consentimiento.descargar');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

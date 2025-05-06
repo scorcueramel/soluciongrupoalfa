@@ -24,9 +24,6 @@ use Inertia\Inertia;
 
 class FormatosController extends Controller
 {
-  //para incrustar en el documento word a exportar
-  protected $codecrypt = "data:image/jpeg;base64,/9j/";
-
   public function __construct(
     private FormatoUnoService $formatoUnoService,
   )

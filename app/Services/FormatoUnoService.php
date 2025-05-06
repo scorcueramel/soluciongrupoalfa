@@ -30,8 +30,6 @@ class FormatoUnoService
       DB::commit();
       //dd($data[0]);
       foreach ($data as $d) {
-        //Firma examinado Base64
-        $firmaBase64 = explode("/9j/", $d->imagenFirma)[1];
         //Datos de las personas
         $persona = Personas::create([
           'nacionalidad_id' => $d->nacionalidad["code"],
@@ -272,7 +270,7 @@ class FormatoUnoService
           'cargo_id' => $d->cargo["code"],
           'usuario_id' => $d->usuarioId,
           'fecha_solicitud' => date("Y-m-d"),
-          'firma' => $firmaBase64,
+          'firma' => $d->imagenFirma,
           'cantidad_evaluaciones' => $d->numeroEvaluaciones,
         ]);
         //end Solicitudes Datos Personales
@@ -312,7 +310,7 @@ class FormatoUnoService
         ConsentimientosExamenes::create([
           'persona_id' => $persona->id,
           'fecha_formato' => date("Y-m-d"),
-          'firma' => $firmaBase64,
+          'firma' => $d->imagenFirma,
           'ciudad' => $d->ciudad,
         ]);
       }

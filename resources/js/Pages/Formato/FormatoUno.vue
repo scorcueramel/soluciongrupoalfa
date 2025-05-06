@@ -4250,7 +4250,7 @@ const registrarFormato = () => {
                         @mousemove="getCoordinate($event)"
                         :lock="false"
                         :lineWidth="1"
-                        saveAs="jpeg"
+                        saveAs="png"
                         v-model:image="form.imagenFirma"
                         style="border: 1px solid gray"
                         :width="280"

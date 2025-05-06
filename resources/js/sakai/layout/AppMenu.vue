@@ -14,6 +14,8 @@ const model = ref([
   {
     items: [
       {label: 'Evaluados', icon: 'pi pi-fw pi-users', to: '/evaluados'},
+      {label: 'Empresas', icon: 'pi pi-fw pi-building', to: '/evaluados'},
+      {label: 'Cargos', icon: 'pi pi-fw pi-sitemap', to: '/evaluados'},
       {label: 'Usuarios', icon: 'pi pi-fw pi-user', to: '/user', can: 'read user'},
       {label: 'Roles', icon: 'pi pi-fw pi-id-card', to: '/role', can: 'read role'},
       {label: 'Permisos', icon: 'pi pi-fw pi-mobile', to: '/permission', can: 'read permission'},
