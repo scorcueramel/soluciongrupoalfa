@@ -646,77 +646,29 @@ const generarConsentimiento = () =>{
                       <table class="w-full text-md text-left">
                         <thead class="text-xs text-gray-800 uppercase bg-gray-300">
                         <tr>
-                          <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
-                          <th scope="col" class="px-6 py-3">Monto Prestamo</th>
-                          <th scope="col" class="px-6 py-3">Entidad Prestamo</th>
-                          <th scope="col" class="px-6 py-3">Cuota Mensual</th>
-                          <th scope="col" class="px-6 py-3">Otro Ingreso</th>
-                          <th scope="col" class="px-6 py-3">Monto Ingreso</th>
-                          <th scope="col" class="px-6 py-3">Origen</th>
+                          <th scope="col" class="px-6 py-3">Con Qué Frecuencia Consume Bebidas Alcohólicas</th>
+                          <th scope="col" class="px-6 py-3">Que Bebidas Consume</th>
+                          <th scope="col" class="px-6 py-3">Ha recibido tratamiento por alcoholismo</th>
+                          <th scope="col" class="px-6 py-3">Ha Llegado a Trabajar Ebrio</th>
+                          <th scope="col" class="px-6 py-3">En Caso De Respuesta Afirmativa, Explique</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr class="border-b">
                           <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_prestamo === true ? 'SI' : 'NO' }}
+                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].frecuencia_consumo ?? 'No registra' }}
                           </td>
                           <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_prestamo }}
+                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].bebidas_consume ?? 'No registra' }}
                           </td>
                           <td class="px-6 py-4">
-                            {{ bancoPrestamo }}
+                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].tratamiento_alcoholismo === true ? 'SI' : 'NO' }}
                           </td>
                           <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].cuota_mensual_prestamo }}
+                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].trabajo_ebrio === true ? 'SI' : 'NO' }}
                           </td>
                           <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].otro_ingreso === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_ingreso }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].origen_ingreso ?? 'No registra' }}
-                          </td>
-                        </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <div class="relative overflow-x-auto">
-                      <table class="w-full text-md text-left">
-                        <thead class="text-xs text-gray-800 uppercase bg-gray-300">
-                        <tr>
-                          <th scope="col" class="px-6 py-3">Tiene Propiedades</th>
-                          <th scope="col" class="px-6 py-3">Detalle Propiedades</th>
-                          <th scope="col" class="px-6 py-3">Reportado Central de Riesgo</th>
-                          <th scope="col" class="px-6 py-3">Entidad Deuda</th>
-                          <th scope="col" class="px-6 py-3">Motivo</th>
-                          <th scope="col" class="px-6 py-3">Tiempo Mora</th>
-                          <th scope="col" class="px-6 py-3">Monto Deuda</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="border-b">
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].tiene_propiedades === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].detalle_propiedades ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos === true ? 'SI' : 'NO' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ bancoReportado }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado ?? 'No registra'}}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}
-                          </td>
-                          <td class="px-6 py-4">
-                            {{ dataResponse.objects.informacionesFinancieras[0].monto_deuda }}
+                            {{ dataResponse.objects.consumoBebidasAlcoholicas[0].explicacion ?? 'No registra' }}
                           </td>
                         </tr>
                         </tbody>
