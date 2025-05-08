@@ -42,13 +42,13 @@ watchEffect(() => {
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="name">Name</label>
-                    <InputText id="name" v-model="form.name" class="flex-auto" autocomplete="off" placeholder="Name" />    
-                    <small v-if="form.errors.name" class="text-red-500">{{ form.errors.name }}</small>  
+                    <InputText id="name" v-model="form.name" class="flex-auto" autocomplete="off" placeholder="Name" />
+                    <small v-if="form.errors.name" class="text-red-500">{{ form.errors.name }}</small>
                 </div>
                 <div class="flex justify-end gap-2">
                     <Button type="button" label="Cancel" severity="secondary" @click="emit('close')"></Button>
                     <Button type="submit" label="Update"></Button>
-                </div> 
+                </div>
             </div>
         </form>
     </Dialog>

@@ -25,7 +25,7 @@ class TiposPersonasSeeder extends Seeder
     foreach ($tiposPersonas as $tipoPersona) {
       TiposParentescos::create([
         'tipo_parentesco' => $tipoPersona,
-        'codigo' => "TP-00" . $contador += 1,
+        'codigo' => "TP-" . $contador += 1,
       ]);
     }
   }

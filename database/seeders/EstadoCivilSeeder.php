@@ -26,7 +26,7 @@ class EstadoCivilSeeder extends Seeder
     foreach ($estadosCiviles as $estadoCivil) {
       EstadosCiviles::create([
         'estado_civil' => $estadoCivil,
-        'codigo' => "EST-00" . $contador+1
+        'codigo' => "EST-" . $contador+1
       ]);
       $contador++;
     }

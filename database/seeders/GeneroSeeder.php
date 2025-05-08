@@ -24,7 +24,7 @@ class GeneroSeeder extends Seeder
         foreach ($generos as $genero) {
           Generos::create([
             'genero' => $genero,
-            'codigo' => "GN-00".$contador,
+            'codigo' => "GN-".$contador,
           ]);
           $contador++;
         }

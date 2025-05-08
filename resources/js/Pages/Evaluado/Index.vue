@@ -192,30 +192,30 @@ const generarConsentimiento = () =>{
         <Column :exportable="false" header="Acciones" style="min-width: 12rem">
           <template #body="slotProps">
             <div class="inline-flex rounded-md shadow-xs" role="group">
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; obtenerDetallePersona()">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; obtenerDetallePersona()" v-show="can(['read evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-eye me-1"></i> Detalles
                 </div>
               </button>
 
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarFormato()">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b border-e border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarFormato()" v-show="can(['format evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Formato Uno
                 </div>
               </button>
 
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b  border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarConsentimiento()">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border-t border-b  border-gray-200 hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" @click="data.evaluado = slotProps.data; generarConsentimiento()" v-show="can(['consent evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Consentimiento
                 </div>
               </button>
 
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-if="slotProps.data.informe_final">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-if="slotProps.data.informe_final" v-show="can(['report evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Informe Final
                 </div>
               </button>
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-else>
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-else v-show="can(['final report evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file-edit me-1"></i> Generar Informe Final
                 </div>
@@ -475,7 +475,7 @@ const generarConsentimiento = () =>{
             <table class="w-full text-md text-left">
               <thead class="text-xs text-gray-800 uppercase bg-gray-300">
               <tr>
-                <th colspan="7" class="px-6 py-3 text-lg text-center">INFORMACIÓN FINANCIERA</th>
+                <th colspan="8" class="px-6 py-3 text-lg text-center">INFORMACIÓN FINANCIERA</th>
               </tr>
               <tr>
                 <th scope="col" class="px-6 py-3">Tiene Prestamos</th>
@@ -826,7 +826,7 @@ const generarConsentimiento = () =>{
               </tbody>
             </table>
           </div>
-          <Accordion value="0">
+<!--          <Accordion value="0">
             <AccordionPanel value="0">
               <AccordionHeader>
                 <div>
@@ -1032,7 +1032,7 @@ const generarConsentimiento = () =>{
                 </Card>
               </AccordionContent>
             </AccordionPanel>
-          </Accordion>
+          </Accordion>-->
         </div>
         <template #footer>
           <Button label="Cerrar" text @click="detailDialog = false"/>

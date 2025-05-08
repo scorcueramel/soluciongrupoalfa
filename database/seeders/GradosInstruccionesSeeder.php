@@ -29,7 +29,7 @@ class GradosInstruccionesSeeder extends Seeder
     foreach ($grados as $grado) {
       GradosInstrucciones::create([
         'grado_instruccion' => $grado,
-        'codigo' => "GI-00".$contador+1
+        'codigo' => "GI-".$contador+1
       ]);
       $contador++;
     }

@@ -129,7 +129,7 @@ const limpiarBuscador = () => {
         <div class="flex flex-wrap justify-between items-center">
           <h2 class="text-2xl font-bold">GESTIÓN DE ACCESO A FORMATOS</h2>
           <!--Cambiar los permisos correspondientes a create allow format-->
-          <Button v-show="can(['create user'])" label="Acceso a Formato" @click="data.allowFormatOpen = true" icon="pi pi-plus"/>
+          <Button v-show="can(['create formato'])" label="Acceso a Formato" @click="data.allowFormatOpen = true" icon="pi pi-plus"/>
         </div>
       </template>
     </Card>
@@ -201,9 +201,9 @@ const limpiarBuscador = () => {
         <Column field="fecha_examen" header="Fecha Evaluación"></Column>
         <Column :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
-            <Button v-show="can(['update user'])" icon="pi pi-pencil" outlined rounded class="mr-2"
+            <Button v-show="can(['update formato'])" icon="pi pi-pencil" outlined rounded class="mr-2"
                     @click="(data.editOpen = true),(data.evaluado = slotProps.data)"/>
-            <Button v-show="can(['delete user'])" icon="pi pi-trash" outlined rounded severity="danger"
+            <Button v-show="can(['delete formato'])" icon="pi pi-trash" outlined rounded severity="danger"
                     @click="deleteDialog = true; data.evaluado = slotProps.data"/>
           </template>
         </Column>

@@ -33,7 +33,7 @@ class EmpresaSeeder extends Seeder
       Empresas::create([
         'nombre_comercial' => $empresa,
         'razon_social' => $empresa,
-        'codigo' => 'CP-00'.$contador,
+        'codigo' => 'CP-'.$contador,
       ]);
     }
   }

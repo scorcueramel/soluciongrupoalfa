@@ -72,25 +72,12 @@ class EntidadesBancariasSeeder extends Seeder
     ];
 
     foreach ($entidadesFinancieras as $ef) {
-      if($contador < 10){
-        EntidadesBancarias::create([
-          'nombre_entidad' => $ef,
-          'codigo' => 'EF-00'.$contador,
-        ]);
-      }
-      if($contador >= 10 && $contador < 100){
-        EntidadesBancarias::create([
-          'nombre_entidad' => $ef,
-          'codigo' => 'EF-0'.$contador,
-        ]);
-      }
 
-      if($contador > 100){
-        EntidadesBancarias::create([
-          'nombre_entidad' => $ef,
-          'codigo' => 'EF-'.$contador,
-        ]);
-      }
+      EntidadesBancarias::create([
+        'nombre_entidad' => $ef,
+        'codigo' => 'EF-' . $contador,
+      ]);
+
       $contador++;
     }
   }

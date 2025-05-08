@@ -39,25 +39,11 @@ class CargosSeeder extends Seeder
 
     foreach ($cargos as $cargo) {
 
-      if($contador < 10){
-        Cargos::create([
-          'cargo' => $cargo,
-          'codigo' => 'CR-00'.$contador,
-        ]);
-      }
-      if($contador >= 10 && $contador < 100){
-        Cargos::create([
-          'cargo' => $cargo,
-          'codigo' => 'CR-0'.$contador,
-        ]);
-      }
+      Cargos::create([
+        'cargo' => $cargo,
+        'codigo' => 'CR-' . $contador,
+      ]);
 
-      if($contador > 100){
-        Cargos::create([
-          'cargo' => $cargo,
-          'codigo' => 'CR-'.$contador,
-        ]);
-      }
       $contador++;
     }
   }

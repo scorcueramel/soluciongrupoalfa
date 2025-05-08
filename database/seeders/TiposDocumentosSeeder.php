@@ -28,7 +28,7 @@ class TiposDocumentosSeeder extends Seeder
       $contador++;
       TiposDocumentos::create([
         'tipo_documento' => $tpd,
-        'codigo' => 'TPD-00'.$contador,
+        'codigo' => 'TPD-'.$contador,
       ]);
     }
   }

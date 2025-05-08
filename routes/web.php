@@ -1,12 +1,11 @@
 <?php
 
 use App\Http\Controllers\EvaluadosController;
-use App\Models\Personas;
 use App\Models\User;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
+
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Spatie\Permission\Models\Permission;
@@ -14,6 +13,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\AccesoFormatosController;
 use App\Http\Controllers\FormatosController;
+use App\Http\Controllers\EmpresasController;
+use App\Http\Controllers\CargosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,13 +63,9 @@ Route::middleware('auth', 'verified')->group(function () {
   Route::get('/evaluados/{personaid}/formato-descargar', [EvaluadosController::class, 'exportFormatOne'])->name('evaluados.formatouno.descargar');
   Route::get('/evaluados/{personaid}/consentimiento-descargar', [EvaluadosController::class, 'exportFormatConcent'])->name('evaluados.consentimiento.descargar');
   //Empresas
-  Route::get('/empresas',function(){
-    return 'Vista de empresas';
-  })->name('empresas.index');
+  Route::resource('/empresas', EmpresasController::class)->except('create', 'show', 'edit');
   //Cargos
-  Route::get('/cargos',function(){
-    return 'Vista de cargos';
-  })->name('cargos.index');
+  Route::resource('/cargos', CargosController::class)->except('create', 'show', 'edit');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

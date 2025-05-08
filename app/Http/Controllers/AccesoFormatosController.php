@@ -17,6 +17,10 @@ class AccesoFormatosController extends Controller
     private AccesoFormatosService $accesoFormatosService
   )
   {
+    $this->middleware('permission:create formato', ['only' => ['create', 'createAllowAccessToFormat']]);
+    $this->middleware('permission:read formato', ['only' => ['index', 'allowAccessToFormat']]);
+    $this->middleware('permission:update formato', ['only' => ['update', 'restrictAccessToFormat']]);
+    $this->middleware('permission:delete formato', ['only' => ['destroy', 'deletedEvaluatedFormat']]);
   }
 
   public function index()
