@@ -19,6 +19,7 @@ use App\Models\PersonasMargenLeyes;
 use App\Models\SolicitudesDatosPersonales;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FormatoUnoService
@@ -34,7 +35,8 @@ class FormatoUnoService
         $uuid = Str::uuid()->toString();
         $extension = $image->getClientOriginalExtension();
         $filename = $uuid . "." . $extension;
-        $image->storeAs('fotos', $filename,'public');
+
+        $image->storeAs('fotos', $filename, 'public');
 
         //Datos de las personas
         $persona = Personas::create([
@@ -326,7 +328,7 @@ class FormatoUnoService
       $accesoFormato->acceso_formato = false;
       $accesoFormato->save();
 
-      return response()->json(['code' => 200, 'message' => 'Actualizado Satisfactoriamente']);
+      return response()->json(['code' => 200, 'message' => 'Guardado Satisfactoriamente']);
     } catch (\Throwable $th) {
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);

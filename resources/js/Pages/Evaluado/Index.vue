@@ -11,11 +11,6 @@ const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
 import Card from "primevue/card";
 
-import Accordion from 'primevue/accordion';
-import AccordionPanel from 'primevue/accordionpanel';
-import AccordionHeader from 'primevue/accordionheader';
-import AccordionContent from 'primevue/accordioncontent';
-
 const props = defineProps({
   filters: Object,
   perPage: Number,
@@ -52,6 +47,11 @@ const dataResponse = reactive({
 });
 const bancoPrestamo = ref("");
 const bancoReportado = ref("");
+const fotoDialog = ref(false);
+const fotoevaluado = ref("");
+const generarInformeFinal = ref(false);
+const nombresInformeFinal = ref("");
+const documentoInformFinal = ref("");
 
 const onPageChange = (event) => {
   router.get(route('evaluados.index'), {page: event.page + 1}, {preserveState: true});
@@ -89,6 +89,10 @@ const obtenerDetallePersona = () => {
       dataResponse.objects.motivacionesPostulacion = response.data.motivacionesPostulacion;
       dataResponse.objects.acercaPoligrafo = response.data.acercaPoligrafo;
       dataResponse.objects.entidadesBancarias = response.data.entidadesBancarias;
+
+      fotoevaluado.value = dataResponse.objects.personas[0].foto;
+      nombresInformeFinal.value = dataResponse.objects.personas[0].nombres + " " + dataResponse.objects.personas[0].apellido_paterno + " " + dataResponse.objects.personas[0].apellido_materno;
+      documentoInformFinal.value = dataResponse.objects.personas[0].numero_documento;
     })
     .catch((error) => {
       console.log(error);
@@ -143,6 +147,11 @@ const generarConsentimiento = () =>{
     .finally(() => { });
 }
 
+const informeFinal = () => {
+  data.evaluado?.personaId
+  nombresInformeFinal.value = data.evaluado?.nombres +" "+data.evaluado?.apellido_paterno+" "+data.evaluado?.apellido_materno;
+  documentoInformFinal.value = data.evaluado?.numero_documento;
+}
 </script>
 
 <template>
@@ -155,7 +164,6 @@ const generarConsentimiento = () =>{
         </div>
       </template>
     </Card>
-
     <div class="card">
       <DataTable lazy :value="evaluados.data" paginator :rows="evaluados.per_page" :totalRecords="evaluados.total" :first="(evaluados.current_page - 1) * evaluados.per_page" @page="onPageChange" tableStyle="min-width: 50rem">
         <template #header>
@@ -215,7 +223,7 @@ const generarConsentimiento = () =>{
                   <i class="pi pi-file me-1"></i> Informe Final
                 </div>
               </button>
-              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-else v-show="can(['final report evaluado'])">
+              <button type="button" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]" v-else @click="data.evaluado = slotProps.data; generarInformeFinal = true; informeFinal()" v-show="can(['final report evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file-edit me-1"></i> Generar Informe Final
                 </div>
@@ -257,9 +265,10 @@ const generarConsentimiento = () =>{
             <table class="w-full text-md text-left">
               <thead class="text-xs text-gray-800 uppercase bg-gray-300">
               <tr>
-                <th colspan="8" class="px-6 py-3 text-lg text-center">DATOS PERSONALES</th>
+                <th colspan="9" class="px-6 py-3 text-lg text-center">DATOS PERSONALES</th>
               </tr>
               <tr>
+                <th scope="col" class="px-6 py-3">Foto</th>
                 <th scope="col" class="px-6 py-3">Nombres y Apellidos</th>
                 <th scope="col" class="px-6 py-3">Nacioinalidad</th>
                 <th scope="col" class="px-6 py-3">Tipo Documento</th>
@@ -272,6 +281,10 @@ const generarConsentimiento = () =>{
               </thead>
               <tbody>
               <tr class="border-b">
+                <td class="px-6 py-4">
+                  <button class="underline" @click="fotoDialog = true" v-if="dataResponse.objects.personas[0].foto != null"><i class="pi pi-image"></i> Foto Evaluado</button>
+                  <span v-else>No registra</span>
+                </td>
                 <td class="px-6 py-4">
                   {{ dataResponse.objects.personas[0].nombres }}
                   {{ dataResponse.objects.personas[0].apellido_paterno }}
@@ -826,216 +839,60 @@ const generarConsentimiento = () =>{
               </tbody>
             </table>
           </div>
-<!--          <Accordion value="0">
-            <AccordionPanel value="0">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-building !text-2xl pe-4"/> Empresa y Cargo que postula
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="1">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-id-card !text-2xl pe-4"/> Datos personales
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-                    </div>
-                    <div class="relative overflow-x-auto">
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="2">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-users !text-2xl pe-4"/> Datos Familiares
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="3">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-bookmark !text-2xl pe-4"/> Formación Académica
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="4">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-briefcase !text-2xl pe-4"/> Experiencias Laborales
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="5">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-wallet !text-2xl pe-4"/> Información Financiera
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="6">
-              <AccordionHeader>
-                <div class="flex">
-                  <i class="pi pi-megaphone !text-2xl pe-7 -rotate-90" style="margin-left: -8px; margin-top: -10px"/> <p style="margin-top: 7px">Consumo de Bebidas Alcoholicas</p>
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="7">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-exclamation-triangle !text-2xl pe-4"/> Impliación en Drogas Ilegales
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="8">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-exclamation-circle !text-2xl pe-4"/> Comisión de Delitos
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="9">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-user-minus !text-2xl pe-4"/> Conoce Alguna Persona al Margen de la Ley
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto mb-4">
-
-                    </div>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="10">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-bolt !text-2xl pe-4"/> Motivaciones por que Postula a la Empresa
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-            <AccordionPanel value="11">
-              <AccordionHeader>
-                <div>
-                  <i class="pi pi-chart-bar !text-2xl pe-4"/> Acerca del Poligrafo
-                </div>
-              </AccordionHeader>
-              <AccordionContent>
-                <Card>
-                  <template #content>
-                    <div class="relative overflow-x-auto">
-
-                    </div>
-                  </template>
-                </Card>
-              </AccordionContent>
-            </AccordionPanel>
-          </Accordion>-->
         </div>
         <template #footer>
           <Button label="Cerrar" text @click="detailDialog = false"/>
+        </template>
+      </Dialog>
+
+      <Dialog
+        v-model:visible="fotoDialog"
+        :style="{ width: '30%' }"
+        position="center"
+        :modal="true">
+        <div class="w-full">
+          <div class="mx-10">
+            <img :src="'/storage/fotos/'+fotoevaluado" alt="Foto del evaluado">
+          </div>
+        </div>
+        <template #footer>
+          <Button label="Cerrar" text @click="fotoDialog = false"/>
+        </template>
+      </Dialog>
+
+      <Dialog
+        v-model:visible="generarInformeFinal"
+        :style="{ width: '40%' }"
+        header="Generar Informe Final"
+        position="top"
+        :modal="true">
+        <div class="w-full">
+          <div class="mx-10">
+            <table class="w-full text-md text-left border">
+              <thead class="text-xs text-gray-800 uppercase bg-gray-300">
+                <tr class="text-center">
+                  <th class="px-6 py-4" colspan="2">Datos del evaluado</th>
+                </tr>
+                <tr class="text-center">
+                  <th class="px-6 py-4">Nombres</th>
+                  <th class="px-6 py-4">N° Documento</th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr class="border-b text-center">
+                <td class="px-6 py-4">
+                  {{ nombresInformeFinal }}
+                </td>
+                <td class="px-6 py-4">
+                  {{ documentoInformFinal }}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <template #footer>
+          <Button label="Cerrar" text @click="generarInformeFinal = false"/>
         </template>
       </Dialog>
     </div>
