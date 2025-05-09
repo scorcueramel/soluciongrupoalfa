@@ -28,8 +28,14 @@ class FormatoUnoService
     DB::beginTransaction();
     try {
       DB::commit();
-      //dd($data[0]);
+
       foreach ($data as $d) {
+        $image = $d->foto;
+        $uuid = Str::uuid()->toString();
+        $extension = $image->getClientOriginalExtension();
+        $filename = $uuid . "." . $extension;
+        $image->storeAs('fotos', $filename,'public');
+
         //Datos de las personas
         $persona = Personas::create([
           'nacionalidad_id' => $d->nacionalidad["code"],
@@ -49,6 +55,7 @@ class FormatoUnoService
           'telefono' => $d->telefono,
           'email' => $d->email,
           'brevete' => $d->brevete,
+          'foto' => $filename,
         ]);
         //end Personas
 

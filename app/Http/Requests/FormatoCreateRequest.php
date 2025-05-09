@@ -172,7 +172,8 @@ class FormatoCreateRequest extends FormRequest
       "imagenFirma" => 'nullable|string',
       "usuarioId" => 'nullable|integer',
       "ciudadExamen" => 'nullable|string',
-      "numeroEvaluaciones" => 'nullable|string'
+      "numeroEvaluaciones" => 'nullable|string',
+      "foto"=> 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
     ];
   }
 
@@ -327,7 +328,8 @@ class FormatoCreateRequest extends FormRequest
       'imagenFirma' => $this->imagenFirma,
       'usuarioId' => $this->usuarioId,
       'ciudad' => $this->ciudadExamen,
-      'numeroEvaluaciones' => $this->numeroEvaluaciones
+      'numeroEvaluaciones' => $this->numeroEvaluaciones,
+      'foto' => $this->file('foto')
     ]);
   }
 }

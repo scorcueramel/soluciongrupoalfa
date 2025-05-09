@@ -60,6 +60,9 @@ const usuarioId = ref(props.datosevaluado.poligrafista_id);
 const nroEvals = ref(props.datosevaluado.numero_evaluaciones);
 
 const getDate = new Date();
+const foto = ref(null)
+const errorFoto = ref(true)
+const fotoError = ref("")
 
 const form = useForm({
   empresa: "",
@@ -212,8 +215,9 @@ const form = useForm({
   ciudadExamen: "",
   usuarioId: 0,
   consentimiento: false,
-  codigoPoligrafista:"",
+  codigoPoligrafista: "",
   numeroEvaluaciones: "",
+  foto: "",
 });
 
 onbeforeunload = (event) => {
@@ -473,7 +477,23 @@ const getCoordinate = (event) => {
   this.y = coordinates.y;
 }
 
+const handleFile = (e) => {
+  foto.value = e.target.files[0];
+  const maxSizeMB = 3;
+  const maxSizeBytes = maxSizeMB * 1024 * 1024 * 1024;
+
+  if (foto.value.size > maxSizeBytes) {
+    fotoError.value = `El archivo supera los ${maxSizeMB} MB, es muy pesado`;
+    errorFoto.value = true;
+    event.target.value = '';
+  }else{
+    fotoError.value = "";
+    errorFoto.value = false;
+  }
+}
+
 const registrarFormato = () => {
+  form.foto = foto.value;
   form.tieneConyuge = datosConyuge.value;
   form.tieneHijos = datosHijos.value;
   form.tieneHermanos = datosHermanos.value;
@@ -481,58 +501,63 @@ const registrarFormato = () => {
   form.numeroEvaluaciones = nroEvals.value;
   validateForm(form, errors, errorsList);
 
-  Swal.fire({
-    title: "¿Terminaste?",
-    html: "Al presionar el botón <b>Continuar</b> se registrará la informarción ingresada",
-    icon: "info",
-    showCancelButton: true,
-    confirmButtonColor: "#10B981",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Continuar",
-    cancelButtonText: "Revisar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      if (!errors.value) {
-        Swal.fire({
-          icon: 'info',
-          html: "Espere un momento porfavor ...",
-          timerProgressBar: true,
-          allowOutsideClick: false,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        });
-        form.post(route('formato.store'), {
-          preserveScroll: true,
-          onSuccess: () => {
-            emit("close");
-            // form.reset();
-            Swal.fire({
-              title: "Formato Registrado!",
-              text: "Tu formato 1 fue registrado correctamente!",
-              icon: "success",
-              allowOutsideClick: false,
-              confirmButtonColor: "#10B981",
-              confirmButtonText: "Siguiente Formato",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                form.codigoPoligrafista = props.datosevaluado.codigo_poligrafista + "" + props.datosevaluado.numero_evaluaciones
-                //redireccionar al siguiente formato enviando los datos necesarios para evitar el rellenado de datos erroneos
-                form.post(route('formato.dos'), {
-                  preventScroll: true,
-                  onSuccess: () => null,
-                  onError: () => null,
-                  onFinish: () => null,
-                });
-              }
-            });
-          },
-          onError: () => null,
-          onFinish: () => null,
-        })
+  if (!errors.value) {
+    Swal.fire({
+      title: "¿Terminaste?",
+      html: "Al presionar el botón <b>Continuar</b> se registrará la informarción ingresada",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#10B981",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Continuar",
+      cancelButtonText: "Revisar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (!errors.value) {
+          Swal.fire({
+            icon: 'info',
+            html: "Espere un momento porfavor ...",
+            timerProgressBar: true,
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            }
+          });
+          form.post(route('formato.store'), {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            preserveScroll: true,
+            onSuccess: () => {
+              emit("close");
+              // form.reset();
+              Swal.fire({
+                title: "Formato Registrado!",
+                text: "Tu formato 1 fue registrado correctamente!",
+                icon: "success",
+                allowOutsideClick: false,
+                confirmButtonColor: "#10B981",
+                confirmButtonText: "Siguiente Formato",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  form.codigoPoligrafista = props.datosevaluado.codigo_poligrafista + "" + props.datosevaluado.numero_evaluaciones
+                  //redireccionar al siguiente formato enviando los datos necesarios para evitar el rellenado de datos erroneos
+                  form.post(route('formato.dos'), {
+                    preventScroll: true,
+                    onSuccess: () => null,
+                    onError: () => null,
+                    onFinish: () => null,
+                  });
+                }
+              });
+            },
+            onError: () => null,
+            onFinish: () => null,
+          })
+        }
       }
-    }
-  });
+    });
+  }
 };
 
 </script>
@@ -887,6 +912,18 @@ const registrarFormato = () => {
                         placeholder="Brevete"
                       />
 
+                    </div>
+                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2">
+                      <label for="file_input">Subir Foto</label>
+                      <input
+                        class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer focus:outline-none h-11"
+                        id="file_input"
+                        type="file"
+                        @change="handleFile"
+                        accept="image/*">
+                    </div>
+                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="errorFoto">
+                      <p>{{fotoError}}</p>
                     </div>
                   </div>
                 </div>
@@ -4266,7 +4303,6 @@ const registrarFormato = () => {
                       </button>
                     </p>
                   </div>
-
                 </div>
                 <div class="flex pt-4 mb-6 gap-2">
                   <Button label="Anterior" severity="secondary" @click="activateCallback('12')"/>
