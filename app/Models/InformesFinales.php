@@ -19,5 +19,6 @@ class InformesFinales extends Model
     'proyeccion_tiempo_empresa',
     'preguntas_relevantes',
     'conclusion',
+    'porcentaje_evaluacion',
   ];
 }

@@ -22,6 +22,7 @@ use App\Models\SolicitudesDatosPersonales;
 use App\Services\EvaluadosService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -268,18 +269,21 @@ class EvaluadosController extends Controller
       }
       if ($detaExpLaborales->recibio_amonestaciones) {
         $template->setValue("amonestaciones", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("amonestaciones", "SI◻ NO[X]");
       }
       if ($detaExpLaborales->solicitud_renuncia) {
         $template->setValue("renuncia", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("renuncia", "SI◻ NO[X]");
       }
       $template->setValue("explica_experiencia", $detaExpLaborales->explicacion ?? 'No registra');
       if ($infoFinancieras->tiene_prestamo) {
         $template->setValue("tienepres", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("tienepres", "SI◻ NO[X]");
       }
       $template->setValue('montdeu', $infoFinancieras->monto_prestamo);
@@ -287,20 +291,23 @@ class EvaluadosController extends Controller
       $template->setValue('cuotdeu', $infoFinancieras->cuota_mensual_prestamo);
       if ($infoFinancieras->otro_ingreso) {
         $template->setValue("otroing", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("otroing", "SI◻ NO[X]");
       }
       $template->setValue('monting', $infoFinancieras->monto_ingreso);
       $template->setValue('origotring', $infoFinancieras->origen_ingreso ?? 'No registra');
       if ($infoFinancieras->tiene_propiedades) {
         $template->setValue("tieneprop", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("tieneprop", "SI◻ NO[X]");
       }
       $template->setValue('detalle', $infoFinancieras->detalle_propiedades ?? 'No registra');
       if ($infoFinancieras->reportado_centrar_riesgos) {
         $template->setValue("reportado", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("reportado", "SI◻ NO[X]");
       }
       $template->setValue('entidadreporta', $infoFinancieras->entidad_reporto ?? 'No registra');
@@ -311,43 +318,51 @@ class EvaluadosController extends Controller
       $template->setValue('bebidas_consume', $consumoBebidas->bebidas_consume ?? 'No registra');
       if ($consumoBebidas->tratamiento_alcoholismo) {
         $template->setValue("tratamiento", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("tratamiento", "SI◻ NO[X]");
       }
       if ($consumoBebidas->trabajo_ebrio) {
         $template->setValue("hebriotrabajar", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("hebriotrabajar", "SI◻ NO[X]");
       }
       $template->setValue('explicacionbebidas', $consumoBebidas->explicacion ?? 'No registra');
       if ($dograsIlegales->marihuana) {
         $template->setValue("marihuana", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("marihuana", "SI◻ NO[X]");
       }
       if ($dograsIlegales->pbc) {
         $template->setValue("pbc", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("pbc", "SI◻ NO[X]");
       }
       if ($dograsIlegales->cocaina) {
         $template->setValue("coca", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("coca", "SI◻ NO[X]");
       }
       if ($dograsIlegales->heroina) {
         $template->setValue("heroina", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("heroina", "SI◻ NO[X]");
       }
       if ($dograsIlegales->lsd) {
         $template->setValue("lcd", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("lcd", "SI◻ NO[X]");
       }
       if ($dograsIlegales->extasis) {
         $template->setValue("extasis", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("extasis", "SI◻ NO[X]");
       }
       if ($dograsIlegales->ultimo_consumo === 'dias') {
@@ -356,138 +371,165 @@ class EvaluadosController extends Controller
         $template->setValue("ult_consumo", "Días ◻	Meses [X]  Años ◻");
       } elseif ($dograsIlegales->ultimo_consumo === 'anio') {
         $template->setValue("ult_consumo", "Días ◻	Meses ◻  Años [X]");
-      } else {
+      }
+      else {
         $template->setValue("ult_consumo", "Días ◻	Meses ◻  Años ◻");
       }
       $template->setValue('cantidad', $dograsIlegales->tiempo_transcurrido);
       if ($dograsIlegales->familiar_consumidor) {
         $template->setValue("familiar_adicto", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("familiar_adicto", "SI◻ NO[X]");
       }
       if ($comisionDelitos->robo_hurto_fraude) {
         $template->setValue("robo", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("robo", "SI◻ NO[X]");
       }
       if ($comisionDelitos->homicidio_involuntario) {
         $template->setValue("homicidio", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("homicidio", "SI◻ NO[X]");
       }
       if ($comisionDelitos->asalto) {
         $template->setValue("asalto", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("asalto", "SI◻ NO[X]");
       }
       if ($comisionDelitos->danio_fisico_individuo) {
         $template->setValue("causar_danio", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("causar_danio", "SI◻ NO[X]");
       }
       if ($comisionDelitos->secuestro) {
         $template->setValue("secuestro", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("secuestro", "SI◻ NO[X]");
       }
       if ($comisionDelitos->violacion) {
         $template->setValue("violacion", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("violacion", "SI◻ NO[X]");
       }
       if ($comisionDelitos->muerte_lesion_otra_persona) {
         $template->setValue("causar_muerte", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("causar_muerte", "SI◻ NO[X]");
       }
       if ($comisionDelitos->trafico_ilicito_drogas) {
         $template->setValue("trafico_drog", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("trafico_drog", "SI◻ NO[X]");
       }
       if ($comisionDelitos->trafico_armas) {
         $template->setValue("trafico_armas", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("trafico_armas", "SI◻ NO[X]");
       }
       if ($comisionDelitos->otros_delitos) {
         $template->setValue("conspiracion", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("conspiracion", "SI◻ NO[X]");
       }
       if ($comisionDelitos->explique_otros) {
         $template->setValue("respuesta_afirmativa", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("respuesta_afirmativa", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->pandilleros) {
         $template->setValue("pandilleros", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("pandilleros", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->sicarios) {
         $template->setValue("sicarios", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("sicarios", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->asaltantes) {
         $template->setValue("asaltantes", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("asaltantes", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->traficantes_drogas) {
         $template->setValue("drogas", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("drogas", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->estafadores) {
         $template->setValue("estafadores", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("estafadores", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->terroristas) {
         $template->setValue("terroristas", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("terroristas", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->secustradores) {
         $template->setValue("secuestros", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("secuestros", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->extorsionadores) {
         $template->setValue("extorsionadores", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("extorsionadores", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->otros) {
         $template->setValue("otros", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("otros", "SI◻ NO[X]");
       }
       if ($personasMargenLeyes->familiares_sentenciados) {
         $template->setValue("familiar_penales", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("familiar_penales", "SI◻ NO[X]");
       }
       if ($motivacionesPostulaciones->causar_danio) {
         $template->setValue("danio_persona", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("danio_persona", "SI◻ NO[X]");
       }
       if ($motivacionesPostulaciones->beneficio_ilegal) {
         $template->setValue("bene_ilegal", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("bene_ilegal", "SI◻ NO[X]");
       }
       if ($motivacionesPostulaciones->familiares_en_empresa) {
         $template->setValue("emp_post", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("emp_post", "SI◻ NO[X]");
       }
       if ($acercaPoligrafo->paso_antes_examen) {
         $template->setValue("paso_antes", "SI[X] NO◻");
-      } else {
+      }
+      else {
         $template->setValue("paso_antes", "SI◻ NO[X]");
       }
       $template->setValue("afirma_explique", $acercaPoligrafo->explique_paso_antes ?? 'No registra');
@@ -502,23 +544,19 @@ class EvaluadosController extends Controller
       $template->setValue('anio_eva', Carbon::parse($consentimientos->fecha_formato)->format('Y'));
 
       $base64Image = $solDatPers[0]->firma;
-      // Quitar el encabezado "data:image/...;base64,"
+
       [$type, $data] = explode(';', $base64Image);
       [, $data] = explode(',', $data);
       $data = base64_decode($data);
-      // Obtener extensión (opcional)
+
       $extension = explode('/', mime_content_type($base64Image))[1];
 
-      // Nombre único para la imagen
       $fileName = 'imagen_' . time() . '.' . $extension;
 
-      // Guardar en storage/app/public/
       Storage::disk('public')->put($fileName, $data);
 
-      // Obtener URL o ruta
-      $path = storage_path('app/public/' . $fileName); // para acceder desde PHP
+      $path = storage_path('app/public/' . $fileName);
 
-      // Insertar imagen en el marcador ${firma_evaluado}
       $template->setImageValue('firma_evaluado', [
         'path' => $path,
         'width' => 280,
@@ -526,16 +564,12 @@ class EvaluadosController extends Controller
         'ratio' => true, // mantiene la proporción
       ]);
 
-      // Eliminar imagen temporal
-
       $fileName = "Formato Uno - $persona->nombres.docx";
 
       $tempFile = tempnam(sys_get_temp_dir(), 'PHPWord');
       $template->saveAs($tempFile);
 
       $headers = ['Content-Type' => 'application/octet-stream'];
-
-      unlink($path);
 
       return response()->download($tempFile, $fileName, $headers)->deleteFileAfterSend(true);
 
@@ -601,4 +635,6 @@ class EvaluadosController extends Controller
     $months = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "setiembre", "octubre", "noviembre", "diciembre"];
     return $months[$numberMonth - 1];
   }
+
+
 }

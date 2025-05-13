@@ -16,6 +16,7 @@ class InformeFinalData extends Data
     public ?string $proyeccion_tiempo_empresa,
     public ?array $preguntas_relevantes,
     public ?string $conclusion,
+    public ?string $porcentaje_evaluacion,
   )
   {
   }

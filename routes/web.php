@@ -68,7 +68,7 @@ Route::middleware('auth', 'verified')->group(function () {
   //Cargos
   Route::resource('/cargos', CargosController::class)->except('create', 'show', 'edit');
   //Informe Final
-  Route::resource('/informes', InformeFinalController::class)->except('create', 'show', 'edit');
+  Route::resource('/informes', InformeFinalController::class)->except('create', 'edit');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

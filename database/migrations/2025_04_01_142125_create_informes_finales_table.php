@@ -20,8 +20,9 @@ return new class extends Migration
             $table->text('vinculos');
             $table->text('planes_infiltracion');
             $table->text('proyeccion_tiempo_empresa');
-            $table->text('preguntas_relevantes');
+            $table->text('preguntas_relevantes')->nullable();
             $table->text('conclusion');
+            $table->string('porcentaje_evaluacion');
             $table->timestamps();
         });
     }

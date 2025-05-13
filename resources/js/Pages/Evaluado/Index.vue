@@ -77,6 +77,7 @@ const form = useForm({
   proyeccion: "",
   preguntasRelevantes: [],
   conclusion: "",
+  porcentajeEvaluacion: "",
 })
 
 const limpiarBuscador = () => {
@@ -182,7 +183,7 @@ const registrarInformeFinal = () => {
     cancelButtonText: "Revisar",
   }).then((result) => {
     if (result.isConfirmed) {
-      /*Swal.fire({
+      Swal.fire({
         icon: 'info',
         html: "Espere un momento porfavor ...",
         timerProgressBar: true,
@@ -190,7 +191,7 @@ const registrarInformeFinal = () => {
         didOpen: () => {
           Swal.showLoading();
         }
-      });*/
+      });
       form.personaId = data.evaluado.personaId;
       form.post(route('informes.store'), {
         headers: {
@@ -202,7 +203,9 @@ const registrarInformeFinal = () => {
           form.reset();
         },
         onError: () => null,
-        onFinish: () => null,
+        onFinish: () => {
+          Swal.close()
+        },
       });
     }else{
       generarInformeFinal.value = true;
@@ -210,6 +213,21 @@ const registrarInformeFinal = () => {
   });
 }
 
+const formatoInformeFinal = () => {
+
+  axios.get(route("informes.show", data.evaluado?.personaId, {responseType: 'Blob'}))
+    .then((response) => {
+      const fileLink = document.createElement('a');
+      fileLink.href = response.config.url;
+      document.body.appendChild(fileLink);
+      fileLink.click();
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(() => {
+    });
+}
 </script>
 
 <template>
@@ -289,7 +307,8 @@ const registrarInformeFinal = () => {
 
               <button type="button"
                       class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]"
-                      v-if="slotProps.data.informe_final" v-show="can(['report evaluado'])">
+                      v-if="slotProps.data.informe_final" @click="data.evaluado = slotProps.data; formatoInformeFinal()"
+                      v-show="can(['report evaluado'])">
                 <div class="flex items-center justify-center">
                   <i class="pi pi-file me-1"></i> Informe Final
                 </div>
@@ -1043,7 +1062,18 @@ const registrarInformeFinal = () => {
                     v-model="form.conclusion"
                   />
                 </div>
-                <Button type="submit" label="Guardar Informe" class="bg-[#10B981]"/>
+                <div class="flex flex-col mb-4">
+                  <label for="porcentajeEvaluacion">Porcentaje de Evaluación</label>
+                  <InputText
+                    id="porcentajeEvaluacion"
+                    class="flex-auto mt-2"
+                    autocomplete="off"
+                    placeholder="Porcentaje de Evaluación Final"
+                    rows="6" cols="30"
+                    v-model="form.porcentajeEvaluacion"
+                  />
+                </div>
+                <Button type="submit" label="Guardar Informe" class="bg-[#10B981] mt-4"/>
               </div>
             </div>
           </form>
