@@ -2,16 +2,20 @@
 
 namespace App\Http\Requests;
 
+use App\Data\InformeFinalData;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class InformeFinalStoreRequest extends FormRequest
 {
+  public array $data = [];
+
   /**
    * Determine if the user is authorized to make this request.
    */
   public function authorize(): bool
   {
-    return false;
+    return true;
   }
 
   /**
@@ -22,12 +26,13 @@ class InformeFinalStoreRequest extends FormRequest
   public function rules(): array
   {
     return [
-      "drogasIlegales" => 'required|string|max:650',
-      "antecedentes" => 'required|string|max:650',
-      "vinculos" => 'required|string|max:650',
-      "planesInfiltracion" => 'required|string|max:650',
-      "proyeccion" => 'required|string|max:650',
-      "conclusion" => 'required|string|max:650',
+      "personaId" =>'required|string',
+      "drogasIlegales" => 'required|string',
+      "antecedentes" => 'required|string',
+      "vinculos" => 'required|string',
+      "planesInfiltracion" => 'required|string',
+      "proyeccion" => 'required|string',
+      "conclusion" => 'required|string',
     ];
   }
 
@@ -57,9 +62,17 @@ class InformeFinalStoreRequest extends FormRequest
 
   public function passedValidation()
   {
-    $this->data[] = EmpresaData::from([
-      'nombreComercial' => $this->nombre_comercial,
-      'razonSocial' => $this->razon_social,
+    $this->data[] = InformeFinalData::from([
+      "persona_id" => $this->personaId,
+      "usuario_id" => Auth::id(),
+      "drogas_ilegales" => $this->drogasIlegales,
+      "antecedentes" => $this->antecedentes,
+      "vinculos" => $this->vinculos,
+      "planes_infiltracion" => $this->planesInfiltracion,
+      "proyeccion_tiempo_empresa" => $this->proyeccion,
+      "preguntas_relevantes" => $this->preguntasRelevantes,
+      "conclusion" => $this->conclusion
     ]);
   }
+
 }

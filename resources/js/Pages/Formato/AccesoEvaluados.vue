@@ -198,7 +198,7 @@ const limpiarBuscador = () => {
             </div>
           </template>
         </Column>
-        <Column field="fecha_examen" header="Fecha Evaluación"></Column>
+        <Column field="fecha_examen" header="Fecha Registro"></Column>
         <Column :exportable="false" style="min-width: 12rem">
           <template #body="slotProps">
             <Button v-show="can(['update formato'])" icon="pi pi-pencil" outlined rounded class="mr-2"

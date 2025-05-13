@@ -69,6 +69,7 @@ watch(
 );
 
 const form = useForm({
+  personaId:0,
   drogasIlegales: "",
   antecedentes: "",
   vinculos: "",
@@ -190,6 +191,7 @@ const registrarInformeFinal = () => {
           Swal.showLoading();
         }
       });*/
+      form.personaId = data.evaluado.personaId;
       form.post(route('informes.store'), {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -202,6 +204,8 @@ const registrarInformeFinal = () => {
         onError: () => null,
         onFinish: () => null,
       });
+    }else{
+      generarInformeFinal.value = true;
     }
   });
 }
@@ -999,7 +1003,7 @@ const registrarInformeFinal = () => {
                   />
                 </div>
                 <div class="flex flex-col mb-4">
-                  <label for="proyeccion">Proyección</label>
+                  <label for="proyeccion">Proyección de tiempo en la empresa</label>
                   <Textarea
                     id="proyeccion"
                     class="flex-auto mt-2"
@@ -1036,6 +1040,7 @@ const registrarInformeFinal = () => {
                     autocomplete="off"
                     placeholder="Conclusión"
                     rows="6" cols="30"
+                    v-model="form.conclusion"
                   />
                 </div>
                 <Button type="submit" label="Guardar Informe" class="bg-[#10B981]"/>
