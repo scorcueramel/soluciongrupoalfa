@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('usuario_id')->constrained('users');
             $table->foreignId('persona_id')->constrained('personas');
-            $table->string('drogas_ilegales');
-            $table->string('antecedentes');
-            $table->string('vinculos');
-            $table->string('planes_infiltracion');
-            $table->string('proyeccion_tiempo_empresa');
+            $table->text('drogas_ilegales');
+            $table->text('antecedentes');
+            $table->text('vinculos');
+            $table->text('planes_infiltracion');
+            $table->text('proyeccion_tiempo_empresa');
             $table->text('preguntas_relevantes');
             $table->text('conclusion');
             $table->timestamps();
