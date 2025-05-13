@@ -486,7 +486,7 @@ const handleFile = (e) => {
     fotoError.value = `El archivo supera los ${maxSizeMB} MB, es muy pesado`;
     errorFoto.value = true;
     event.target.value = '';
-  }else{
+  } else {
     fotoError.value = "";
     errorFoto.value = false;
   }
@@ -695,7 +695,6 @@ const registrarFormato = () => {
                         autocomplete="off"
                         placeholder="Nombres"
                       />
-
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="paterno">Apellido Paterno</label>
@@ -832,8 +831,8 @@ const registrarFormato = () => {
                             <div>{{ slotProps.value.name }}</div>
                           </div>
                           <span v-else>
-                    {{ slotProps.placeholder }}
-                  </span>
+                            {{ slotProps.placeholder }}
+                          </span>
                         </template>
                         <template #option="slotProps">
                           <div class="flex items-center">
@@ -841,8 +840,6 @@ const registrarFormato = () => {
                           </div>
                         </template>
                       </Select>
-
-
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1">
                       <label for="direccion">Dirección</label>
@@ -922,8 +919,9 @@ const registrarFormato = () => {
                         @change="handleFile"
                         accept="image/*">
                     </div>
-                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2" v-if="errorFoto">
-                      <p>{{fotoError}}</p>
+                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2"
+                         v-if="errorFoto">
+                      <p>{{ fotoError }}</p>
                     </div>
                   </div>
                 </div>
@@ -1308,7 +1306,6 @@ const registrarFormato = () => {
                           autocomplete="off"
                           placeholder="Nombres y apellidos"
                         />
-
                       </div>
                       <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                         <label :for="'edadchijos' + item">Edad</label>
@@ -1321,7 +1318,6 @@ const registrarFormato = () => {
                           :min="0"
                           :max="120"
                         />
-
                       </div>
                       <div class="mt-2 flex flex-col gap-2 me-4 col-span-1">
                         <label :for="'ocupacioneshijos' + item">Ocupación</label>

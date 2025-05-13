@@ -15,6 +15,7 @@ use App\Http\Controllers\AccesoFormatosController;
 use App\Http\Controllers\FormatosController;
 use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\CargosController;
+use App\Http\Controllers\InformeFinalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,8 @@ Route::middleware('auth', 'verified')->group(function () {
   Route::resource('/empresas', EmpresasController::class)->except('create', 'show', 'edit');
   //Cargos
   Route::resource('/cargos', CargosController::class)->except('create', 'show', 'edit');
+  //Informe Final
+  Route::resource('/informes', InformeFinalController::class)->except('create', 'show', 'edit');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/
