@@ -11,6 +11,7 @@ const {_, debounce, pickBy} = pkg;
 import {loadToast} from '@/composables/loadToast';
 import Card from "primevue/card";
 
+
 const props = defineProps({
   filters: Object,
   perPage: Number,
@@ -1036,6 +1037,7 @@ const formatoInformeFinal = () => {
                   <p class="font-bold text-lg">Pregunsta Relevantes Realizadas en el Exámen</p>
                 </div>
                 <div class="mb-5">
+
                   <div v-for="(input, index) in inputs" :key="index" style="margin-bottom: 10px;"
                        class="flex flex-col mb-4">
                     <Textarea
