@@ -18,7 +18,7 @@ class AccesoFormatosController extends Controller
   )
   {
     $this->middleware('permission:create formato', ['only' => ['create', 'createAllowAccessToFormat']]);
-    $this->middleware('permission:read formato', ['only' => ['index', 'allowAccessToFormat']]);
+    $this->middleware('permission:read formato', ['only' => ['allowAccessToFormat']]);
     $this->middleware('permission:update formato', ['only' => ['update', 'restrictAccessToFormat']]);
     $this->middleware('permission:delete formato', ['only' => ['destroy', 'deletedEvaluatedFormat']]);
   }
