@@ -532,9 +532,11 @@ class EvaluadosController extends Controller
 
       return response()->download($tempFile, $fileName, $headers)->deleteFileAfterSend(true);
 
-    } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+    }
+    catch (\PhpOffice\PhpWord\Exception\Exception $e) {
       return back()->with('error', $e->getCode());
-    } finally {
+    }
+    finally {
       $folder = public_path('storage');
       foreach (File::files($folder) as $file) {
         if (in_array($file->getExtension(), ['png'])) {
