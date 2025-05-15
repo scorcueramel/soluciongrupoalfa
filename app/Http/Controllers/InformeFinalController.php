@@ -176,7 +176,6 @@ class InformeFinalController extends Controller
 
           foreach ($preguntas as $index => $pregunta) {
             $i = $index + 1;
-            $template->setValue("titulo_subtest#{$i}", "Subtest $subtest[$i]");
             $template->setValue("pregunta_relevante#{$i}", $pregunta);
           }
         }
