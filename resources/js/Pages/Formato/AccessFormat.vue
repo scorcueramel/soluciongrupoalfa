@@ -58,7 +58,7 @@ onMounted(()=>{
                 >
                     <div class="flex justify-center mb-4">
                         <img
-                            src="/demo/images/Logo-municipalidad.png"
+                            src="/demo/images/logosmall.png"
                             alt="logo-grupo-alfa"
                             width="200"
                         />

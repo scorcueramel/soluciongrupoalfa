@@ -575,8 +575,8 @@ const registrarFormato = () => {
             <div class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4">
               <div class="border-none flex justify-center items-center">
                 <img
-                  src="/demo/images/ESCUDO-RGB.png"
-                  width="130"
+                  src="/demo/images/logo.png"
+                  width="200"
                   alt="logo"
                   class="p-8"
                 />
