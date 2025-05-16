@@ -318,7 +318,8 @@ onMounted(() => {
     })
   })
 
-  numeroMesExamen.value = fechaActual.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
+  // numeroMesExamen.value = fechaActual.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
+  numeroMesExamen.value = fechaActual.getMonth();
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
   diaMesExamen.value = fechaActual.getDate();
   anioExamen.value = fechaActual.getFullYear();
