@@ -59,7 +59,7 @@ const anioExamen = ref(0);
 const usuarioId = ref(props.datosevaluado.poligrafista_id);
 const nroEvals = ref(props.datosevaluado.numero_evaluaciones);
 
-const getDate = new Date();
+const fechaActual = new Date();
 const foto = ref(null)
 const errorFoto = ref(true)
 const fotoError = ref("")
@@ -318,12 +318,26 @@ onMounted(() => {
     })
   })
 
-
-  numeroMesExamen.value = getDate.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
+  numeroMesExamen.value = fechaActual.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
-  diaMesExamen.value = (getDate.getMonth() + 1).toString().padStart(2, "0");
-  anioExamen.value = getDate.getFullYear();
+  diaMesExamen.value = (fechaActual.getMonth() + 1).toString().padStart(2, "0");
+  anioExamen.value = fechaActual.getFullYear();
 });
+
+function formatDate() {
+  const now = new Date();
+
+  let year = now.getFullYear();        // Obtener el año
+  let month = now.getMonth() + 1;      // Obtener el mes (0-11, por eso sumamos 1)
+  let day = now.getDate();             // Obtener el día del mes
+
+  // Agregar un cero a la izquierda si el mes, día, horas, minutos o segundos son menores a 10
+  month = month < 10 ? '0' + month : month;
+  day = day < 10 ? '0' + day : day;
+
+  // Devolver la fecha en formato: YYYY-MM-DD HH:mm:ss
+  return `${day}/${month}/${year}`;
+}
 
 const datosPiePagina = () => {
   nombresCompletosPiePagina.value = form.nombres + " " + form.paterno + " " + form.materno
@@ -607,7 +621,7 @@ const registrarFormato = () => {
                     <p class="font-bold">Fecha:</p>
                   </div>
                   <div class="text-end">
-                    <p>{{ getDate.toLocaleDateString() }}</p>
+                    <p>{{ formatDate() }}</p>
                   </div>
                 </div>
               </div>
