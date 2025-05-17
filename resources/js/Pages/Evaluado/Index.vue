@@ -103,6 +103,8 @@ const obtenerDetallePersona = () => {
       dataResponse.objects.entidadesBancarias = response.data.entidadesBancarias;
 
       fotoevaluado.value = dataResponse.objects.personas[0].foto;
+
+      console.log(response.data)
     })
     .catch((error) => {
       console.log(error);
