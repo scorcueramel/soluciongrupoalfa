@@ -14,16 +14,16 @@ return new class extends Migration
         Schema::create('personas_margen_leyes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->boolean('pandilleros');
-            $table->boolean('sicarios');
-            $table->boolean('asaltantes');
-            $table->boolean('traficantes_drogas');
-            $table->boolean('estafadores');
-            $table->boolean('terroristas');
-            $table->boolean('secuestradores');
-            $table->boolean('extorsionadores');
-            $table->boolean('otros')->nullable();
-            $table->boolean('familiares_sentenciados');
+            $table->boolean('pandilleros')->default(false);
+            $table->boolean('sicarios')->default(false);
+            $table->boolean('asaltantes')->default(false);
+            $table->boolean('traficantes_drogas')->default(false);
+            $table->boolean('estafadores')->default(false);
+            $table->boolean('terroristas')->default(false);
+            $table->boolean('secuestradores')->default(false);
+            $table->boolean('extorsionadores')->default(false);
+            $table->boolean('otros')->nullable()->default(false);
+            $table->boolean('familiares_sentenciados')->default(false);
             $table->timestamps();
         });
     }

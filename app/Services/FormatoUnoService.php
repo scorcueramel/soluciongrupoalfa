@@ -28,6 +28,8 @@ class FormatoUnoService
   {
     DB::beginTransaction();
     try {
+      dd($data);
+
       DB::commit();
 
       foreach ($data as $d) {
@@ -311,7 +313,7 @@ class FormatoUnoService
           'lsd' => $d->lcd,
           'extasis' => $d->extasis,
           'ultimo_consumo' => (int)$d->cantidadUltimoConsumo,
-          'tiempo_transcurrido' => $d->tiempoUltimaVez === "" ? 0 : $d->tiempoUltimaVez,
+          'tiempo_transcurrido' => $d->tiempoUltimaVez,
           'familiar_consumidor' => $d->familiaresEnDrogas,
         ]);
         //end Implicaciones en Drogas

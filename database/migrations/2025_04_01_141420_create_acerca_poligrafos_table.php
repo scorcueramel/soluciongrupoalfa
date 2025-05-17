@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('acerca_poligrafos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->boolean('paso_antes_examen');
+            $table->boolean('paso_antes_examen')->default(false);
             $table->text('explique_paso_antes')->nullable();
             $table->string('empresa',100)->nullable();
             $table->date('fecha')->nullable();

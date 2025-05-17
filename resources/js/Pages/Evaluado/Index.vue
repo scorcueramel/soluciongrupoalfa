@@ -836,22 +836,22 @@ const formatoInformeFinal = () => {
               <tbody>
               <tr class="border-b">
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].pandilleros === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].pandilleros === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].sicarios === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].sicarios === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].asaltantes === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].asaltantes === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].traficantes_drogas === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].traficantes_drogas === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].estafadores === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].estafadores === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].terroristas === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].terroristas === true ? 'SI' : 'NO' }}
                 </td>
               </tr>
               </tbody>
@@ -868,16 +868,16 @@ const formatoInformeFinal = () => {
               <tbody>
               <tr class="border-b">
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].secuestradores === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].secuestradores === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].extorsionadores === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].extorsionadores === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].otros === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].otros === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].familiares_sentenciados === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.personasMargenLeyes[0].familiares_sentenciados === true ? 'SI' : 'NO' }}
                 </td>
               </tr>
               </tbody>
@@ -902,13 +902,13 @@ const formatoInformeFinal = () => {
               <tbody>
               <tr class="border-b">
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].causar_danio === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.motivacionesPostulacion[0].causar_danio === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].beneficio_ilegal === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.motivacionesPostulacion[0].beneficio_ilegal === true ? 'SI' : 'NO' }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.comisionDelitos[0].familiares_en_empresa === true ? 'SI' : 'NO' }}
+                  {{ dataResponse.objects.motivacionesPostulacion[0].familiares_en_empresa === true ? 'SI' : 'NO' }}
                 </td>
               </tr>
               </tbody>

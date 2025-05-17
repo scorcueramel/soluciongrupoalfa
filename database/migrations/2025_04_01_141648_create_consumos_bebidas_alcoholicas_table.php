@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas');
             $table->string('frecuencia_consumo')->nullable();
             $table->text('bebidas_consume')->nullable();
-            $table->boolean('tratamiento_alcoholismo');
-            $table->boolean('trabajo_ebrio');
+            $table->boolean('tratamiento_alcoholismo')->default(false);
+            $table->boolean('trabajo_ebrio')->default(false);
             $table->text('explicacion')->nullable();
             $table->timestamps();
         });

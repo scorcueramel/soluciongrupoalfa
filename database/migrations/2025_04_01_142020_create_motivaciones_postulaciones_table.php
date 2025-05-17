@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('motivaciones_postulaciones', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->boolean('causar_danio');
-            $table->boolean('beneficio_ilegal');
-            $table->boolean('familiares_en_empresa');
+            $table->boolean('causar_danio')->default(false);
+            $table->boolean('beneficio_ilegal')->default(false);
+            $table->boolean('familiares_en_empresa')->default(false);
             $table->timestamps();
         });
     }
