@@ -1,10 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 use App\Models\EntidadesBancarias;
-use GuzzleHttp\Promise\Create;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EntidadesBancariasSeeder extends Seeder

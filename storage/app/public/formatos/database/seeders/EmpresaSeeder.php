@@ -1,9 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 use App\Models\Empresas;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class EmpresaSeeder extends Seeder

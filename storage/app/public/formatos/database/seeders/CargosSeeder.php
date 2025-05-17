@@ -1,9 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 use App\Models\Cargos;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CargosSeeder extends Seeder

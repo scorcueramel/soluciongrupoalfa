@@ -1,10 +1,9 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {

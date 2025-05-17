@@ -1,9 +1,8 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use App\Models\AccesoFormatos;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

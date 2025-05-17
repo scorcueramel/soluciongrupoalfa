@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace public\storage\formatos\database\seeders;
 
 use App\Models\Distritos;
 use Illuminate\Database\Seeder;

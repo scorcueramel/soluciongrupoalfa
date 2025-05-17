@@ -6,6 +6,8 @@
         "build": "vite build"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+        "@ckeditor/ckeditor5-vue": "^7.3.0",
         "@primevue/themes": "^4.0.0",
         "chart.js": "3.3.2",
         "lodash": "^4.17.21",
