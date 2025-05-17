@@ -529,7 +529,7 @@ const registrarFormato = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         if (!errors.value) {
-/*          Swal.fire({
+          Swal.fire({
             icon: 'info',
             html: "Espere un momento porfavor ...",
             timerProgressBar: true,
@@ -537,7 +537,7 @@ const registrarFormato = () => {
             didOpen: () => {
               Swal.showLoading();
             }
-          });*/
+          });
           form.post(route('formato.store'), {
             headers: {
               'Content-Type': 'multipart/form-data'

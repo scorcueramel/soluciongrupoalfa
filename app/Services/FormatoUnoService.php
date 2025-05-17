@@ -28,8 +28,6 @@ class FormatoUnoService
   {
     DB::beginTransaction();
     try {
-      dd($data);
-
       DB::commit();
 
       foreach ($data as $d) {
