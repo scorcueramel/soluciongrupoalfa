@@ -167,7 +167,7 @@ class InformeFinalController extends Controller
         $template->setValue("motivo_exp#{$i}", $experiencia->motivo_salida);
       }
 
-      if (!$informeFinal[0]->preguntas_relevantes === "null") {
+      if ($informeFinal[0]->preguntas_relevantes !== "null") {
         $preguntas = json_decode($informeFinal[0]->preguntas_relevantes);
 
         $template->cloneRow('pregunta_relevante', count($preguntas));
