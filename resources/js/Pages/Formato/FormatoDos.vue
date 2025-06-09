@@ -14,39 +14,22 @@ const diaMesExamen = ref(0);
 const anioExamen = ref(0);
 const anioNacimiento = ref(0);
 const edadEvaluado = ref(0);
-const fechaActual = new Date();
 
 const form = useForm({
   imagenFirma: "",
 })
 
 onMounted(() => {
-  // numeroMesExamen.value = fechaActual.toLocaleDateString().slice(2, -4).replaceAll('/', '') - 1;
-  numeroMesExamen.value = fechaActual.getMonth();
+
+  numeroMesExamen.value = getDate.getMonth() + 1;
   nombreMesExamen.value = mesesListCalendatio.value[numeroMesExamen.value];
-  diaMesExamen.value = fechaActual.getDate();
-  anioExamen.value = fechaActual.getFullYear();
+  diaMesExamen.value = (getDate.getMonth() + 1).toString().padStart(2, "0");
+  anioExamen.value = getDate.getFullYear();
 
   anioNacimiento.value = parseInt(props.datosEvaluados.edad.slice(0, 4));
 
   edadEvaluado.value = parseInt(anioExamen.value) - anioNacimiento.value;
 });
-
-function formatDate() {
-  const now = new Date();
-
-  let year = now.getFullYear();        // Obtener el año
-  let month = now.getMonth() + 1;      // Obtener el mes (0-11, por eso sumamos 1)
-  let day = now.getDate();             // Obtener el día del mes
-
-  // Agregar un cero a la izquierda si el mes, día, horas, minutos o segundos son menores a 10
-  month = month < 10 ? '0' + month : month;
-  day = day < 10 ? '0' + day : day;
-
-  // Devolver la fecha en formato: YYYY-MM-DD HH:mm:ss
-  return `${day}/${month}/${year}`;
-}
-
 
 onbeforeunload = (event) => {
   event.preventDefault();
@@ -119,8 +102,8 @@ const registrarFormato = () => {
             <div class="grid grid-cols-1 xl:grid-col-4 lg:grid-col-4 md:grid-cols-4 w-full">
               <div class="border-none flex justify-center items-center">
                 <img
-                  src="/demo/images/logo.png"
-                  width="200"
+                  src="/demo/images/ESCUDO-RGB.png"
+                  width="130"
                   alt="logo"
                   class="p-8"
                 />
@@ -150,7 +133,7 @@ const registrarFormato = () => {
                     <p class="font-bold">Fecha:</p>
                   </div>
                   <div class="text-end">
-                    <p>{{ formatDate() }}</p>
+                    <p>{{ getDate.toLocaleDateString() }}</p>
                   </div>
                 </div>
               </div>

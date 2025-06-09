@@ -3,13 +3,14 @@ import AppLayout from "@/sakai/layout/AppLayout.vue";
 
 import {Head, router, useForm} from '@inertiajs/vue3';
 
-import {onMounted, reactive, ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, reactive, ref, watch} from "vue";
 import pkg from "lodash";
 
 const {_, debounce, pickBy} = pkg;
 
 import {loadToast} from '@/composables/loadToast';
 import Card from "primevue/card";
+import ModalViewer from "@/Pages/Informe/ModalViewer.vue";
 
 
 const props = defineProps({
@@ -19,6 +20,8 @@ const props = defineProps({
 });
 
 loadToast();
+
+const visibilidad = ref(false);
 
 const detailDialog = ref(false);
 const data = reactive({
@@ -53,6 +56,15 @@ const fotoevaluado = ref("");
 const generarInformeFinal = ref(false);
 const inputs = ref([{valor: ''}]);
 const abecdario = ref(["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]);
+const activeDropdown = ref(null);
+
+const loading = ref(false);
+const menuVisible = ref(false);
+const dropdownX = ref(0);
+const dropdownY = ref(0);
+const currentItem = ref(null);
+
+
 const onPageChange = (event) => {
   router.get(route('evaluados.index'), {page: event.page + 1}, {preserveState: true});
 };
@@ -214,7 +226,7 @@ const registrarInformeFinal = () => {
   });
 }
 
-const formatoInformeFinal = () => {
+/*const formatoInformeFinal = () => {
 
   axios.get(route("informes.show", data.evaluado?.personaId, {responseType: 'Blob'}))
     .then((response) => {
@@ -228,7 +240,27 @@ const formatoInformeFinal = () => {
     })
     .finally(() => {
     });
+}*/
+function toggleDropdown (id) {
+  activeDropdown.value = activeDropdown.value === id ? null : id;
 }
+
+const showMenu = (event, item) => {
+  const rect = event.currentTarget.getBoundingClientRect();
+  dropdownX.value = rect.left;
+  dropdownY.value = rect.bottom;
+  currentItem.value = item;
+  menuVisible.value = true;
+}
+
+const handleClickOutside = (e) => {
+  if (!e.target.closest('.relative')) {
+    menuVisible.value = false
+    visibilidad.value = false
+  }
+}
+onMounted(() => document.addEventListener('click', handleClickOutside))
+onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
 </script>
 
 <template>
@@ -278,7 +310,7 @@ const formatoInformeFinal = () => {
             {{ slotProps.data.nombres }} {{ slotProps.data.apellido_paterno }} {{ slotProps.data.apellido_materno }}
           </template>
         </Column>
-        <Column :exportable="false" header="Acciones" style="min-width: 12rem">
+<!--        <Column :exportable="false" header="Acciones" style="min-width: 12rem">
           <template #body="slotProps">
             <div class="inline-flex rounded-md shadow-xs" role="group">
               <button type="button"
@@ -306,14 +338,8 @@ const formatoInformeFinal = () => {
                 </div>
               </button>
 
-              <button type="button"
-                      class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]"
-                      v-if="slotProps.data.informe_final" @click="data.evaluado = slotProps.data; formatoInformeFinal()"
-                      v-show="can(['report evaluado'])">
-                <div class="flex items-center justify-center">
-                  <i class="pi pi-file me-1"></i> Informe Final
-                </div>
-              </button>
+              <ModalViewer :personaId="slotProps.data.personaId" v-if="slotProps.data.informe_final" v-show="can(['report evaluado'])" />
+
               <button type="button"
                       class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-[#10B981] focus:z-10 focus:ring-2 focus:ring-[#10B981] focus:text-[#10B981]"
                       v-else @click="data.evaluado = slotProps.data; generarInformeFinal = true"
@@ -322,6 +348,75 @@ const formatoInformeFinal = () => {
                   <i class="pi pi-file-edit me-1"></i> Generar Informe Final
                 </div>
               </button>
+
+            </div>
+          </template>
+        </Column>-->
+
+        <Column :exportable="false" style="min-width: 12rem; text-align: center;">
+          <template #body="slotProps">
+
+            <div class="relative">
+              <Button
+                icon="pi pi-chevron-down"
+                class="ml-2 bg-gray-200 hover:bg-gray-300 text-black"
+                @click="showMenu($event, slotProps.data)"
+                label="Acciones"
+                size="small"
+              />
+
+              <!-- Dropdown Menu -->
+              <div
+                v-if="menuVisible && currentItem === slotProps.data"
+                class="fixed w-40 bg-white shadow-lg rounded-xl ring-1 ring-black ring-opacity-5 z-50"
+                :style="{ top: dropdownY + 'px', left: dropdownX + 'px' }"
+              >
+                <ul class="py-1 text-sm">
+                  <li>
+                    <a href="#"
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
+                       role="menuitem" tabindex="-1"
+                       @click="data.evaluado = slotProps.data; obtenerDetallePersona()" v-show="can(['read evaluado'])">
+                      <i class="pi pi-eye me-2"></i> Detalles
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#"
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
+                       role="menuitem" tabindex="-1"
+                       @click="data.evaluado = slotProps.data; generarFormato()" v-show="can(['format evaluado'])">
+                      <i class="pi pi-file me-2"></i> Formato Uno
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#"
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
+                       role="menuitem" tabindex="-1"
+                       @click="data.evaluado = slotProps.data; generarConsentimiento()" v-show="can(['consent evaluado'])">
+                      <i class="pi pi-file me-2"></i> Consentimiento
+                    </a>
+                  </li>
+                  <li>
+                    <div v-if="slotProps.data.informe_final" v-show="can(['report evaluado'])">
+                    <a href="#"
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
+                       role="menuitem" tabindex="-1"
+                       @click="visibilidad=true" v-show="can(['final report evaluado'])">
+                      <i class="pi pi-file-pdf me-2"></i> Ver PDF
+                    </a>
+                    <!-- Modal Viewer -->
+
+                      <ModalViewer :personaId="slotProps.data.personaId" :visible="visibilidad"/>
+                    </div>
+                    <a href="#" v-else
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
+                       role="menuitem" tabindex="-1"
+                       @click="data.evaluado = slotProps.data; generarInformeFinal = true" v-show="can(['final report evaluado'])">
+                      <i class="pi pi-file-edit me-2"></i> Generar Informe Final
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </template>
         </Column>

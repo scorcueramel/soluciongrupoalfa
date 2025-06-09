@@ -69,6 +69,10 @@ Route::middleware('auth', 'verified')->group(function () {
   Route::resource('/cargos', CargosController::class)->except('create', 'show', 'edit');
   //Informe Final
   Route::resource('/informes', InformeFinalController::class)->except('create', 'edit');
+
+
+
+  Route::get('/pdf/{id}', [InformeFinalController::class, 'generarPdf']);
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

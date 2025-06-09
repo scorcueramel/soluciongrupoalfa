@@ -21,7 +21,6 @@ use App\Models\PersonasMargenLeyes;
 use App\Models\SolicitudesDatosPersonales;
 use App\Services\EvaluadosService;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -42,10 +41,8 @@ class EvaluadosController extends Controller
       ->leftJoin('solicitudes_datos_personales', 'solicitudes_datos_personales.persona_id', '=', 'personas.id')
       ->select('personas.id as personaId', 'personas.nombres', 'personas.apellido_paterno', 'personas.apellido_materno', 'personas.numero_documento', 'personas.informe_final', 'tipos_documentos.tipo_documento');
 
-    $userAuth = Auth::id();
-
     if ($request->has('search')) {
-      $valuados->where('solicitudes_datos_personales.usuario_id', $userAuth)->where('numero_documento', 'LIKE', '%' . $request->search . '%');
+      $valuados->where('solicitudes_datos_personales.usuario_id', \Auth::id())->where('numero_documento', 'LIKE', '%' . $request->search . '%');
     }
 
     if ($request->has(['field', 'order'])) {
@@ -54,7 +51,7 @@ class EvaluadosController extends Controller
 
     return Inertia::render('Evaluado/Index', [
       'filters' => $request->all(['search', 'field', 'order']),
-      'evaluados' => $valuados->where('solicitudes_datos_personales.usuario_id', $userAuth)->paginate(10),
+      'evaluados' => $valuados->where('solicitudes_datos_personales.usuario_id', \Auth::id())->paginate(10),
     ]);
   }
 
