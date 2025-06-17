@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('especialidad_facultad',100);
             $table->date('fecha_inicio');
             $table->date('fecha_termino')->nullable();
-            $table->boolean('situacion');
+            $table->boolean('situacion')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,8 +1,6 @@
 <template>
   <div>
-<!--    <Button label="Ver PDF" icon="pi pi-file-pdf" @click="visible = true" />-->
-
-    <Dialog v-model:visible="props.visible" modal header="Previsualización del Informe" :style="{ width: '80vw' }">
+    <Dialog v-model:visible="props.visible" modal header="Previsualización del Informe Final" :style="{ width: '80vw' }">
       <PdfViewer :personaId="personaId" @cerrar="visible = false" />
     </Dialog>
   </div>

@@ -67,10 +67,6 @@ export function validateForm(form, errors, errorsList) {
     errors.value = true;
     errorsList.value.push("[Email] : No ingresaste tu email de contacto");
   }
-  if (form.foto === "") {
-    errors.value = true;
-    errorsList.value.push("[Foto] : No subiste tu foto");
-  }
   if (form.nombrespadre === "") {
     errors.value = true;
     errorsList.value.push("[Nombres y Apellidos Padre] : No ingresaste el nombre y apellido de tu padre");

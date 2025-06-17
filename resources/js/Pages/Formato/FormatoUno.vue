@@ -61,8 +61,6 @@ const nroEvals = ref(props.datosevaluado.numero_evaluaciones);
 
 const getDate = new Date();
 const foto = ref(null)
-const errorFoto = ref(true)
-const fotoError = ref("")
 
 const form = useForm({
   empresa: "",
@@ -479,17 +477,6 @@ const getCoordinate = (event) => {
 
 const handleFile = (e) => {
   foto.value = e.target.files[0];
-  const maxSizeMB = 3;
-  const maxSizeBytes = maxSizeMB * 1024 * 1024 * 1024;
-
-  if (foto.value.size > maxSizeBytes) {
-    fotoError.value = `El archivo supera los ${maxSizeMB} MB, es muy pesado`;
-    errorFoto.value = true;
-    event.target.value = '';
-  } else {
-    fotoError.value = "";
-    errorFoto.value = false;
-  }
 }
 
 const registrarFormato = () => {
@@ -528,7 +515,8 @@ const registrarFormato = () => {
               'Content-Type': 'multipart/form-data'
             },
             preserveScroll: true,
-            onSuccess: () => {
+            onSuccess: (res) => {
+              console.log(res)
               emit("close");
               // form.reset();
               Swal.fire({
@@ -551,7 +539,7 @@ const registrarFormato = () => {
                 }
               });
             },
-            onError: () => null,
+            onError: (err) => console.log(err),
             onFinish: () => null,
           })
         }
@@ -917,11 +905,7 @@ const registrarFormato = () => {
                         id="file_input"
                         type="file"
                         @change="handleFile"
-                        accept="image/*">
-                    </div>
-                    <div class="mt-2 flex flex-col gap-2 me-4 col-span-2 xl:col-span-2 lg:col-span-2 md:col-span-2"
-                         v-if="errorFoto">
-                      <p>{{ fotoError }}</p>
+                        accept="image/jpeg,png,jpg,gif,svg">
                     </div>
                   </div>
                 </div>

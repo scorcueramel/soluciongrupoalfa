@@ -35,6 +35,7 @@ const update = () => {
     onSuccess: () => {
       emit("close");
       form.reset();
+      window.location.reload();
     },
     onError: () => null,
     onFinish: () => null,

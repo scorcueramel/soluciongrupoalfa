@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('acceso_formatos', function (Blueprint $table) {
             $table->id();
             $table->string('documento_persona');
-            $table->boolean('acceso_formato');
+            $table->boolean('acceso_formato')->default(false);
             $table->string('codigo_poligrafista',20);
             $table->string('numero_evaluaciones',20)->nullable();
             $table->integer('poligrafista_id');

@@ -30,14 +30,14 @@ class FormatoCreateRequest extends FormRequest
       "nombres" => 'nullable|string|max:50',
       "paterno" => 'nullable|string|max:100',
       "materno" => 'nullable|string|max:100',
-      "nacionalidad" => 'nullable|required',
-      "tipoDocumento" => 'nullable|required',
+      "nacionalidad" => 'nullable',
+      "tipoDocumento" => 'nullable',
       "numeroDocumento" => 'nullable|string|min:8|max:20',
       "fechaNacimiento" => 'nullable|date',
       "lugarNacimiento" => 'nullable|string|max:100',
-      "estadoCivil" => 'nullable|required',
-      "genero" => 'nullable|required',
-      "distrito" => 'nullable|required',
+      "estadoCivil" => 'nullable',
+      "genero" => 'nullable',
+      "distrito" => 'nullable',
       "direccion" => 'nullable|string|max:150',
       "tipoVivienda" => 'nullable|numeric',
       "otroTipoVivienda" => 'nullable|string|max:150',
@@ -46,14 +46,14 @@ class FormatoCreateRequest extends FormRequest
       "brevete" => 'nullable|string|max:20',
       "tipoParentescoPadre" => 'nullable|numeric',
       "nombrespadre" => 'nullable|string|max:100',
-      "edadpadre" => 'nullable|required',
+      "edadpadre" => 'nullable',
       "nombresocupacionpadre" => 'nullable|string|max:100',
-      "mismoInmueblePadre" => 'nullable|required',
+      "mismoInmueblePadre" => 'nullable',
       "tipoParentescoMadre" => 'nullable|numeric',
       "nombresmadre" => 'nullable|string|max:100',
-      "edadmadre" => 'nullable|required',
+      "edadmadre" => 'nullable',
       "nombresocupacionmadre" => 'nullable|string|max:100',
-      "mismoInmuebleMadre" => 'nullable|required',
+      "mismoInmuebleMadre" => 'nullable',
       "tieneConyuge" => 'nullable|boolean',
       "tipoParentescoConyuge" => 'nullable|numeric',
       "nombresConyuge" => 'nullable|string|max:100',
@@ -173,7 +173,7 @@ class FormatoCreateRequest extends FormRequest
       "usuarioId" => 'nullable|integer',
       "ciudadExamen" => 'nullable|string',
       "numeroEvaluaciones" => 'nullable|string',
-      "foto"=> 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+      "foto"=> 'nullable|image',
     ];
   }
 
@@ -329,7 +329,7 @@ class FormatoCreateRequest extends FormRequest
       'usuarioId' => $this->usuarioId,
       'ciudad' => $this->ciudadExamen,
       'numeroEvaluaciones' => $this->numeroEvaluaciones,
-      'foto' => $this->file('foto')
+      'foto' => $this->file('foto') ?? null
     ]);
   }
 }

@@ -28,15 +28,16 @@ class FormatoUnoService
   {
     DB::beginTransaction();
     try {
-      DB::commit();
-
       foreach ($data as $d) {
-        $image = $d->foto;
-        $uuid = Str::uuid()->toString();
-        $extension = $image->getClientOriginalExtension();
-        $filename = $uuid . "." . $extension;
+        $filename = null;
 
-        $image->storeAs('fotos', $filename, 'public');
+        if (!is_null($d->foto)) {
+          $image = $d->foto;
+          $uuid = Str::uuid()->toString();
+          $extension = $image->getClientOriginalExtension();
+          $filename = $uuid . "." . $extension;
+          $image->storeAs('fotos', $filename, 'public');
+        }
 
         //Datos de las personas
         $persona = Personas::create([
@@ -323,11 +324,10 @@ class FormatoUnoService
           'ciudad' => $d->ciudad,
         ]);
       }
-
       $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->get()[0];
       $accesoFormato->acceso_formato = false;
       $accesoFormato->save();
-
+      DB::commit();
       return response()->json(['code' => 200, 'message' => 'Guardado Satisfactoriamente']);
     } catch (\Throwable $th) {
       DB::rollback();

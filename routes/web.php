@@ -72,7 +72,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
 
 
-  Route::get('/pdf/{id}', [InformeFinalController::class, 'generarPdf']);
+  Route::get('/pdf/{id}', [InformeFinalController::class, 'generarPdf'])->name('informe.final');
 });
 
 /*Validacion de acceso a formatos, solo personas autorizadas*/

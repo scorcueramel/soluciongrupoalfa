@@ -13,14 +13,17 @@ use App\Models\ExperienciasLaborales;
 use App\Models\FormacionesAcademicasPersonas;
 use App\Models\Generos;
 use App\Models\ImplicacionesDrogas;
+use App\Models\InformesFinales;
 use App\Models\MotivacionesPostulaciones;
 use App\Models\Nacionalidades;
 use App\Models\ParentescosPersonas;
 use App\Models\Personas;
 use App\Models\PersonasMargenLeyes;
 use App\Models\SolicitudesDatosPersonales;
+use App\Models\TiposViviendas;
 use App\Services\EvaluadosService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -532,11 +535,9 @@ class EvaluadosController extends Controller
 
       return response()->download($tempFile, $fileName, $headers)->deleteFileAfterSend(true);
 
-    }
-    catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+    } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
       return back()->with('error', $e->getCode());
-    }
-    finally {
+    } finally {
       $folder = public_path('storage');
       foreach (File::files($folder) as $file) {
         if (in_array($file->getExtension(), ['png'])) {

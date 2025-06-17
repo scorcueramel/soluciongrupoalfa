@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('implicaciones_drogas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->boolean('marihuana');
-            $table->boolean('pbc');
-            $table->boolean('cocaina');
-            $table->boolean('heroina');
-            $table->boolean('lsd');
-            $table->boolean('extasis');
+            $table->boolean('marihuana')->default(false);
+            $table->boolean('pbc')->default(false);
+            $table->boolean('cocaina')->default(false);
+            $table->boolean('heroina')->default(false);
+            $table->boolean('lsd')->default(false);
+            $table->boolean('extasis')->default(false);
             $table->string('ultimo_consumo');
             $table->integer('tiempo_transcurrido');
-            $table->boolean('familiar_consumidor');
+            $table->boolean('familiar_consumidor')->default(false);
             $table->timestamps();
         });
     }

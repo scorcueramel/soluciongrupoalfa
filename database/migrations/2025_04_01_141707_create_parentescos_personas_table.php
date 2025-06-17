@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nombres_apellidos',200);
             $table->integer('edad');
             $table->string('ocupacion');
-            $table->boolean('mismo_inmueble');
+            $table->boolean('mismo_inmueble')->default(false);
             $table->timestamps();
         });
     }

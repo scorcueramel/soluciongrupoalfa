@@ -20,8 +20,8 @@ return new class extends Migration
             $table->double('sueldo_percibido',10,2)->nullable();
             $table->string('cargo_desempenado',100)->nullable();
             $table->string('motivo_salida',100)->nullable();
-            $table->boolean('recibio_amonestaciones')->nullable();
-            $table->boolean('solicitud_renuncia')->nullable();
+            $table->boolean('recibio_amonestaciones')->default(false);
+            $table->boolean('solicitud_renuncia')->default(false);
             $table->text('explicacion')->nullable();
             $table->timestamps();
         });

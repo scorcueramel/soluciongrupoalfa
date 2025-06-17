@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('detalle_experencia_laborals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('persona_id')->constrained('personas');
-            $table->boolean('recibio_amonestaciones');
-            $table->boolean('solicitud_renuncia');
+            $table->boolean('recibio_amonestaciones')->default(false);
+            $table->boolean('solicitud_renuncia')->default(false);
             $table->string('explicacion');
             $table->timestamps();
         });

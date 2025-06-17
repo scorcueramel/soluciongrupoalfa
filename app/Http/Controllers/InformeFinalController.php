@@ -198,78 +198,231 @@ class InformeFinalController extends Controller
     }
   }
 
+  private function requestPersona(int $id)
+  {
+    // Consulta optimizada para datos de persona
+    return Personas::leftJoin('tipos_documentos', 'tipos_documentos.id', '=', 'personas.tipo_documento_id')
+      ->leftJoin('estados_civiles', 'estados_civiles.id', '=', 'personas.estado_civil_id')
+      ->where('personas.id', $id)
+      ->select([
+        'personas.id',
+        'personas.nombres',
+        'personas.apellido_paterno',
+        'personas.apellido_materno',
+        'personas.numero_documento',
+        'personas.fecha_nacimiento',
+        'personas.direccion',
+        'personas.distrito_id',
+        'personas.tipo_vivienda_id',
+        'personas.telefono',
+        'personas.foto',
+        'tipos_documentos.tipo_documento',
+        'estados_civiles.estado_civil'
+      ])
+      ->firstOrFail();
+  }
+
+  private function requestCodigoConteo(int $id)
+  {
+    // Consulta optimizada para código de poligrafista
+    $codigoYConteo = SolicitudesDatosPersonales::leftJoin('users', 'users.id', '=', 'solicitudes_datos_personales.usuario_id')
+      ->where('persona_id', $id)
+      ->select([
+        'users.codigo_poligrafista',
+        'solicitudes_datos_personales.fecha_solicitud',
+        'solicitudes_datos_personales.cantidad_evaluaciones'
+      ])
+      ->first();
+    return [$codigoYConteo->codigo_poligrafista . $codigoYConteo->cantidad_evaluaciones, $codigoYConteo->fecha_solicitud];
+  }
+
+  private function requestSolicitudDatosPersonales(int $id)
+  {
+    // Consulta optimizada para datos de solicitud
+    return SolicitudesDatosPersonales::leftJoin('empresas', 'empresas.id', '=', 'solicitudes_datos_personales.empresa_id')
+      ->leftJoin('cargos', 'cargos.id', '=', 'solicitudes_datos_personales.cargo_id')
+      ->where('persona_id', $id)
+      ->select([
+        'cargos.cargo as cargo',
+        'empresas.razon_social'
+      ])
+      ->first();
+  }
+
+  private function requestInformeFinal(int $id)
+  {
+    // Consulta optimizada para informe final
+    return InformesFinales::where('persona_id', $id)
+      ->where('usuario_id', Auth::id())
+      ->select([
+        'porcentaje_evaluacion',
+        'drogas_ilegales',
+        'antecedentes',
+        'vinculos',
+        'planes_infiltracion',
+        'proyeccion_tiempo_empresa',
+        'preguntas_relevantes',
+        'conclusion'
+      ])
+      ->first();
+  }
+
+  private function formatDate(string $date)
+  {
+    // Solo necesitamos estos meses para formatear la fecha
+    $meses = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+    // Formateo de fecha de nacimiento
+    return [
+      'dia' => Carbon::parse($date)->format('d'),
+      'mes' => $meses[(int)Carbon::parse($date)->format('m') - 1],
+      'anio' => Carbon::parse($date)->format('Y')
+    ];
+  }
+
+  private function requestUbicacion(int $id)
+  {
+    // Consultas optimizadas para ubicación
+    return Distritos::where('id', $id)
+      ->select('distrito')
+      ->first();
+  }
+
+  private function requestProvincia(int $id)
+  {
+    return ConsentimientosExamenes::where('persona_id', $id)
+      ->select('ciudad')
+      ->first();
+  }
+
+  private function requestTipoVivienda(int $id)
+  {
+    return TiposViviendas::where('id', $id)
+      ->select('tipo_vivienda')
+      ->first();
+  }
+
+  private function requestParentesco(int $id)
+  {
+    // Consulta optimizada para familiares
+    return ParentescosPersonas::leftJoin('tipos_parentescos', 'tipos_parentescos.id', '=', 'parentescos_personas.tipo_parentesco_id')
+      ->where('persona_id', $id)
+      ->select([
+        'tipos_parentescos.tipo_parentesco',
+        'parentescos_personas.nombres_apellidos',
+        'parentescos_personas.edad',
+        'parentescos_personas.ocupacion',
+        'parentescos_personas.mismo_inmueble'
+      ])
+      ->get();
+  }
+
+  private function requestFormacionAcademica(int $id)
+  {
+    // Consulta optimizada para formación académica
+    return FormacionesAcademicasPersonas::leftJoin('grados_instrucciones', 'grados_instrucciones.id', 'formaciones_academicas_personas.grado_instruccion_id')
+      ->where('persona_id', $id)
+      ->select([
+        'grados_instrucciones.grado_instruccion',
+        'formaciones_academicas_personas.centro_estudio',
+        'formaciones_academicas_personas.especialidad_facultad',
+        'formaciones_academicas_personas.fecha_inicio',
+        'formaciones_academicas_personas.fecha_termino',
+        'formaciones_academicas_personas.situacion'
+      ])
+      ->get();
+  }
+
+  private function requestInformacionFinanciera(int $id)
+  {
+    // Consulta optimizada para información financiera
+    return DB::table('personas_informaciones_financieras')
+      ->leftJoin('entidades_bancarias as eb', 'eb.id', '=', 'personas_informaciones_financieras.entidad_bancaria_prestamo_id')
+      ->leftJoin('entidades_bancarias as eb2', 'eb2.id', '=', 'personas_informaciones_financieras.entidad_bancaria_reporto_id')
+      ->where('persona_id', $id)
+      ->select([
+        'tiene_prestamo',
+        'monto_prestamo',
+        'eb.nombre_entidad as entidad_prestamo',
+        'cuota_mensual_prestamo',
+        'reportado_centrar_riesgos',
+        'eb2.nombre_entidad as entidad_reporto',
+        'tiene_propiedades'
+      ])
+      ->first();
+
+  }
+
+  private function requestConsumoBebidasAlcoholicas(int $id)
+  {
+    // Consulta optimizada para consumo de bebidas
+    return ConsumosBebidasAlcoholicas::where('persona_id', $id)
+      ->select('frecuencia_consumo')
+      ->first();
+  }
+
+  private function requestExperienciasLaborales(int $id)
+  {
+    return ExperienciasLaborales::where('persona_id', $id)
+      ->select([
+        'empresa',
+        'fecha_ingreso',
+        'fecha_salida',
+        'sueldo_percibido',
+        'cargo_desempenado',
+        'motivo_salida'
+      ])
+      ->get();
+  }
+
   public function generarPdf($id)
   {
     $descargar = request()->query('descargar') === '1';
+    $persona = $this->requestPersona($id);
+    $codigoPoli = $this->requestCodigoConteo($id)[0];
+    $solDatPers = $this->requestSolicitudDatosPersonales($id);
+    $informeFinal = $this->requestInformeFinal($id);
+    $fechaNacimiento = $this->formatDate($persona->fecha_nacimiento);
+    $distrito = $this->requestUbicacion($persona->distrito_id);
+    $provincia = $this->requestProvincia($persona->id);
+    $tiposVivienda = $this->requestTipoVivienda($persona->tipo_vivienda_id);
+    $parentescos = $this->requestParentesco($persona->id);
+    $formAcademicas = $this->requestFormacionAcademica($persona->id);
+    $infoFinancieras = $this->requestInformacionFinanciera($persona->id);
+    $reportaInfocorp = $infoFinancieras->reportado_centrar_riesgos ? 'Afirmo haber estado registrado en INFOCORP' : 'Negó haber estado registrado negativamente en INFOCORP';
+    $propiedades = $infoFinancieras->tiene_propiedades ? 'afirmo tener propiedades registradas a su nombre.' : 'negó tener propiedades registradas a su nombre.';
+    $consumoBebidas = $this->requestConsumoBebidasAlcoholicas($id);
+    $expLaborales = $this->requestExperienciasLaborales($id);
 
-    $subtest = range('a', 'z'); // Equivalente a tu array
+    // Ruta de la foto
+    $fotoPath = storage_path('app/public/fotos/' . $persona->foto);
 
-    $meses = [
-      'ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO',
-      'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'
+    // Preparar datos para la vista
+    $data = [
+      'codigoPoli' => $codigoPoli,
+      'fechaSolicitud' => Carbon::parse($this->requestCodigoConteo($id)[1])->format('d/m/Y'),
+      'persona' => $persona,
+      'informeFinal' => $informeFinal,
+      'solDatPers' => $solDatPers,
+      'fechaNacimiento' => $fechaNacimiento,
+      'distrito' => $distrito,
+      'provincia' => $provincia,
+      'tiposVivienda' => $tiposVivienda,
+      'parentescos' => $parentescos,
+      'formAcademicas' => $formAcademicas,
+      'infoFinancieras' => $infoFinancieras,
+      'reportaInfocorp' => $reportaInfocorp,
+      'propiedades' => $propiedades,
+      'consumoBebidas' => $consumoBebidas,
+      'expLaborales' => $expLaborales,
+      'fotoPath' => $fotoPath
     ];
 
-    $persona = Personas::leftJoin('tipos_documentos', 'tipos_documentos.id', '=', 'personas.tipo_documento_id')
-      ->leftJoin('estados_civiles', 'estados_civiles.id', '=', 'personas.estado_civil_id')
-      ->where('personas.id', $id)
-      ->select('personas.*', 'tipos_documentos.tipo_documento', 'estados_civiles.estado_civil')
-      ->first();
-
-    $codigoYConteo = SolicitudesDatosPersonales::leftJoin('users', 'users.id', '=', 'solicitudes_datos_personales.usuario_id')
-      ->select('users.codigo_poligrafista', 'solicitudes_datos_personales.cantidad_evaluaciones')
-      ->where('persona_id', $id)
-      ->first();
-
-    $codigoPoli = $codigoYConteo?->codigo_poligrafista . ($codigoYConteo?->cantidad_evaluaciones ?? '');
-
-    $informeFinal = InformesFinales::where('persona_id', $id)->where('usuario_id', Auth::id())->get();
-
-    $diaNac = Carbon::parse($persona->fecha_nacimiento)->format('d');
-    $mesNac = $meses[(int)Carbon::parse($persona->fecha_nacimiento)->format('m') - 1];
-    $anioNac = Carbon::parse($persona->fecha_nacimiento)->format('Y');
-
-    $distrito = Distritos::find($persona->distrito_id);
-    $provincia = ConsentimientosExamenes::find($persona->id);
-    $tiposVivienda = TiposViviendas::find($persona->tipo_vivienda_id);
-
-    $parentescos = ParentescosPersonas::leftJoin('tipos_parentescos', 'tipos_parentescos.id', '=', 'parentescos_personas.tipo_parentesco_id')
-      ->select('tipos_parentescos.tipo_parentesco', 'parentescos_personas.nombres_apellidos', 'parentescos_personas.edad', 'parentescos_personas.ocupacion', 'parentescos_personas.mismo_inmueble')
-      ->where('persona_id', $persona->id)
-      ->get();
-
-    $formAcademicas = FormacionesAcademicasPersonas::leftJoin('grados_instrucciones', 'grados_instrucciones.id', 'formaciones_academicas_personas.grado_instruccion_id')
-      ->select('grados_instrucciones.grado_instruccion', 'formaciones_academicas_personas.centro_estudio', 'formaciones_academicas_personas.especialidad_facultad', 'formaciones_academicas_personas.fecha_inicio', 'formaciones_academicas_personas.fecha_termino', 'formaciones_academicas_personas.situacion')
-      ->where('persona_id', $persona->id)
-      ->get();
-
-    $infoFinancieras = DB::selectOne("
-            SELECT
-                pif.tiene_prestamo, pif.monto_prestamo, eb.nombre_entidad as entidad_prestamo,
-                pif.cuota_mensual_prestamo, pif.otro_ingreso, pif.monto_ingreso, pif.origen_ingreso,
-                pif.tiene_propiedades, pif.detalle_propiedades, pif.reportado_centrar_riesgos,
-                eb2.nombre_entidad as entidad_reporto, pif.motivo_reportado, pif.tiempo_mora, pif.monto_deuda
-            FROM personas_informaciones_financieras pif
-            LEFT JOIN entidades_bancarias eb ON eb.id = pif.entidad_bancaria_prestamo_id
-            LEFT JOIN entidades_bancarias eb2 ON eb2.id = pif.entidad_bancaria_reporto_id
-            WHERE persona_id = ?", [$persona->id]
-    );
-
-    $reportaInfocorp = $infoFinancieras?->reportado_centrar_riesgos ? 'Afirmó haber estado registrado en INFOCORP' : 'Negó haber estado registrado negativamente en INFOCORP';
-    $propiedades = $infoFinancieras?->tiene_propiedades ? 'Afirmó tener propiedades registradas a su nombre.' : 'Negó tener propiedades registradas a su nombre.';
-
-    $consumoBebidas = ConsumosBebidasAlcoholicas::where('persona_id', $id)->first();
-    $expLaborales = ExperienciasLaborales::where('persona_id', $id)->get();
-
-    $pdf = Pdf::loadView('pdf.informe', compact(
-      'persona', 'diaNac', 'mesNac', 'anioNac',
-      'distrito', 'provincia', 'tiposVivienda',
-      'parentescos', 'formAcademicas', 'infoFinancieras',
-      'reportaInfocorp', 'propiedades', 'consumoBebidas',
-      'expLaborales', 'codigoPoli', 'informeFinal'
-    ));
+    // Generar PDF
+    $pdf = \PDF::loadView('pdf.informe', $data);
+    $fileName = "Informe Final - {$persona->nombres}.pdf";
 
     return $descargar
-      ? $pdf->download("informe_{$persona->id}.pdf")
-      : $pdf->stream("informe_{$persona->id}.pdf");
+      ? $pdf->download($fileName)
+      : $pdf->stream($fileName);
   }
 }

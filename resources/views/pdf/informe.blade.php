@@ -1,122 +1,66 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Informe Personal</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <style>
-    body {
-      font-family: DejaVu Sans, sans-serif;
-      font-size: 12px;
-      line-height: 1.5;
-    }
-    h1, h2, h3 {
-      text-align: center;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 15px;
-    }
-    th, td {
-      border: 1px solid #000;
-      padding: 4px;
-      text-align: left;
-    }
-    ul {
-      padding-left: 20px;
-    }
+    body { font-family: Arial, sans-serif; font-size: 12px; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .foto { float: right; width: 150px; height: 150px; margin-left: 20px; }
+    .clear { clear: both; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+    table, th, td { border: 1px solid #ddd; }
+    th, td { padding: 8px; text-align: left; }
+    .section-title { background-color: #f2f2f2; font-weight: bold; padding: 8px; margin-top: 20px; }
   </style>
 </head>
 <body>
-<h1>Informe Personal</h1>
 
-<h2>Datos Personales</h2>
-<p><strong>Nombre:</strong> {{ $persona->nombres }} {{ $persona->apellido_paterno }} {{ $persona->apellido_materno }}</p>
-<p><strong>Fecha de Nacimiento:</strong> {{ $diaNac }} de {{ $mesNac }} de {{ $anioNac }}</p>
-<p><strong>Documento:</strong> {{ $persona->tipo_documento }} {{ $persona->numero_documento }}</p>
-<p><strong>Estado Civil:</strong> {{ $persona->estado_civil }}</p>
-<p><strong>Distrito:</strong> {{ $distrito->nombre ?? 'No disponible' }}</p>
+@include('pdf.encabezado',[$codigoPoli, $fechaSolicitud])
 
-<h2>Información Financiera</h2>
-<p>{{ $reportaInfocorp }}</p>
-<p>{{ $propiedades }}</p>
-<p><strong>Tiene préstamo:</strong> {{ $infoFinancieras->tiene_prestamo ? 'Sí' : 'No' }}</p>
-@if($infoFinancieras->tiene_prestamo)
-  <p><strong>Entidad:</strong> {{ $infoFinancieras->entidad_prestamo }}</p>
-  <p><strong>Monto:</strong> S/ {{ $infoFinancieras->monto_prestamo }}</p>
-  <p><strong>Cuota mensual:</strong> S/ {{ $infoFinancieras->cuota_mensual_prestamo }}</p>
+<!-- Foto y datos básicos -->
+@if(file_exists($fotoPath))
+@include('pdf.foto-evaluado',[$fotoPath])
 @endif
 
-@if($infoFinancieras->otro_ingreso)
-  <p><strong>Otros Ingresos:</strong> S/ {{ $infoFinancieras->monto_ingreso }} ({{ $infoFinancieras->origen_ingreso }})</p>
+@include('pdf.datos-empresa',['nombres'=>"$persona->nombres $persona->apellido_paterno $persona->apellido_materno",'porcentaje'=>$informeFinal->porcentaje_evaluacion,'tipoDocumento' => $persona->tipo_documento,'numeroDocumento' => $persona->numero_documento,'cargo' => $solDatPers->cargo,'empresa'=>$solDatPers->razon_social])
+
+<!-- Datos personales -->
+<div class="section-title">DATOS PERSONALES</div>
+@include('pdf.datos-personales',['dia'=>$fechaNacimiento['dia'],'mes'=>$fechaNacimiento['mes'],'anio'=>$fechaNacimiento['anio'],'estadoCivil' => $persona->estado_civil,'direccion' => $persona->direccion,'distrito' => $distrito->distrito,'provincia' => $provincia->ciudad,'departamento' => $provincia->ciudad,'tiposVivienda' => $tiposVivienda->tipo_vivienda,'telefono'=>$persona->telefono])
+
+<!-- Familiares -->
+<div class="section-title">FAMILIARES</div>
+@include('pdf.familiares',[$parentescos])
+
+<!-- Formación académica -->
+<div class="section-title">FORMACIÓN ACADÉMICA</div>
+@include('pdf.formacion-academica',[$formAcademicas])
+
+<!-- Información financiera -->
+<div class="section-title">INFORMACIÓN FINANCIERA</div>
+@include('pdf.informacion-financiera',['tienePrestamo' => $infoFinancieras->tiene_prestamo,'montoPrestamo' => $infoFinancieras->monto_prestamo,'entidadPrestamo' => $infoFinancieras->entidad_prestamo,'cuotaMensualPrestamo' => $infoFinancieras->cuota_mensual_prestamo,'reportaInfocorp' => $reportaInfocorp,'propiedades' => $propiedades])
+
+<!-- Consumo de alcohol -->
+<div class="section-title">CONSUMO DE BEBIDAS ALCOHÓLICAS</div>
+@include('pdf.consumo-bebidas-alcholicas',['consumoBebidasAlcoholicas' => $consumoBebidas->frecuencia_consumo])
+
+<!-- Experiencia laboral -->
+<div class="section-title">EXPERIENCIA LABORAL</div>
+@include('pdf.experiencia-labores',['expLaborales' => $expLaborales])
+
+<!-- Información adicional -->
+<div class="section-title">INFORMACIÓN ADICIONAL</div>
+@include('pdf.informacion-adicional',['drogasIlegales' => $informeFinal->drogas_ilegales,'antecedentes' => $informeFinal->antecedentes,'vinculos' => $informeFinal->vinculos,'planeInfiltracion' => $informeFinal->planes_infiltracion,'proyeccionTiempoEmpresa' => $informeFinal->proyeccion_tiempo_empresa])
+
+<!-- Preguntas relevantes -->
+@if(!is_null($informeFinal->preguntas_relevantes))
+  <div class="section-title">PREGUNTAS RELEVANTES</div>
+  @php $preguntas = json_decode($informeFinal->preguntas_relevantes); @endphp
+  @include('pdf.preguntas-relevantes',['preguntas'=>$preguntas])
 @endif
 
-@if($infoFinancieras->reportado_centrar_riesgos)
-  <p><strong>Entidad que reportó:</strong> {{ $infoFinancieras->entidad_reporto }}</p>
-  <p><strong>Motivo:</strong> {{ $infoFinancieras->motivo_reportado }}</p>
-  <p><strong>Tiempo de mora:</strong> {{ $infoFinancieras->tiempo_mora }}</p>
-  <p><strong>Monto de deuda:</strong> S/ {{ $infoFinancieras->monto_deuda }}</p>
-@endif
-
-<h2>Formación Académica</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Grado</th>
-    <th>Centro</th>
-    <th>Especialidad</th>
-    <th>Inicio</th>
-    <th>Término</th>
-    <th>Situación</th>
-  </tr>
-  </thead>
-  <tbody>
-  @foreach($formAcademicas as $form)
-    <tr>
-      <td>{{ $form->grado_instruccion }}</td>
-      <td>{{ $form->centro_estudio }}</td>
-      <td>{{ $form->especialidad_facultad }}</td>
-      <td>{{ $form->fecha_inicio }}</td>
-      <td>{{ $form->fecha_termino }}</td>
-      <td>{{ $form->situacion }}</td>
-    </tr>
-  @endforeach
-  </tbody>
-</table>
-
-<h2>Experiencias Laborales</h2>
-<ul>
-  @foreach($expLaborales as $exp)
-    <li><strong>{{ $exp->empresa }}</strong>: {{ $exp->cargo }} ({{ $exp->fecha_inicio }} - {{ $exp->fecha_termino }})</li>
-  @endforeach
-</ul>
-
-<h2>Parentescos</h2>
-<table>
-  <thead>
-  <tr>
-    <th>Parentesco</th>
-    <th>Nombre</th>
-    <th>Edad</th>
-    <th>Ocupación</th>
-    <th>Vive en mismo inmueble</th>
-  </tr>
-  </thead>
-  <tbody>
-  @foreach($parentescos as $par)
-    <tr>
-      <td>{{ $par->tipo_parentesco }}</td>
-      <td>{{ $par->nombres_apellidos }}</td>
-      <td>{{ $par->edad }}</td>
-      <td>{{ $par->ocupacion }}</td>
-      <td>{{ $par->mismo_inmueble ? 'Sí' : 'No' }}</td>
-    </tr>
-  @endforeach
-  </tbody>
-</table>
-
-<h2>Consumo de Alcohol</h2>
-<p><strong>Frecuencia:</strong> {{ $consumoBebidas->frecuencia ?? 'No especificado' }}</p>
-
+<!-- Conclusión final -->
+<div class="section-title">CONCLUSIÓN FINAL</div>
+<p>{{ $informeFinal->conclusion }}</p>
 </body>
 </html>

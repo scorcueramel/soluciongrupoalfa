@@ -159,6 +159,21 @@ const generarFormato = () => {
     });
 }
 
+const generaInformeFinal = () =>{
+  axios.get(route("informe.final", data.evaluado?.personaId, {responseType: 'Blob'}))
+    .then((response) => {
+      const fileLink = document.createElement('a');
+      fileLink.href = response.config.url;
+      document.body.appendChild(fileLink);
+      fileLink.click();
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    .finally(() => {
+    });
+}
+
 const generarConsentimiento = () => {
   console.log(data.evaluado?.personaId)
   axios.get(route("evaluados.consentimiento.descargar", data.evaluado?.personaId, {responseType: 'Blob'}))
@@ -212,7 +227,7 @@ const registrarInformeFinal = () => {
         },
         preserveScroll: true,
         onSuccess: () => {
-          emit("close");
+          // emit("close");
           form.reset();
         },
         onError: () => null,
@@ -397,6 +412,13 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
                     </a>
                   </li>
                   <li>
+<!--                      <a href="#"-->
+<!--                         class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"-->
+<!--                         role="menuitem" tabindex="-1"-->
+<!--                         @click="data.evaluado = slotProps.data; generaInformeFinal()" v-show="can(['consent evaluado'])" v-if="slotProps.data.informe_final">-->
+<!--                        <i class="pi pi-file-pdf me-2"></i> Informe Final-->
+<!--                      </a>-->
+
                     <div v-if="slotProps.data.informe_final" v-show="can(['report evaluado'])">
                     <a href="#"
                        class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-[#10B981]"
