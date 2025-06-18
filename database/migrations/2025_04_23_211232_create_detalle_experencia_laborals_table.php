@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas');
             $table->boolean('recibio_amonestaciones')->default(false);
             $table->boolean('solicitud_renuncia')->default(false);
-            $table->string('explicacion');
+            $table->string('explicacion')->nullable();
             $table->timestamps();
         });
     }

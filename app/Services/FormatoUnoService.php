@@ -59,6 +59,7 @@ class FormatoUnoService
           'brevete' => $d->brevete,
           'foto' => $filename,
         ]);
+
         //end Personas
         //Formaciones academicas
         //3 formaciones academicas, validadndo que solo la ultima no sea obligatoria
@@ -80,7 +81,12 @@ class FormatoUnoService
           'fecha_termino' => $d->terminoEstudiosDos,
           'situacion' => $d->situacionDos,
         ]);
-        if ($d->gradoInstruccionTres != 0 && !is_null($d->centroEstudioTres) && !is_null($d->especialidadesFacultadTres) && !is_null($d->inicioEstudiosTres)) {
+        if (
+          !empty($d->gradoInstruccionTres) &&
+          !empty($d->centroEstudioTres) &&
+          !empty($d->especialidadesFacultadTres) &&
+          !empty($d->inicioEstudiosTres)
+        ) {
           FormacionesAcademicasPersonas::create([
             'persona_id' => $persona->id,
             'grado_instruccion_id' => $d->gradoInstruccionTres,
@@ -91,6 +97,7 @@ class FormatoUnoService
             'situacion' => $d->situacionTres,
           ]);
         }
+
         //end Formaciones academicas
         //Motivaviones de postulación
         MotivacionesPostulaciones::create([
@@ -219,46 +226,44 @@ class FormatoUnoService
             'mismo_inmueble' => $d->mismoInmuebleConyuge,
           ]);
         }
-        if ($d->tieneHijos) {
-          $hijos = [];
 
-          for ($i = 1; $i <= (int)$d->cantidadHijos; $i++) {
-            $hijos[] = ["nombres" => $d->nombresHijos[$i],
-              "edad" => $d->edadesHijos[$i],
-              "ocupacion" => $d->nombreOcupacionesHijos[$i],
-              "misma_casa" => $d->mismoInmuebleHijos[$i]];
-          }
-
-          foreach ($hijos as $hijo) {
-            ParentescosPersonas::create([
-              'persona_id' => $persona->id,
-              'tipo_parentesco_id' => $d->tipoParentescoHijos,
-              'nombres_apellidos' => $hijo["nombres"],
-              'edad' => $hijo["edad"],
-              'ocupacion' => $hijo["ocupacion"],
-              'mismo_inmueble' => $hijo["misma_casa"],
-            ]);
+        if (!empty($d->tieneHijos) && (int)$d->cantidadHijos > 0 && is_array($d->nombresHijos)) {
+          for ($i = 0; $i < (int)$d->cantidadHijos; $i++) {
+            if (
+              !empty($d->nombresHijos[$i]) &&
+              isset($d->edadesHijos[$i]) &&
+              isset($d->nombreOcupacionesHijos[$i]) &&
+              isset($d->mismoInmuebleHijos[$i])
+            ) {
+              ParentescosPersonas::create([
+                'persona_id' => $persona->id,
+                'tipo_parentesco_id' => $d->tipoParentescoHijos,
+                'nombres_apellidos' => $d->nombresHijos[$i],
+                'edad' => $d->edadesHijos[$i],
+                'ocupacion' => $d->nombreOcupacionesHijos[$i],
+                'mismo_inmueble' => $d->mismoInmuebleHijos[$i],
+              ]);
+            }
           }
         }
-        if ($d->tieneHermanos) {
-          $hermanos = [];
 
-          for ($i = 1; $i <= (int)$d->cantidadHermanos; $i++) {
-            $hermanos[] = ["nombres" => $d->nombresHermanos[$i],
-              "edad" => $d->edadesHermanos[$i],
-              "ocupacion" => $d->nombreOcupacionesHermanos[$i],
-              "misma_casa" => $d->mismoInmuebleHermanos[$i]];
-          }
-
-          foreach ($hermanos as $hermano) {
-            ParentescosPersonas::create([
-              'persona_id' => $persona->id,
-              'tipo_parentesco_id' => $d->tipoParentescoHermanos,
-              'nombres_apellidos' => $hermano["nombres"],
-              'edad' => $hermano["edad"],
-              'ocupacion' => $hermano["ocupacion"],
-              'mismo_inmueble' => $hermano["misma_casa"],
-            ]);
+        if (!empty($d->tieneHermanos) && (int)$d->cantidadHermanos > 0 && is_array($d->nombresHermanos)) {
+          for ($i = 0; $i < (int)$d->cantidadHermanos; $i++) {
+            if (
+              !empty($d->nombresHermanos[$i]) &&
+              isset($d->edadesHermanos[$i]) &&
+              isset($d->nombreOcupacionesHermanos[$i]) &&
+              isset($d->mismoInmuebleHermanos[$i])
+            ) {
+              ParentescosPersonas::create([
+                'persona_id' => $persona->id,
+                'tipo_parentesco_id' => $d->tipoParentescoHermanos,
+                'nombres_apellidos' => $d->nombresHermanos[$i],
+                'edad' => $d->edadesHermanos[$i],
+                'ocupacion' => $d->nombreOcupacionesHermanos[$i],
+                'mismo_inmueble' => $d->mismoInmuebleHermanos[$i],
+              ]);
+            }
           }
         }
         //end Parentescos personas
@@ -313,10 +318,9 @@ class FormatoUnoService
         ]);
       }
 
-      $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->where('acceso_formato',true)->get();
-
-      $accesoFormato[0]->acceso_formato = false;
-      $accesoFormato[0]->save();
+      $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->where('acceso_formato', true)->first();
+      $accesoFormato->acceso_formato = false;
+      $accesoFormato->save();
       DB::commit();
       return response()->json(['code' => 200, 'message' => 'Guardado Satisfactoriamente']);
     } catch (\Throwable $th) {

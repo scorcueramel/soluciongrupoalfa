@@ -744,6 +744,8 @@ const registrarFormato = () => {
                         optionLabel="name"
                         placeholder="Seleccionar tipo de documento"
                         emptyMessage="Opciones no disponibles"
+                        @focus="datosPiePagina"
+                        @click="datosPiePagina"
                       />
 
                     </div>
@@ -755,8 +757,6 @@ const registrarFormato = () => {
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Número de documento"
-                        @focus="datosPiePagina"
-                        @click="datosPiePagina"
                         :readonly="true"
                       />
 
@@ -4254,7 +4254,7 @@ const registrarFormato = () => {
                           class="flex-auto w-1/2 ms-4"
                           autocomplete="off"
                           placeholder="Número de documento"
-                          :value="form.numeroDocumento"
+                          :value="props.numerodocumento"
                           :disabled="true"
                           id="numeroDocumentoPie"
                         />
