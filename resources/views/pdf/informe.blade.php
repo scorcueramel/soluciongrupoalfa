@@ -56,9 +56,15 @@
 @include('pdf.informacion-adicional',['drogasIlegales' => $informeFinal->drogas_ilegales,'antecedentes' => $informeFinal->antecedentes,'vinculos' => $informeFinal->vinculos,'planeInfiltracion' => $informeFinal->planes_infiltracion,'proyeccionTiempoEmpresa' => $informeFinal->proyeccion_tiempo_empresa])
 
 <!-- Preguntas relevantes -->
-@if($informeFinal->preguntas_relevantes !== 'null' && $informeFinal->preguntas_relevantes != [])
+@php
+  $preguntas = [];
+  if (!empty($informeFinal->preguntas_relevantes) && $informeFinal->preguntas_relevantes !== 'null') {
+      $preguntas = json_decode($informeFinal->preguntas_relevantes, true);
+  }
+@endphp
+
+@if(!empty($preguntas))
   <div class="section-title">PREGUNTAS RELEVANTES</div>
-  @php $preguntas = json_decode($informeFinal->preguntas_relevantes); @endphp
   @include('pdf.preguntas-relevantes',['preguntas'=>$preguntas])
 @endif
 
