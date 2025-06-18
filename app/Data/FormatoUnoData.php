@@ -105,7 +105,7 @@ class FormatoUnoData extends Data
     public bool    $tienePropiedades,
     public ?string $detallePropiedades,
     public bool    $reportadoEnCentralesDeRiesgo,
-    public ?array  $entidadDeuda,
+    public ?string $entidadDeuda,
     public ?string $motivoCentralDeRiesgo,
     public ?string $tiempoMora,
     public ?float  $montoDeuraMora,

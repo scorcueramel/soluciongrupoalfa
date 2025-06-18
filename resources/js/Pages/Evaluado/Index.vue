@@ -130,15 +130,15 @@ const obtenerDetallePersona = () => {
         }
       });
 
-      dataResponse.objects.entidadesBancarias.map((e) => {
-        if (dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos) {
-          if (dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_reporto_id === e.id) {
-            bancoReportado.value = e.nombre_entidad;
-          }
-        } else {
-          bancoReportado.value = 'No registra';
-        }
-      });
+      // dataResponse.objects.entidadesBancarias.map((e) => {
+      //   if (dataResponse.objects.informacionesFinancieras[0].reportado_centrar_riesgos) {
+      //     if (dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_reporto_id === e.id) {
+      //       bancoReportado.value = e.nombre_entidad;
+      //     }
+      //   } else {
+      //     bancoReportado.value = 'No registra';
+      //   }
+      // });
 
       detailDialog.value = true
     });
@@ -767,10 +767,10 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
                   }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ bancoReportado }}
+                  {{ dataResponse.objects.informacionesFinancieras[0].entidad_bancaria_reporto_id }}
                 </td>
                 <td class="px-6 py-4">
-                  {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado }}
+                  {{ dataResponse.objects.informacionesFinancieras[0].motivo_reportado ?? 'No registra' }}
                 </td>
                 <td class="px-6 py-4">
                   {{ dataResponse.objects.informacionesFinancieras[0].tiempo_mora ?? 'No registra' }}

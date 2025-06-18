@@ -2412,8 +2412,15 @@ const registrarFormato = () => {
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                          v-if="form.reportadoEnCentralesDeRiesgo">
                       <label for="entidaddeuda">Entidad Deuda</label>
+                      <InputText
+                        id="entidaddeuda"
+                        v-model="form.entidadDeuda"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Entidad Deuda"
+                      />
 
-                      <Select
+<!--                      <Select
                         v-model="form.entidadDeuda"
                         :options="entidadesBancariasList"
                         filter
@@ -2433,7 +2440,7 @@ const registrarFormato = () => {
                             <div>{{ slotProps.option.name }}</div>
                           </div>
                         </template>
-                      </Select>
+                      </Select>-->
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                          v-if="form.reportadoEnCentralesDeRiesgo">

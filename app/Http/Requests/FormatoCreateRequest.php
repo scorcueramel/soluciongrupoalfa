@@ -125,7 +125,7 @@ class FormatoCreateRequest extends FormRequest
       "tienePropiedades" => 'nullable',
       "detallePropiedades" => 'nullable|string|max:150',
       "reportadoEnCentralesDeRiesgo" => 'nullable',
-      "entidadDeuda" => 'nullable|array',
+      "entidadDeuda" => 'nullable|string',
       "motivoCentralDeRiesgo" => 'nullable|string|max:150',
       "tiempoMora" => 'nullable|string|max:150',
       "montoDeuraMora" => 'nullable|numeric',

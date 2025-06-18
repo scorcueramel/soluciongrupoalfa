@@ -24,7 +24,7 @@ return new class extends Migration
             $table->boolean('tiene_propiedades')->default(false);
             $table->string('detalle_propiedades',150)->nullable();
             $table->boolean('reportado_centrar_riesgos')->default(false);
-            $table->integer('entidad_bancaria_reporto_id')->nullable(); //almacena el id de entidades financieras para futuras consultas
+            $table->string('entidad_bancaria_reporto_id')->nullable(); //almacena el id de entidades financieras para futuras consultas
             $table->text('motivo_reportado')->nullable();
             $table->string('tiempo_mora',50)->nullable();
             $table->double('monto_deuda',10,2)->nullable();
