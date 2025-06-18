@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Informe Final de Evaluación</title>
   <style>
     body { font-family: Arial, sans-serif; font-size: 12px; }
     .header { text-align: center; margin-bottom: 20px; }
@@ -18,8 +19,10 @@
 @include('pdf.encabezado',[$codigoPoli, $fechaSolicitud])
 
 <!-- Foto y datos básicos -->
+@if(!is_null($persona->foto))
 @if(file_exists($fotoPath))
 @include('pdf.foto-evaluado',[$fotoPath])
+@endif
 @endif
 
 @include('pdf.datos-empresa',['nombres'=>"$persona->nombres $persona->apellido_paterno $persona->apellido_materno",'porcentaje'=>$informeFinal->porcentaje_evaluacion,'tipoDocumento' => $persona->tipo_documento,'numeroDocumento' => $persona->numero_documento,'cargo' => $solDatPers->cargo,'empresa'=>$solDatPers->razon_social])
