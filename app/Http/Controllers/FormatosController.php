@@ -5,26 +5,41 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FormatoCreateRequest;
 use App\Http\Requests\ValidarAccesoFormatosRequest;
 use App\Models\AccesoFormatos;
+use App\Models\AcercaPoligrafos;
 use App\Models\Cargos;
+use App\Models\ComisionesDelitos;
+use App\Models\ConsentimientosExamenes;
+use App\Models\ConsumosBebidasAlcoholicas;
+use App\Models\DetalleExperenciaLaboral;
 use App\Models\Distritos;
 use App\Models\Empresas;
 use App\Models\EntidadesBancarias;
 use App\Models\EstadosCiviles;
+use App\Models\ExperienciasLaborales;
+use App\Models\FormacionesAcademicasPersonas;
 use App\Models\Generos;
 use App\Models\GradosInstrucciones;
+use App\Models\ImplicacionesDrogas;
+use App\Models\MotivacionesPostulaciones;
 use App\Models\Nacionalidades;
+use App\Models\ParentescosPersonas;
+use App\Models\Personas;
+use App\Models\PersonasInformacionesFinancieras;
+use App\Models\PersonasMargenLeyes;
+use App\Models\SolicitudesDatosPersonales;
 use App\Models\TiposDocumentos;
 use App\Models\TiposParentescos;
 use App\Models\TiposViviendas;
 
 use App\Services\FormatoUnoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 
 class FormatosController extends Controller
 {
   public function __construct(
-    private FormatoUnoService $formatoUnoService,
+    private readonly FormatoUnoService $formatoUnoService,
   )
   {
   }
@@ -48,6 +63,7 @@ class FormatosController extends Controller
           'tiposparentescos' => TiposParentescos::all(),
           'tiposviviendas' => TiposViviendas::all(),
           'datosevaluado' => $accesoFormato,
+          'numerodocumento' => $request->documento,
         ]);
       }
     }
@@ -71,7 +87,7 @@ class FormatosController extends Controller
 
   public function formatoDos(Request $request)
   {
-    $datosEvaluado = [
+    $requestatosEvaluado = [
       "nombres" => $request->nombres . " " . $request->paterno . " " . $request->materno,
       "documento" => $request->numeroDocumento,
       "edad" => $request->fechaNacimiento,
@@ -79,7 +95,7 @@ class FormatosController extends Controller
     ];
 
     return Inertia::render('Formato/FormatoDos', [
-      'datosEvaluados' => $datosEvaluado,
+      'datosEvaluados' => $requestatosEvaluado,
     ]);
   }
 

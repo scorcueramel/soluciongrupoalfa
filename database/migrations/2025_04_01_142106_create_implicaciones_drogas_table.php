@@ -20,8 +20,8 @@ return new class extends Migration
             $table->boolean('heroina')->default(false);
             $table->boolean('lsd')->default(false);
             $table->boolean('extasis')->default(false);
-            $table->string('ultimo_consumo');
-            $table->integer('tiempo_transcurrido');
+            $table->string('ultimo_consumo')->nullable();
+            $table->string('tiempo_transcurrido')->nullable();
             $table->boolean('familiar_consumidor')->default(false);
             $table->timestamps();
         });

@@ -10,6 +10,7 @@ import VueDrawingCanvas from "vue-drawing-canvas";
 loadToast();
 
 const props = defineProps({
+  numerodocumento: String,
   show: Boolean,
   cargos: Array,
   distritos: Object,
@@ -37,7 +38,6 @@ const datosHermanos = ref(false);
 const cantidadDeHermanosIndicada = ref(0);
 const cantidadHermanos = ref(false);
 const nombresCompletosPiePagina = ref("");
-const image = ref("");
 const tiposViviendasList = ref([]);
 const distritosList = ref([]);
 const tipoParentescoList = ref([]);
@@ -177,7 +177,7 @@ const form = useForm({
   heroina: false,
   lcd: false,
   extasis: false,
-  tiempoUltimaVez: false,
+  tiempoUltimaVez: "",
   cantidadUltimoConsumo: 0,
   familiaresEnDrogas: false,
   roboHurtoFraude: false,
@@ -480,12 +480,14 @@ const handleFile = (e) => {
 }
 
 const registrarFormato = () => {
+  form.numeroDocumento = props.numerodocumento;
   form.foto = foto.value;
   form.tieneConyuge = datosConyuge.value;
   form.tieneHijos = datosHijos.value;
   form.tieneHermanos = datosHermanos.value;
   form.usuarioId = usuarioId.value;
   form.numeroEvaluaciones = nroEvals.value;
+  form.tiempoUltimaVez === "" ? form.tiempoUltimaVez = "No aplica" : form.tiempoUltimaVez;
   validateForm(form, errors, errorsList);
 
   if (!errors.value) {
@@ -516,8 +518,7 @@ const registrarFormato = () => {
             },
             preserveScroll: true,
             onSuccess: (res) => {
-              console.log(res)
-              emit("close");
+              // emit("close");
               // form.reset();
               Swal.fire({
                 title: "Formato Registrado!",
@@ -529,7 +530,6 @@ const registrarFormato = () => {
               }).then((result) => {
                 if (result.isConfirmed) {
                   form.codigoPoligrafista = props.datosevaluado.codigo_poligrafista + "" + props.datosevaluado.numero_evaluaciones
-                  //redireccionar al siguiente formato enviando los datos necesarios para evitar el rellenado de datos erroneos
                   form.post(route('formato.dos'), {
                     preventScroll: true,
                     onSuccess: () => null,
@@ -539,7 +539,10 @@ const registrarFormato = () => {
                 }
               });
             },
-            onError: (err) => console.log(err),
+            onError: (err) => {
+              Swal.close();
+              console.log(err);
+            },
             onFinish: () => null,
           })
         }
@@ -748,12 +751,13 @@ const registrarFormato = () => {
                       <label for="numeroDocumento">Número de Documento</label>
                       <InputText
                         id="numeroDocumento"
-                        v-model="form.numeroDocumento"
+                        v-model="props.numerodocumento"
                         class="flex-auto"
                         autocomplete="off"
                         placeholder="Número de documento"
                         @focus="datosPiePagina"
                         @click="datosPiePagina"
+                        :readonly="true"
                       />
 
                     </div>

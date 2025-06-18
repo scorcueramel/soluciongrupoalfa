@@ -7,23 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class ImplicacionesDrogas extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'persona_id',
-        'marihuana',
-        'pbc',
-        'cocaina',
-        'heroina',
-        'lsd',
-        'extasis',
-        'tiempo_transcurrido',
-        'ultimo_consumo',
-        'familiar_consumidor',
-    ];
+  protected $fillable = [
+    'persona_id',
+    'marihuana',
+    'pbc',
+    'cocaina',
+    'heroina',
+    'lsd',
+    'extasis',
+    'ultimo_consumo',
+    'tiempo_transcurrido',
+    'familiar_consumidor',
+  ];
 
-    protected $hidden = [
-      'created_at',
-      'updated_at',
-    ];
+  protected $hidden = [
+    'created_at',
+    'updated_at',
+  ];
 }

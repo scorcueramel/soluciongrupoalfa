@@ -19,7 +19,6 @@ use App\Models\PersonasMargenLeyes;
 use App\Models\SolicitudesDatosPersonales;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FormatoUnoService
@@ -61,7 +60,6 @@ class FormatoUnoService
           'foto' => $filename,
         ]);
         //end Personas
-
         //Formaciones academicas
         //3 formaciones academicas, validadndo que solo la ultima no sea obligatoria
         FormacionesAcademicasPersonas::create([
@@ -94,7 +92,6 @@ class FormatoUnoService
           ]);
         }
         //end Formaciones academicas
-
         //Motivaviones de postulación
         MotivacionesPostulaciones::create([
           'persona_id' => $persona->id,
@@ -103,7 +100,6 @@ class FormatoUnoService
           'familiares_en_empresa' => $d->familiaresMismaEmpresa,
         ]);
         //end Motivaviones de postulación
-
         //Consumo de bebidas alcoholicas
         ConsumosBebidasAlcoholicas::create([
           'persona_id' => $persona->id,
@@ -114,7 +110,6 @@ class FormatoUnoService
           'explicacion' => $d->expliqueLlegoEbrio,
         ]);
         //end Consumo de bebidas alcoholicas
-
         //Personas informacion financiera
         PersonasInformacionesFinancieras::create([
           'persona_id' => $persona->id,
@@ -134,7 +129,6 @@ class FormatoUnoService
           'monto_deuda' => $d->montoDeuraMora,
         ]);
         //end Personas informacion financiera
-
         //Perosnas al margen de la ley
         PersonasMargenLeyes::create([
           'persona_id' => $persona->id,
@@ -150,7 +144,6 @@ class FormatoUnoService
           'familiares_sentenciados' => $d->familiaresSentenciadosPenales,
         ]);
         //end Perosnas al margen de la ley
-
         //Acerca del poligrafo
         AcercaPoligrafos::create([
           'persona_id' => $persona->id,
@@ -161,7 +154,6 @@ class FormatoUnoService
           'motivo' => $d->motivoPasoAntesE,
         ]);
         //end Acerca del poligrafo
-
         //Experiencias labroales
         ExperienciasLaborales::create([
           'persona_id' => $persona->id,
@@ -191,7 +183,6 @@ class FormatoUnoService
           'motivo_salida' => $d->motivoSalidaTres,
         ]);
         //end Experiencias labroales
-
         //Detalle de experiencia labolar
         //almacena las opciones de amonestaciones, solicitud de renuncia, explicacion
         DetalleExperenciaLaboral::create([
@@ -201,7 +192,6 @@ class FormatoUnoService
           'explicacion' => $d->explicacion,
         ]);
         //end Detalle de experiencia labolar
-
         //Parentescos personas
         ParentescosPersonas::create([
           'persona_id' => $persona->id,
@@ -272,7 +262,6 @@ class FormatoUnoService
           }
         }
         //end Parentescos personas
-
         //Solicitudes Datos Personales
         SolicitudesDatosPersonales::create([
           'persona_id' => $persona->id,
@@ -284,7 +273,6 @@ class FormatoUnoService
           'cantidad_evaluaciones' => $d->numeroEvaluaciones,
         ]);
         //end Solicitudes Datos Personales
-
         //Comision de delitos
         ComisionesDelitos::create([
           'persona_id' => $persona->id,
@@ -301,8 +289,8 @@ class FormatoUnoService
           'explique_otros' => $d->explicacionCastigadoLey,
         ]);
         //end Comision de delitos
-
         //Implicaciones en Drogas
+
         ImplicacionesDrogas::create([
           'persona_id' => $persona->id,
           'marihuana' => $d->marihuana,
@@ -311,12 +299,12 @@ class FormatoUnoService
           'heroina' => $d->heroina,
           'lsd' => $d->lcd,
           'extasis' => $d->extasis,
-          'ultimo_consumo' => (int)$d->cantidadUltimoConsumo,
-          'tiempo_transcurrido' => $d->tiempoUltimaVez === "" ? 0 : $d->tiempoUltimaVez,
+          'ultimo_consumo' => $d->cantidadUltimoConsumo,
+          'tiempo_transcurrido' => $d->tiempoUltimaVez,
           'familiar_consumidor' => $d->familiaresEnDrogas,
         ]);
-        //end Implicaciones en Drogas
 
+        //end Implicaciones en Drogas
         ConsentimientosExamenes::create([
           'persona_id' => $persona->id,
           'fecha_formato' => date("Y-m-d"),
@@ -324,12 +312,16 @@ class FormatoUnoService
           'ciudad' => $d->ciudad,
         ]);
       }
-      $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->get()[0];
-      $accesoFormato->acceso_formato = false;
-      $accesoFormato->save();
+
+      $accesoFormato = AccesoFormatos::where('documento_persona', $data[0]->numeroDocumento)->where('acceso_formato',true)->get();
+
+      $accesoFormato[0]->acceso_formato = false;
+      $accesoFormato[0]->save();
       DB::commit();
       return response()->json(['code' => 200, 'message' => 'Guardado Satisfactoriamente']);
     } catch (\Throwable $th) {
+      \Log::error('Error al guardar formato uno: ' . $th->getMessage());
+      dd($th->getMessage());
       DB::rollback();
       return response()->json(['code' => 500, 'message' => $th->getMessage()]);
     }
