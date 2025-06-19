@@ -2208,9 +2208,15 @@ const registrarFormato = () => {
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                          v-if="form.tienesPrestamos">
-                      <label for="solicitudrenuncia">Entidad</label>
-
-                      <Select
+                      <label for="entidadprestamo">Entidad Prestamo</label>
+                      <InputText
+                        id="entidadprestamo"
+                        v-model="form.entidadBancaria"
+                        class="flex-auto"
+                        autocomplete="off"
+                        placeholder="Entidad Prestamo"
+                      />
+<!--                      <Select
                         v-model="form.entidadBancaria"
                         :options="entidadesBancariasList"
                         filter
@@ -2230,7 +2236,7 @@ const registrarFormato = () => {
                             <div>{{ slotProps.option.name }}</div>
                           </div>
                         </template>
-                      </Select>
+                      </Select>-->
                     </div>
                     <div class="mt-2 flex flex-col gap-2 me-2 col-span-2 xl:col-span-1 lg:col-span-1 md:col-span-1"
                          v-if="form.tienesPrestamos">

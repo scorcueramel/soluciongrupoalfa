@@ -121,7 +121,8 @@ class FormatoUnoService
         PersonasInformacionesFinancieras::create([
           'persona_id' => $persona->id,
           'tiene_prestamo' => $d->tienesPrestamos,
-          'entidad_bancaria_prestamo_id' => $d->entidadBancaria === null ? null : $d->entidadBancaria["code"],
+//          'entidad_bancaria_prestamo_id' => $d->entidadBancaria === null ? null : $d->entidadBancaria["code"],
+          'entidad_bancaria_prestamo_id' => $d->entidadBancaria,
           'monto_prestamo' => $d->montoDeuda,
           'cuota_mensual_prestamo' => $d->cuotaMensual,
           'otro_ingreso' => $d->otroIngreso,

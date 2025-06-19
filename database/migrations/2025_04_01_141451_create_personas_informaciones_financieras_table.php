@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('persona_id')->constrained('personas');
             $table->boolean('tiene_prestamo')->default(false);
             $table->double('monto_prestamo',10,2)->nullable();
-            $table->integer('entidad_bancaria_prestamo_id')->nullable();
+            $table->string('entidad_bancaria_prestamo_id')->nullable();
             $table->double('cuota_mensual_prestamo',10,2)->nullable();
             $table->boolean('otro_ingreso')->default(false);
             $table->double('monto_ingreso',10,2)->nullable();

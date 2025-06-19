@@ -96,7 +96,7 @@ class FormatoUnoData extends Data
     public bool    $solicitudRenuncia,
     public ?string $explicacion,
     public bool    $tienesPrestamos,
-    public ?array  $entidadBancaria,
+    public ?string  $entidadBancaria,
     public ?float  $cuotaMensual,
     public ?float  $montoDeuda,
     public bool    $otroIngreso,

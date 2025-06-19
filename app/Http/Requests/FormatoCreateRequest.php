@@ -117,7 +117,7 @@ class FormatoCreateRequest extends FormRequest
       "explicacion" => 'nullable|string|max:150',
       "tienesPrestamos" => 'nullable',
       "montoDeuda" => 'nullable|numeric',
-      "entidadBancaria" => 'nullable|array',
+      "entidadBancaria" => 'nullable|string',
       "cuotaMensual" => 'nullable|numeric',
       "otroIngreso" => 'nullable',
       "preciseMonto" => 'nullable|numeric',
